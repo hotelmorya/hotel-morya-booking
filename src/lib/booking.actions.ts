@@ -11,8 +11,8 @@ export const bookingSchema = z.object({
     .regex(/^\+?[0-9\s()-]{10,18}$/, "Please enter a valid phone number"),
   checkIn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid check-in date"),
   checkOut: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid check-out date"),
-  guests: z.number().int().min(1, "Minimum 1 guest").max(30, "Maximum 30 guests"),
-  stayType: z.enum(["AC room", "Non-AC room", "Non-AC dormitory"]),
+  guests: z.number().int().min(1, "Minimum 1 guest").max(100, "Maximum 100 guests"),
+  stayType: z.enum(["AC room", "Non-AC room", "Non-AC dormitory", "Mini hall"]),
   note: z.string().trim().max(500).optional(),
   website: z.string().max(200).optional(),
 });

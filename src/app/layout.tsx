@@ -5,7 +5,7 @@ import "./globals.css";
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   display: "swap",
 });
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://hotel-morya-booking.vercel.app"),
   title: "Hotel Morya Lodging | Stay Near Shri Balumama Temple, Admapur",
   description:
-    "Stay at Hotel Morya Lodging in Admapur, Kolhapur, just 200 metres from Shri Balumama Temple. Explore AC rooms, non-AC rooms, dormitory stays and a mini hall.",
+    "Stay at Hotel Morya Lodging in Admapur, Kolhapur, just 200 metres from Shri Balumama Temple. Explore AC rooms, non-AC rooms, and spacious dormitory stays.",
   keywords: [
     "Hotel Morya",
     "Hotel Morya Lodging",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Hotel Morya Lodging | Admapur, Kolhapur",
     description:
-      "A comfortable stay 200 metres from Shri Balumama Temple. Explore rooms, dormitory accommodation and a mini hall in Admapur.",
+      "A comfortable stay 200 metres from Shri Balumama Temple. Explore AC rooms, non-AC rooms, and group dormitory accommodation in Admapur.",
     url: "https://hotel-morya-booking.vercel.app",
     siteName: "Hotel Morya Lodging",
     images: [
