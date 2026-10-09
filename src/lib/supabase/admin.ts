@@ -9,7 +9,10 @@ import { createClient } from '@supabase/supabase-js'
 // NEVER import this into client components or expose to the browser.
 export function createAdminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || ''
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+  const serviceKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    ''
 
   return createClient(url, serviceKey, {
     auth: { persistSession: false, autoRefreshToken: false },

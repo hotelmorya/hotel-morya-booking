@@ -58,7 +58,7 @@ insert into guests (id, fullname, phone, email, city, preferred_language, tags)
 values
   ('30000000-0000-0000-0000-000000000001', 'Ramesh Patil',   '9876500011', 'ramesh@example.com', 'Kolhapur', 'mr', '{"Frequent"}'),
   ('30000000-0000-0000-0000-000000000002', 'Sunita Deshmukh', '9876500022', null,                 'Sangli',   'mr', '{}'),
-  ('30000000-0000-0000-0000-000000000003', 'Imran Shaikh',    '9876500033', 'imran@example.com',  'Pune',     'hi', '{"VIP"}')
+  ('30000000-0000-0000-0000-000000000003', 'Imran Shaikh',    '9876500033', 'imran@example.com',  'Pune',     'mr', '{"VIP"}')
 on conflict (phone) do nothing;
 
 commit;

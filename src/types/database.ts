@@ -1,6 +1,3 @@
-// Generated from the live Supabase project (utnywpbtqalrfdezudtg) via MCP
-// generate_typescript_types on 2026-06-29. Regenerate after schema changes:
-//   pnpm dlx supabase gen types typescript --project-id utnywpbtqalrfdezudtg > types/database.ts
 export type Json =
   | string
   | number
@@ -13,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
+    PostgrestVersion: "14.18"
   }
   public: {
     Tables: {
@@ -92,6 +89,21 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      booking_ref_counters: {
+        Row: {
+          last_seq: number
+          year: number
+        }
+        Insert: {
+          last_seq?: number
+          year: number
+        }
+        Update: {
+          last_seq?: number
+          year?: number
+        }
+        Relationships: []
       }
       booking_rooms: {
         Row: {
@@ -401,8 +413,12 @@ export type Database = {
           fullname: string
           id: string
           id_number: string | null
+          id_proof_number: string | null
+          id_proof_type: Database["public"]["Enums"]["id_proof_type"] | null
           id_proof_url: string | null
           id_type: Database["public"]["Enums"]["id_proof_type"] | null
+          is_blacklisted: boolean | null
+          is_vip: boolean | null
           last_stayed_at: string | null
           last_vehicle_number: string | null
           last_vehicle_type: Database["public"]["Enums"]["vehicle_type"] | null
@@ -411,7 +427,10 @@ export type Database = {
           phone: string
           phone_verified: boolean | null
           preferred_language: string | null
+          special_requests: string | null
+          state: string | null
           tags: string[] | null
+          total_spend: number | null
           total_stays: number | null
           updated_at: string | null
         }
@@ -425,8 +444,12 @@ export type Database = {
           fullname: string
           id?: string
           id_number?: string | null
+          id_proof_number?: string | null
+          id_proof_type?: Database["public"]["Enums"]["id_proof_type"] | null
           id_proof_url?: string | null
           id_type?: Database["public"]["Enums"]["id_proof_type"] | null
+          is_blacklisted?: boolean | null
+          is_vip?: boolean | null
           last_stayed_at?: string | null
           last_vehicle_number?: string | null
           last_vehicle_type?: Database["public"]["Enums"]["vehicle_type"] | null
@@ -435,7 +458,10 @@ export type Database = {
           phone: string
           phone_verified?: boolean | null
           preferred_language?: string | null
+          special_requests?: string | null
+          state?: string | null
           tags?: string[] | null
+          total_spend?: number | null
           total_stays?: number | null
           updated_at?: string | null
         }
@@ -449,8 +475,12 @@ export type Database = {
           fullname?: string
           id?: string
           id_number?: string | null
+          id_proof_number?: string | null
+          id_proof_type?: Database["public"]["Enums"]["id_proof_type"] | null
           id_proof_url?: string | null
           id_type?: Database["public"]["Enums"]["id_proof_type"] | null
+          is_blacklisted?: boolean | null
+          is_vip?: boolean | null
           last_stayed_at?: string | null
           last_vehicle_number?: string | null
           last_vehicle_type?: Database["public"]["Enums"]["vehicle_type"] | null
@@ -459,7 +489,10 @@ export type Database = {
           phone?: string
           phone_verified?: boolean | null
           preferred_language?: string | null
+          special_requests?: string | null
+          state?: string | null
           tags?: string[] | null
+          total_spend?: number | null
           total_stays?: number | null
           updated_at?: string | null
         }
@@ -478,79 +511,115 @@ export type Database = {
           address: string
           advance_percent: number | null
           auto_cancel_hours_after_booking: number | null
+          cancellation_policy: Json | null
           check_in_time: string | null
           check_out_time: string | null
           city: string
+          created_at: string | null
+          description: Json | null
           email: string | null
+          facebook_url: string | null
           fee_passthrough_enabled: boolean | null
           fee_passthrough_percent: number | null
+          gmb_url: string | null
+          google_maps_url: string | null
           gst_enabled: boolean | null
           gst_number: string | null
           gst_rate: number | null
           id: string
+          instagram_url: string | null
+          logo_public_id: string | null
+          logo_url: string | null
           min_hours_before_checkin: number | null
           name: string
           phone: string
           phone_alt: string | null
           razorpay_enabled: boolean | null
+          reception_hours: string | null
           seo_meta: Json | null
+          slug: string | null
           state: string
           updated_at: string | null
           upi_id: string | null
           upi_qr_url: string | null
           whatsapp: string | null
+          wifi_password: string | null
         }
         Insert: {
           address: string
           advance_percent?: number | null
           auto_cancel_hours_after_booking?: number | null
+          cancellation_policy?: Json | null
           check_in_time?: string | null
           check_out_time?: string | null
           city?: string
+          created_at?: string | null
+          description?: Json | null
           email?: string | null
+          facebook_url?: string | null
           fee_passthrough_enabled?: boolean | null
           fee_passthrough_percent?: number | null
+          gmb_url?: string | null
+          google_maps_url?: string | null
           gst_enabled?: boolean | null
           gst_number?: string | null
           gst_rate?: number | null
           id?: string
+          instagram_url?: string | null
+          logo_public_id?: string | null
+          logo_url?: string | null
           min_hours_before_checkin?: number | null
           name: string
           phone: string
           phone_alt?: string | null
           razorpay_enabled?: boolean | null
+          reception_hours?: string | null
           seo_meta?: Json | null
+          slug?: string | null
           state?: string
           updated_at?: string | null
           upi_id?: string | null
           upi_qr_url?: string | null
           whatsapp?: string | null
+          wifi_password?: string | null
         }
         Update: {
           address?: string
           advance_percent?: number | null
           auto_cancel_hours_after_booking?: number | null
+          cancellation_policy?: Json | null
           check_in_time?: string | null
           check_out_time?: string | null
           city?: string
+          created_at?: string | null
+          description?: Json | null
           email?: string | null
+          facebook_url?: string | null
           fee_passthrough_enabled?: boolean | null
           fee_passthrough_percent?: number | null
+          gmb_url?: string | null
+          google_maps_url?: string | null
           gst_enabled?: boolean | null
           gst_number?: string | null
           gst_rate?: number | null
           id?: string
+          instagram_url?: string | null
+          logo_public_id?: string | null
+          logo_url?: string | null
           min_hours_before_checkin?: number | null
           name?: string
           phone?: string
           phone_alt?: string | null
           razorpay_enabled?: boolean | null
+          reception_hours?: string | null
           seo_meta?: Json | null
+          slug?: string | null
           state?: string
           updated_at?: string | null
           upi_id?: string | null
           upi_qr_url?: string | null
           whatsapp?: string | null
+          wifi_password?: string | null
         }
         Relationships: []
       }
@@ -713,33 +782,42 @@ export type Database = {
           created_at: string | null
           created_by: string | null
           end_date: string
+          from_date: string
           id: string
           label: string | null
           rate: number
+          reason: string
           room_type_id: string
           start_date: string
+          to_date: string
           updated_by: string | null
         }
         Insert: {
           created_at?: string | null
           created_by?: string | null
           end_date: string
+          from_date: string
           id?: string
           label?: string | null
           rate: number
+          reason: string
           room_type_id: string
           start_date: string
+          to_date: string
           updated_by?: string | null
         }
         Update: {
           created_at?: string | null
           created_by?: string | null
           end_date?: string
+          from_date?: string
           id?: string
           label?: string | null
           rate?: number
+          reason?: string
           room_type_id?: string
           start_date?: string
+          to_date?: string
           updated_by?: string | null
         }
         Relationships: [
@@ -768,31 +846,34 @@ export type Database = {
       }
       room_photos: {
         Row: {
+          caption: string | null
           created_at: string | null
           id: string
           is_primary: boolean | null
           public_id: string
           room_type_id: string
-          sort_order: number | null
-          url: string
+          sort_order: number
+          url: string | null
         }
         Insert: {
+          caption?: string | null
           created_at?: string | null
           id?: string
           is_primary?: boolean | null
           public_id: string
           room_type_id: string
-          sort_order?: number | null
-          url: string
+          sort_order?: number
+          url?: string | null
         }
         Update: {
+          caption?: string | null
           created_at?: string | null
           id?: string
           is_primary?: boolean | null
           public_id?: string
           room_type_id?: string
-          sort_order?: number | null
-          url?: string
+          sort_order?: number
+          url?: string | null
         }
         Relationships: [
           {
@@ -815,12 +896,14 @@ export type Database = {
           deleted_at: string | null
           deleted_by: string | null
           description: Json | null
+          extra_bed_charge: number
           id: string
-          is_active: boolean | null
+          is_active: boolean
+          max_extra_beds: number
           max_guests: number
           name: Json
           number_of_beds: number | null
-          sort_order: number | null
+          sort_order: number
           updated_at: string | null
           updated_by: string | null
         }
@@ -834,12 +917,14 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           description?: Json | null
+          extra_bed_charge?: number
           id?: string
-          is_active?: boolean | null
-          max_guests?: number
+          is_active?: boolean
+          max_extra_beds?: number
+          max_guests: number
           name: Json
           number_of_beds?: number | null
-          sort_order?: number | null
+          sort_order?: number
           updated_at?: string | null
           updated_by?: string | null
         }
@@ -853,12 +938,14 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           description?: Json | null
+          extra_bed_charge?: number
           id?: string
-          is_active?: boolean | null
+          is_active?: boolean
+          max_extra_beds?: number
           max_guests?: number
           name?: Json
           number_of_beds?: number | null
-          sort_order?: number | null
+          sort_order?: number
           updated_at?: string | null
           updated_by?: string | null
         }
@@ -891,8 +978,9 @@ export type Database = {
           created_at: string | null
           deleted_at: string | null
           deleted_by: string | null
-          floor: number | null
+          floor: number
           id: string
+          is_active: boolean
           room_number: string
           room_type_id: string
           status: Database["public"]["Enums"]["room_status"]
@@ -902,8 +990,9 @@ export type Database = {
           created_at?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
-          floor?: number | null
+          floor?: number
           id?: string
+          is_active?: boolean
           room_number: string
           room_type_id: string
           status?: Database["public"]["Enums"]["room_status"]
@@ -913,8 +1002,9 @@ export type Database = {
           created_at?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
-          floor?: number | null
+          floor?: number
           id?: string
+          is_active?: boolean
           room_number?: string
           room_type_id?: string
           status?: Database["public"]["Enums"]["room_status"]
@@ -944,9 +1034,10 @@ export type Database = {
           created_by: string | null
           fullname: string
           id: string
-          is_active: boolean | null
-          phone: string | null
+          is_active: boolean
+          phone: string
           role: Database["public"]["Enums"]["user_role"]
+          updated_at: string | null
         }
         Insert: {
           auth_user_id: string
@@ -954,9 +1045,10 @@ export type Database = {
           created_by?: string | null
           fullname: string
           id?: string
-          is_active?: boolean | null
-          phone?: string | null
+          is_active?: boolean
+          phone: string
           role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string | null
         }
         Update: {
           auth_user_id?: string
@@ -964,9 +1056,10 @@ export type Database = {
           created_by?: string | null
           fullname?: string
           id?: string
-          is_active?: boolean | null
-          phone?: string | null
+          is_active?: boolean
+          phone?: string
           role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string | null
         }
         Relationships: [
           {
@@ -987,6 +1080,7 @@ export type Database = {
         Args: never
         Returns: Database["public"]["Enums"]["user_role"]
       }
+      next_booking_ref: { Args: never; Returns: string }
     }
     Enums: {
       booking_source: "website" | "walkin" | "phone" | "whatsapp"
@@ -1030,12 +1124,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1059,11 +1153,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1084,11 +1178,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1109,11 +1203,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1126,11 +1220,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1175,14 +1269,30 @@ export const Constants = {
   },
 } as const
 
-// Convenience enum aliases used across the app
-export type UserRole = Enums<"user_role">
-export type RoomStatus = Enums<"room_status">
-export type BookingStatus = Enums<"booking_status">
-export type BookingSource = Enums<"booking_source">
-export type PaymentMethod = Enums<"payment_method">
-export type PaymentStatus = Enums<"payment_status">
-export type IdProofType = Enums<"id_proof_type">
 
-// Convenience row alias for the curated gallery (migration 013_gallery_media.sql)
-export type GalleryMedia = Tables<"gallery_media">
+// Convenience domain aliases
+export type UserRole = Database["public"]["Enums"]["user_role"]
+export type RoomStatus = Database["public"]["Enums"]["room_status"]
+export type BookingStatus = Database["public"]["Enums"]["booking_status"]
+export type BookingSource = Database["public"]["Enums"]["booking_source"]
+export type PaymentMethod = Database["public"]["Enums"]["payment_method"]
+export type PaymentStatus = Database["public"]["Enums"]["payment_status"]
+export type IdProofType = Database["public"]["Enums"]["id_proof_type"]
+export type StayType = Database["public"]["Enums"]["stay_type"]
+export type VehicleType = Database["public"]["Enums"]["vehicle_type"]
+
+export type HotelSettings = Database["public"]["Tables"]["hotel_settings"]["Row"]
+export type User = Database["public"]["Tables"]["users"]["Row"]
+export type RoomType = Database["public"]["Tables"]["room_types"]["Row"]
+export type Room = Database["public"]["Tables"]["rooms"]["Row"]
+export type RoomPhoto = Database["public"]["Tables"]["room_photos"]["Row"]
+export type RateOverride = Database["public"]["Tables"]["rate_overrides"]["Row"]
+export type Guest = Database["public"]["Tables"]["guests"]["Row"]
+export type Booking = Database["public"]["Tables"]["bookings"]["Row"]
+export type BookingRoom = Database["public"]["Tables"]["booking_rooms"]["Row"]
+export type Payment = Database["public"]["Tables"]["payments"]["Row"]
+export type BookingHold = Database["public"]["Tables"]["booking_holds"]["Row"]
+export type ActivityLog = Database["public"]["Tables"]["activity_log"]["Row"]
+export type MaintenanceBlock = Database["public"]["Tables"]["maintenance_blocks"]["Row"]
+export type CleaningLock = Database["public"]["Tables"]["cleaning_locks"]["Row"]
+export type GalleryMedia = Database["public"]["Tables"]["gallery_media"]["Row"]
