@@ -53,7 +53,7 @@ export async function submitBookingAction(input: BookingInput): Promise<BookingR
     const supabase = createSupabaseServerClient();
     if (supabase) {
       try {
-        const { data: saved, error } = await supabase
+        const { data: saved, error } = await (supabase as any)
           .from("booking_requests")
           .insert({
             guest_name: data.guestName,

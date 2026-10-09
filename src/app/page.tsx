@@ -25,7 +25,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-background text-foreground">
+    <div className="light-scope relative min-h-screen bg-background text-foreground">
       {/* Navigation Header */}
       <SiteNav />
 

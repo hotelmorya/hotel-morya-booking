@@ -1,17 +1,29 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(.dark *):not(.light-scope):not(.light-scope *));
 
-/* Mobile: disable double-tap-to-zoom on interactive elements and remove 300ms tap delay */
 button,
 [role="button"],
 a {
   touch-action: manipulation;
 }
 
+/* Safelist for status classes built via template literals in lib/room-status.ts */
+@source inline("bg-room-{available,arriving,occupied,cleaning,repair}-bg");
+@source inline("text-room-{available,arriving,occupied,cleaning,repair}-text");
+@source inline("border-room-{available,arriving,occupied,cleaning,repair}-border");
+@source inline("bg-room-{available,arriving,occupied,cleaning,repair}-text");
+@source inline("bg-booking-{pending,confirmed,checkedin,checkedout,cancelled,hold}-bg");
+@source inline("text-booking-{pending,confirmed,checkedin,checkedout,cancelled,hold}-text");
+@source inline("border-booking-{pending,confirmed,checkedin,checkedout,cancelled,hold}-border");
+@source inline("bg-booking-{pending,confirmed,checkedin,checkedout,cancelled,hold}-text");
+@source inline("bg-booking-{pending,confirmed,checkedin,checkedout,cancelled,hold}");
+
 @theme inline {
   --font-sans: var(--font-manrope), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-display: var(--font-cormorant), Georgia, serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -31,17 +43,272 @@ a {
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  /* Public Landing Specific Tokens */
   --color-hero-accent: var(--hero-accent);
   --color-hero-accent-foreground: var(--hero-accent-foreground);
   --color-footer: var(--footer);
   --color-footer-foreground: var(--footer-foreground);
   --color-lightbox: var(--lightbox);
-  --radius-sm: 0.125rem;
-  --radius-md: 0.25rem;
-  --radius-lg: 0.375rem;
+
+  /* Admin Neutrals */
+  --color-bg: var(--bg);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-border-emphasis: var(--border-emphasis);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-text-disabled: var(--text-disabled);
+
+  /* Semantic */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+
+  /* Admin Accent (Indigo) */
+  --color-accent-50: #EEEDFE;
+  --color-accent-100: #CECBF6;
+  --color-accent-500: #4F46E5;
+  --color-accent-700: #3C3489;
+  --color-accent-900: #26215C;
+
+  /* Booking Status */
+  --color-booking-pending: #F59E0B;
+  --color-booking-pending-bg: var(--booking-pending-bg);
+  --color-booking-pending-text: var(--booking-pending-text);
+  --color-booking-pending-border: var(--booking-pending-border);
+  --color-booking-confirmed: #2563EB;
+  --color-booking-confirmed-bg: var(--booking-confirmed-bg);
+  --color-booking-confirmed-text: var(--booking-confirmed-text);
+  --color-booking-confirmed-border: var(--booking-confirmed-border);
+  --color-booking-checkedin: #7C3AED;
+  --color-booking-checkedin-bg: var(--booking-checkedin-bg);
+  --color-booking-checkedin-text: var(--booking-checkedin-text);
+  --color-booking-checkedin-border: var(--booking-checkedin-border);
+  --color-booking-checkedout: #737373;
+  --color-booking-checkedout-bg: var(--booking-checkedout-bg);
+  --color-booking-checkedout-text: var(--booking-checkedout-text);
+  --color-booking-checkedout-border: var(--booking-checkedout-border);
+  --color-booking-cancelled: #DC2626;
+  --color-booking-cancelled-bg: var(--booking-cancelled-bg);
+  --color-booking-cancelled-text: var(--booking-cancelled-text);
+  --color-booking-cancelled-border: var(--booking-cancelled-border);
+  --color-booking-hold: #BA7517;
+  --color-booking-hold-bg: var(--booking-hold-bg);
+  --color-booking-hold-text: var(--booking-hold-text);
+  --color-booking-hold-border: var(--booking-hold-border);
+
+  /* Room Status */
+  --color-room-available: #16A34A;
+  --color-room-available-bg: var(--room-available-bg);
+  --color-room-available-text: var(--room-available-text);
+  --color-room-available-border: var(--room-available-border);
+  --color-room-arriving: #06B6D4;
+  --color-room-arriving-bg: var(--room-arriving-bg);
+  --color-room-arriving-text: var(--room-arriving-text);
+  --color-room-arriving-border: var(--room-arriving-border);
+  --color-room-occupied: #9333EA;
+  --color-room-occupied-bg: var(--room-occupied-bg);
+  --color-room-occupied-text: var(--room-occupied-text);
+  --color-room-occupied-border: var(--room-occupied-border);
+  --color-room-cleaning: #D97706;
+  --color-room-cleaning-bg: var(--room-cleaning-bg);
+  --color-room-cleaning-text: var(--room-cleaning-text);
+  --color-room-cleaning-border: var(--room-cleaning-border);
+  --color-room-repair: #64748B;
+  --color-room-repair-bg: var(--room-repair-bg);
+  --color-room-repair-text: var(--room-repair-text);
+  --color-room-repair-border: var(--room-repair-border);
+
+  /* Font Sizes */
+  --text-micro: 10px;
+  --text-micro--line-height: 1.4;
+  --text-label: 11px;
+  --text-label--line-height: 1.4;
+  --text-small: 12px;
+  --text-small--line-height: 1.5;
+  --text-body: 13px;
+  --text-body--line-height: 1.5;
+  --text-subsection: 14px;
+  --text-subsection--line-height: 1.4;
+  --text-section: 18px;
+  --text-section--line-height: 1.25;
+  --text-page: 22px;
+  --text-page--line-height: 1.2;
+
+  /* Border Radii */
+  --radius-sm: 4px;
+  --radius: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+
+  /* Border Widths */
+  --border-width-hairline: 0.5px;
+
+  /* Z-Index */
+  --z-index-sticky: 100;
+  --z-index-fab: 200;
+  --z-index-dropdown: 300;
+  --z-index-overlay: 900;
+  --z-index-modal: 1000;
+  --z-index-toast: 2000;
 }
 
 :root {
+  /* Admin neutrals — light */
+  --bg: #f6f6f7;
+  --surface-1: #ffffff;
+  --surface-2: #efeff1;
+  --border: #e5e5e6;
+  --border-emphasis: #d4d4d6;
+  --text-primary: #1c1c1f;
+  --text-secondary: #57575c;
+  --text-tertiary: #82828a;
+  --text-disabled: #aeaeb5;
+
+  /* shadcn semantic tokens — light */
+  --background: var(--bg);
+  --foreground: var(--text-primary);
+  --card: var(--surface-1);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface-1);
+  --popover-foreground: var(--text-primary);
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--text-secondary);
+  --accent: var(--surface-2);
+  --accent-foreground: var(--text-primary);
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --input: var(--border);
+  --ring: #4f46e5;
+
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #dc2626;
+  --info: #2563eb;
+
+  /* Booking status — light */
+  --booking-pending-bg: #fef3c7;
+  --booking-pending-text: #92400e;
+  --booking-pending-border: #fcd34d;
+  --booking-confirmed-bg: #dbeafe;
+  --booking-confirmed-text: #1e40af;
+  --booking-confirmed-border: #93c5fd;
+  --booking-checkedin-bg: #f3e8ff;
+  --booking-checkedin-text: #6b21a8;
+  --booking-checkedin-border: #d8b4fe;
+  --booking-checkedout-bg: #f5f5f5;
+  --booking-checkedout-text: #525252;
+  --booking-checkedout-border: #d4d4d4;
+  --booking-cancelled-bg: #fee2e2;
+  --booking-cancelled-text: #991b1b;
+  --booking-cancelled-border: #fca5a5;
+  --booking-hold-bg: #fef3c7;
+  --booking-hold-text: #854f0b;
+  --booking-hold-border: #ba7517;
+
+  /* Room status — light */
+  --room-available-bg: #dcfce7;
+  --room-available-text: #14532d;
+  --room-available-border: #86efac;
+  --room-arriving-bg: #cffafe;
+  --room-arriving-text: #155e75;
+  --room-arriving-border: #67e8f9;
+  --room-occupied-bg: #f3e8ff;
+  --room-occupied-text: #6b21a8;
+  --room-occupied-border: #d8b4fe;
+  --room-cleaning-bg: #fef3c7;
+  --room-cleaning-text: #92400e;
+  --room-cleaning-border: #fcd34d;
+  --room-repair-bg: #e2e8f0;
+  --room-repair-text: #334155;
+  --room-repair-border: #94a3b8;
+}
+
+:root.dark {
+  /* Admin neutrals — dark */
+  --bg: #141417;
+  --surface-1: #1c1c20;
+  --surface-2: #26262b;
+  --border: #2c2c31;
+  --border-emphasis: #3a3a40;
+  --text-primary: #ededee;
+  --text-secondary: #a6a6ad;
+  --text-tertiary: #76767d;
+  --text-disabled: #4d4d53;
+
+  --background: var(--bg);
+  --foreground: var(--text-primary);
+  --card: var(--surface-1);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface-1);
+  --popover-foreground: var(--text-primary);
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--text-secondary);
+  --accent: var(--surface-2);
+  --accent-foreground: var(--text-primary);
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --input: var(--border-emphasis);
+  --ring: #6366f1;
+
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --danger: #fca5a5;
+  --info: #60a5fa;
+
+  /* Booking status — dark */
+  --booking-pending-bg: rgba(245, 158, 11, 0.18);
+  --booking-pending-text: #fcd34d;
+  --booking-pending-border: rgba(245, 158, 11, 0.45);
+  --booking-confirmed-bg: rgba(59, 130, 246, 0.18);
+  --booking-confirmed-text: #93c5fd;
+  --booking-confirmed-border: rgba(59, 130, 246, 0.5);
+  --booking-checkedin-bg: rgba(168, 85, 247, 0.18);
+  --booking-checkedin-text: #d8b4fe;
+  --booking-checkedin-border: rgba(168, 85, 247, 0.5);
+  --booking-checkedout-bg: rgba(115, 115, 115, 0.18);
+  --booking-checkedout-text: #d4d4d4;
+  --booking-checkedout-border: rgba(115, 115, 115, 0.45);
+  --booking-cancelled-bg: rgba(239, 68, 68, 0.18);
+  --booking-cancelled-text: #fca5a5;
+  --booking-cancelled-border: rgba(239, 68, 68, 0.5);
+  --booking-hold-bg: rgba(245, 158, 11, 0.18);
+  --booking-hold-text: #fcd34d;
+  --booking-hold-border: rgba(186, 117, 23, 0.6);
+
+  /* Room status — dark */
+  --room-available-bg: rgba(34, 197, 94, 0.16);
+  --room-available-text: #86efac;
+  --room-available-border: rgba(34, 197, 94, 0.45);
+  --room-arriving-bg: rgba(6, 182, 212, 0.18);
+  --room-arriving-text: #67e8f9;
+  --room-arriving-border: rgba(6, 182, 212, 0.5);
+  --room-occupied-bg: rgba(168, 85, 247, 0.18);
+  --room-occupied-text: #d8b4fe;
+  --room-occupied-border: rgba(168, 85, 247, 0.5);
+  --room-cleaning-bg: rgba(245, 158, 11, 0.18);
+  --room-cleaning-text: #fcd34d;
+  --room-cleaning-border: rgba(245, 158, 11, 0.45);
+  --room-repair-bg: rgba(148, 163, 184, 0.18);
+  --room-repair-text: #cbd5e1;
+  --room-repair-border: rgba(148, 163, 184, 0.45);
+}
+
+/* ── Public site scoped tokens ────────────────────────────────────────── */
+.light-scope {
   --background: oklch(0.995 0.002 55);
   --foreground: oklch(0.22 0.02 45);
   --card: oklch(1 0 0);
@@ -68,46 +335,43 @@ a {
   --lightbox: oklch(0.1 0.01 45 / 94%);
 }
 
-.dark {
-  --background: oklch(0.18 0.019 41);
-  --foreground: oklch(0.98 0.004 70);
-  --card: oklch(0.23 0.022 41);
-  --card-foreground: oklch(0.98 0.004 70);
-  --popover: oklch(0.23 0.022 41);
-  --popover-foreground: oklch(0.98 0.004 70);
-  --primary: oklch(0.75 0.14 22);
-  --primary-foreground: oklch(0.17 0.02 40);
-  --secondary: oklch(0.24 0.02 45);
-  --secondary-foreground: oklch(0.98 0.004 70);
-  --muted: oklch(0.27 0.02 45);
-  --muted-foreground: oklch(0.75 0.015 70);
-  --accent: oklch(0.3 0.03 40);
-  --accent-foreground: oklch(0.98 0.004 70);
-  --destructive: oklch(0.72 0.18 25);
-  --destructive-foreground: oklch(0.15 0.01 40);
-  --border: oklch(0.4 0.02 45);
-  --input: oklch(0.4 0.02 45);
-  --ring: oklch(0.72 0.12 77);
-}
-
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
-  html {
-    scroll-behavior: smooth;
-  }
-  body {
-    background: var(--color-background);
-    color: var(--color-foreground);
-    font-family: var(--font-sans);
-  }
-  ::selection {
-    background: var(--color-hero-accent);
-    color: var(--color-hero-accent-foreground);
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
   }
 }
 
+@layer utilities {
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 10px;
+  }
+  .pill-dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 9999px;
+  }
+  .text-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .hairline-border {
+    border-width: 0.5px;
+    border-color: var(--border);
+  }
+  .ring-focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-50);
+    border-color: var(--accent-500);
+  }
+}
+
+/* Public landing bespoke utilities */
 @utility eyebrow {
   display: inline-flex;
   align-items: center;
@@ -157,40 +421,22 @@ a {
   }
 }
 
-@keyframes enter-up {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
+/* Print-to-PDF for booking receipts */
+@media print {
+  body * {
+    visibility: hidden;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .print-area,
+  .print-area * {
+    visibility: visible;
   }
-}
-
-@utility animate-enter-up {
-  animation: enter-up 800ms both ease-out;
-}
-
-/* ── Tactile Noise Overlay ────────────────────────────────────────────── */
-.grain-overlay::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 90;
-  opacity: 0.024;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+  .print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .no-print {
+    display: none !important;
   }
 }
-
