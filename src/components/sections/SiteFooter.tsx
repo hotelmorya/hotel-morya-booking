@@ -17,12 +17,12 @@ export function SiteFooter() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand info */}
           <div className="space-y-4">
-            <div className="relative h-13 w-44">
+            <div className="relative h-12 w-36 sm:h-13 sm:w-40 aspect-[3/1] overflow-hidden rounded-md shadow-xs">
               <Image
-                src="/images/morya-logo.png"
+                src="/images/morya-logo-white-bg.jpg"
                 alt="Hotel Morya Lodging"
                 fill
-                className="object-contain object-left drop-shadow brightness-110"
+                className="object-cover rounded-md"
               />
             </div>
             <p className="text-sm leading-relaxed text-zinc-300">
