@@ -536,7 +536,9 @@ export function Contact({
                       {isMr ? "पत्ता (मंदिरापासून २०० मीटर)" : "Address (200m from Temple)"}
                     </p>
                     <p className="mt-1 text-sm text-foreground leading-relaxed">
-                      {hotelSettings?.address || `${HOTEL.address.street}, ${HOTEL.address.village}, Tal. ${HOTEL.address.taluka}, Dist. ${HOTEL.address.district}, ${HOTEL.address.state} - ${HOTEL.address.postalCode}`}
+                      {isMr
+                        ? "श्री बाळूमामा मंदिर गेटजवळ, आदमापूर, ता. भुदरगड, जि. कोल्हापूर, महाराष्ट्र ४१६२०८"
+                        : (hotelSettings?.address || `${HOTEL.address.street}, ${HOTEL.address.village}, Tal. ${HOTEL.address.taluka}, Dist. ${HOTEL.address.district}, ${HOTEL.address.state} - ${HOTEL.address.postalCode}`)}
                     </p>
                   </div>
                 </div>

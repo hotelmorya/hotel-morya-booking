@@ -95,7 +95,12 @@
     "hlPrasadTitle": "Temple Mahaprasad Proximity",
     "hlPrasadDesc": "Conveniently located near the Sansthan Anna Chhatra (Mahaprasad dining hall).",
     "hlEldersTitle": "Elder-Friendly Stay",
-    "hlEldersDesc": "Seniors can easily return to air-conditioned rooms to rest between rituals and darshan."
+    "hlEldersDesc": "Seniors can easily return to air-conditioned rooms to rest between rituals and darshan.",
+    "mapAndDirections": "Map & Directions",
+    "templeTag": "Shri Sant Balumama Temple",
+    "locationAdmapur": "Admapur, Kolhapur",
+    "templeDistanceBadge": "Just 200m Walk (2 mins)",
+    "waEnquiryMessage": "Namaskar, I am visiting Shri Balumama Temple in Admapur and would like to check room availability."
   },
   "rooms": {
     "eyebrow": "Accommodations",
@@ -287,6 +292,13 @@
     "locationTitle": "Location & Directions",
     "reservations": "Reservations & Help",
     "callForBooking": "Direct Booking Lines",
+    "templeDistance": "200m to Temple Gate",
+    "aartiKakad": "Kakad Aarti: 5:30 AM",
+    "mahaprasad": "Mahaprasad: 11:30 AM to 2:30 PM",
+    "aartiSandhya": "Sandhya Aarti: 7:30 PM",
+    "aartiShej": "Shej Aarti: 9:30 PM",
+    "addressText": "Near Shri Balumama Temple Gate, Admapur, Kolhapur, Maharashtra 416208",
+    "waFooterMessage": "Namaskar, I want to inquire about staying at Hotel Morya Admapur.",
     "copyright": "Hotel Morya Lodging, Admapur. All rights reserved.",
     "credit": "Designed & Developed by"
   }

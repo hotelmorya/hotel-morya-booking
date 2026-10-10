@@ -12,11 +12,12 @@ import {
 } from "@/components/motion/primitives";
 import { ParallaxAura, ParallaxLayer } from "@/components/motion/parallax";
 import { MagneticLink } from "@/components/motion/magnetic-link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { directionsHref, waHref } from "@/lib/site";
 
 export function Temple() {
   const t = useTranslations("temple");
+  const locale = useLocale();
 
   const templeHighlights = [
     {
@@ -97,14 +98,14 @@ export function Temple() {
           <Reveal delay={0.15} className="mt-8 flex flex-wrap gap-4">
             <MagneticLink href={directionsHref} variant="primary" external>
               <Navigation className="size-4" />
-              <span>Map & Directions</span>
+              <span>{t("mapAndDirections")}</span>
             </MagneticLink>
             <MagneticLink
-              href={waHref("Namaskar, I am visiting Shri Balumama Temple in Admapur and would like to check room availability.")}
+              href={waHref(t("waEnquiryMessage"))}
               variant="whatsapp"
               external
             >
-              WhatsApp
+              {locale === "mr" ? "व्हॉट्सअ‍ॅप" : "WhatsApp"}
             </MagneticLink>
           </Reveal>
         </div>
@@ -123,8 +124,8 @@ export function Temple() {
             </motion.div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-white">
-              <p className="text-xs uppercase tracking-wider font-semibold text-amber-300">Shri Sant Balumama Temple</p>
-              <p className="text-base sm:text-lg font-semibold tracking-tight text-white drop-shadow-sm">Admapur, Kolhapur</p>
+              <p className="text-xs uppercase tracking-wider font-semibold text-amber-300">{t("templeTag")}</p>
+              <p className="text-base sm:text-lg font-semibold tracking-tight text-white drop-shadow-sm">{t("locationAdmapur")}</p>
             </div>
           </Reveal>
 
