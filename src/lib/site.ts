@@ -67,7 +67,7 @@ export const HOTEL = {
 
 export const CREDIT = {
   name: "Pravin Bagde",
-  email: "pravinbagde@gmail.com",
+  email: "pravin.b.0009@gmail.com",
 } as const;
 
 export const siteUrl = (
