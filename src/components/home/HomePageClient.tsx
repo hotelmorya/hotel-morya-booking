@@ -60,48 +60,51 @@ export function HomePageClient({
       {/* Navigation Header */}
       <SiteNav />
 
-      {/* 1. Fullscreen Hero Slider & Proximity */}
-      <Hero />
+      {/* Semantic Main Landmark */}
+      <main id="main-content">
+        {/* 1. Fullscreen Hero Slider & Proximity */}
+        <Hero />
 
-      {/* 1.5 Quick Booking & Availability Panel (Bridging Hero & Content) */}
-      <section
-        id="check-availability"
-        aria-label="Check room availability"
-        className="relative z-20 border-b border-zinc-800/80 bg-zinc-950 py-4 sm:py-6 shadow-md"
-      >
-        <div className="mx-auto max-w-5xl px-4 sm:px-8">
-          <HeroAvailabilityBar />
-        </div>
-      </section>
+        {/* 1.5 Quick Booking & Availability Panel (Bridging Hero & Content) */}
+        <section
+          id="check-availability"
+          aria-label="Check room availability"
+          className="relative z-20 border-b border-zinc-800/80 bg-zinc-950 py-4 sm:py-6 shadow-md"
+        >
+          <div className="mx-auto max-w-5xl px-4 sm:px-8">
+            <HeroAvailabilityBar />
+          </div>
+        </section>
 
-      {/* 2. About Morya & Spring-animated Stats */}
-      <About />
+        {/* 2. About Morya & Spring-animated Stats */}
+        <About />
 
-      {/* 3. Dedicated Shri Balumama Temple Section (200m) */}
-      <Temple />
+        {/* 3. Dedicated Shri Balumama Temple Section (200m) */}
+        <Temple />
 
-      {/* 4. Accommodations: AC, Non-AC & Dormitory (Live Database & Cloudinary) */}
-      <Accommodations
-        initialRoomTypes={roomTypes}
-        onSelectRoom={handleSelectRoom}
-      />
+        {/* 4. Accommodations: AC, Non-AC & Dormitory (Live Database & Cloudinary) */}
+        <Accommodations
+          initialRoomTypes={roomTypes}
+          onSelectRoom={handleSelectRoom}
+        />
 
-      {/* 5. Why Choose Us / Pilgrimage Amenities */}
-      <WhyUs />
+        {/* 5. Why Choose Us / Pilgrimage Amenities */}
+        <WhyUs />
 
-      {/* 6. Interactive Masonry Gallery & Lightbox (Live Cloudinary Media) */}
-      <Gallery initialMedia={galleryMedia} />
+        {/* 6. Interactive Masonry Gallery & Lightbox (Live Cloudinary Media) */}
+        <Gallery initialMedia={galleryMedia} />
 
-      {/* 7. Pilgrim Testimonials & Google Rating Badge */}
-      <Testimonials />
+        {/* 7. Pilgrim Testimonials & Google Rating Badge */}
+        <Testimonials />
 
-      {/* 8. Booking Form & Location Map (Live Availability & Rates) */}
-      <Contact
-        initialRoomTypes={roomTypes}
-        selectedRoomId={selectedRoomId}
-        selectedRoom={selectedRoomTitle}
-        hotelSettings={hotelSettings}
-      />
+        {/* 8. Booking Form & Location Map (Live Availability & Rates) */}
+        <Contact
+          initialRoomTypes={roomTypes}
+          selectedRoomId={selectedRoomId}
+          selectedRoom={selectedRoomTitle}
+          hotelSettings={hotelSettings}
+        />
+      </main>
 
       {/* 9. Floating WhatsApp Direct Assistance */}
       <FloatingWhatsApp />

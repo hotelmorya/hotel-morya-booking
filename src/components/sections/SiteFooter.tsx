@@ -132,9 +132,9 @@ export function SiteFooter() {
 
               <div className="flex items-start gap-2.5">
                 <MapPin className="size-4 text-amber-400 shrink-0 mt-0.5" />
-                <span className="leading-relaxed">
+                <address className="not-italic leading-relaxed">
                   {t("addressText")}
-                </span>
+                </address>
               </div>
             </div>
           </div>

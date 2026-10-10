@@ -63,33 +63,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
       },
     },
-
-    // 3. Track Booking Verification Page
-    {
-      url: `${baseUrl}/en/track`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.5,
-      alternates: {
-        languages: {
-          en: `${baseUrl}/en/track`,
-          mr: `${baseUrl}/mr/track`,
-          'x-default': `${baseUrl}/en/track`,
-        },
-      },
-    },
-    {
-      url: `${baseUrl}/mr/track`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.5,
-      alternates: {
-        languages: {
-          en: `${baseUrl}/en/track`,
-          mr: `${baseUrl}/mr/track`,
-          'x-default': `${baseUrl}/en/track`,
-        },
-      },
-    },
   ]
 }

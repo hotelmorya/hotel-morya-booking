@@ -79,7 +79,7 @@ export function About() {
             <motion.div {...imageReveal} className="relative aspect-4/3 w-full sm:aspect-5/4">
               <Image
                 src="/images/hotel-morya-exterior-01.png"
-                alt="Hotel Morya Lodging facade in Admapur"
+                alt={t("altFacade")}
                 fill
                 sizes="(min-width: 1024px) 45vw, 100vw"
                 className="object-cover"
@@ -98,14 +98,14 @@ export function About() {
             <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl">
               <Image
                 src="/images/hotel-morya-reception-lobby.png"
-                alt="Reception desk at Hotel Morya Lodging"
+                alt={t("altLobby")}
                 fill
                 sizes="224px"
                 className="object-cover"
               />
             </div>
             <p className="py-2 text-center text-xs font-semibold text-muted-foreground">
-              Friendly Reception & Assistance
+              {t("captionReception")}
             </p>
           </motion.div>
         </ParallaxLayer>

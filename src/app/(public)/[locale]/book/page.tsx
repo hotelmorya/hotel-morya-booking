@@ -15,7 +15,7 @@ export async function generateMetadata({
   return {
     title: { absolute: `${t('title')} — ${HOTEL.name}` },
     description: t('subtitle'),
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
   }
 }
 

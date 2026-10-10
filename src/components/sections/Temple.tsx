@@ -83,9 +83,9 @@ export function Temple() {
                     <Icon className="size-5" />
                   </span>
                   <div>
-                    <h4 className="font-sans font-bold text-base sm:text-[1.0625rem] text-foreground tracking-tight">
+                    <h3 className="font-sans font-bold text-base sm:text-[1.0625rem] text-foreground tracking-tight">
                       {item.title}
-                    </h4>
+                    </h3>
                     <p className="font-sans text-sm sm:text-base text-muted-foreground mt-1 leading-relaxed">
                       {item.desc}
                     </p>
@@ -116,7 +116,7 @@ export function Temple() {
             <motion.div {...imageReveal} className="absolute inset-0">
               <Image
                 src="/images/balumama-temple.jpg"
-                alt="Shri Sant Balumama Temple exterior in Admapur"
+                alt={t("altTempleExterior")}
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 className="object-cover"
@@ -134,7 +134,7 @@ export function Temple() {
             <Reveal delay={0.2} className="relative aspect-[3/4] overflow-hidden rounded-2xl shadow-2xl ring-4 ring-background border border-amber-900/20">
               <Image
                 src="/images/balumama-murti.jpg"
-                alt="Divine Darshan of Shri Sant Balumama Maharaj"
+                alt={t("altMurti")}
                 fill
                 sizes="224px"
                 className="object-cover"

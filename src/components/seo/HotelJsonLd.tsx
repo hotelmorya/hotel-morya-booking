@@ -261,68 +261,12 @@ export function HotelJsonLd({ locale }: HotelJsonLdProps) {
     },
   ];
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: isMr
-          ? "हॉटेल मोरया लॉजिंग श्री संत बाळूमामा मंदिरापासून किती अंतरावर आहे?"
-          : "How far is Hotel Morya Lodging from Shri Sant Balumama Temple, Admapur?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: isMr
-            ? "हॉटेल मोरया हे श्री संत बाळूमामा मंदिराच्या मुख्य कमानीपासून फक्त २०० मीटर अंतरावर (२ मिनिटांचे अंतर) स्थित आहे. वृद्ध व लहान मुलांसह सहज चालत जाता येते."
-            : "Hotel Morya is located just 200 metres (approx. 2 minutes walk) from the main gate of Shri Sant Balumama Temple in Admapur.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: isMr
-          ? "हॉटेल मोरयामध्ये चेक-इन आणि चेक-आऊटची वेळ काय आहे?"
-          : "What are the check-in and check-out timings at Hotel Morya?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: isMr
-            ? "हॉटेलमध्ये चेक-इन वेळ सकाळी ९:०० आणि चेक-आऊट वेळ सकाळी १०:०० आहे. खोली उपलब्धतेनुसार अर्ली चेक-इन शक्य आहे."
-            : "Standard check-in is 9:00 AM and check-out is 10:00 AM IST. Early check-in or late check-out is subject to availability.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: isMr
-          ? "मोठ्या भाविक मंडळांसाठी ग्रुप हॉल / डॉर्मिटरी उपलब्ध आहे का?"
-          : "Is group accommodation or dormitory available for large pilgrim groups?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: isMr
-            ? "होय, मोठ्या कुटुंबांसाठी आणि भाविक मंडळांसाठी ५०+ लोकांचा प्रशस्त ग्रुप हॉल (डॉर्मिटरी) उपलब्ध आहे, ज्यामध्ये अनेक अटॅच्ड वॉशरुम्स आणि २४ तास गरम पाण्याची सोय आहे."
-            : "Yes, Hotel Morya provides a spacious group dormitory hall accommodating up to 50 pilgrims, with multiple attached washrooms and continuous hot water.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: isMr
-          ? "गाड्यांसाठी आणि बसेससाठी पार्किंगची सोय आहे का?"
-          : "Is parking available for cars and tourist buses?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: isMr
-            ? "होय, हॉटेलच्या आवारात सर्व प्रकारच्या चारचाकी गाड्या व प्रवासी बसेससाठी सुरक्षित खाजगी पार्किंग उपलब्ध आहे."
-            : "Yes, dedicated on-site secure parking is available for cars and group tourist buses visiting Admapur.",
-        },
-      },
-    ],
-  };
-
   const schemas = [
     hotelSchema,
     webSiteSchema,
     breadcrumbSchema,
     templeSchema,
     ...festivalEvents,
-    faqSchema,
   ];
 
   return (

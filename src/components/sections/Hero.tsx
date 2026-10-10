@@ -14,7 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/lib/navigation";
 import { HOTEL, telHref, waHref } from "@/lib/site";
 
@@ -22,6 +22,8 @@ const SLIDE_DURATION = 6500;
 
 export function Hero() {
   const t = useTranslations("hero");
+  const locale = useLocale();
+  const isMr = locale === "mr";
   const [current, setCurrent] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -30,7 +32,9 @@ export function Hero() {
   const slides = [
     {
       image: "/images/hotel-morya-exterior-02.png",
-      alt: "Hotel Morya Lodging building exterior in Admapur",
+      alt: isMr
+        ? "आदमापूर येथील हॉटेल मोरया लॉजिंगची इमारत"
+        : "Hotel Morya Lodging building exterior in Admapur",
       badge: t("badgeTemple"),
       title: "Hotel Morya",
       italic: "Lodging Admapur",
@@ -39,7 +43,9 @@ export function Hero() {
     },
     {
       image: "/images/hotel-morya-reception-lobby.png",
-      alt: "Reception lobby at Hotel Morya Lodging",
+      alt: isMr
+        ? "हॉटेल मोरया लॉजिंगचे स्वागत कक्ष व रिसेप्शन लॉबी"
+        : "Reception lobby at Hotel Morya Lodging",
       badge: t("badgeLift"),
       title: "Come in.",
       italic: "Feel at ease.",
@@ -48,7 +54,9 @@ export function Hero() {
     },
     {
       image: "/images/hotel-morya-ac-room.png",
-      alt: "Deluxe AC room at Hotel Morya Lodging",
+      alt: isMr
+        ? "हॉटेल मोरया लॉजिंगमधील डिलक्स AC रूम"
+        : "Deluxe AC room at Hotel Morya Lodging",
       badge: t("badgeRooms"),
       title: "Stay close.",
       italic: "Rest well.",
@@ -153,6 +161,9 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="mt-3.5 sm:mt-4 font-display text-[clamp(2.75rem,8.2vw,4.75rem)] font-light leading-[1.04] sm:leading-[1.06] tracking-tight text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)]"
           >
+            <span className="block font-sans text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-amber-400 mb-2 drop-shadow-md">
+              {t("brandKicker")}
+            </span>
             {t("titleLine1")}{" "}
             <span className="block font-normal italic text-amber-300">
               {t("titleAccent")}

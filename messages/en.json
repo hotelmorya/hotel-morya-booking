@@ -40,6 +40,7 @@
   },
   "hero": {
     "eyebrow": "Admapur, Kolhapur • 200m from Temple Gate",
+    "brandKicker": "Hotel Morya Lodging • Admapur",
     "titleLine1": "Peaceful Lodging Beside",
     "titleAccent": "Shri Sant Balumama Temple",
     "subtitle": "Comfortable AC rooms, clean non-AC rooms, and a spacious group dormitory for pilgrim families and palkhis. Enjoy 24/7 hot water, free secure parking, and restful darshan stays.",
@@ -75,7 +76,10 @@
     "statPilgrims": "50+",
     "statPilgrimsLabel": "Group Dormitory Capacity",
     "statSupport": "24/7",
-    "statSupportLabel": "Reception & Hot Water"
+    "statSupportLabel": "Reception & Hot Water",
+    "altFacade": "Hotel Morya Lodging facade in Admapur",
+    "altLobby": "Reception desk at Hotel Morya Lodging",
+    "captionReception": "Friendly Reception & Assistance"
   },
   "temple": {
     "eyebrow": "Divine Proximity",
@@ -100,7 +104,9 @@
     "templeTag": "Shri Sant Balumama Temple",
     "locationAdmapur": "Admapur, Kolhapur",
     "templeDistanceBadge": "Just 200m Walk (2 mins)",
-    "waEnquiryMessage": "Namaskar, I am visiting Shri Balumama Temple in Admapur and would like to check room availability."
+    "waEnquiryMessage": "Namaskar, I am visiting Shri Balumama Temple in Admapur and would like to check room availability.",
+    "altTempleExterior": "Shri Sant Balumama Temple exterior in Admapur",
+    "altMurti": "Divine Darshan of Shri Sant Balumama Maharaj"
   },
   "rooms": {
     "eyebrow": "Accommodations",
