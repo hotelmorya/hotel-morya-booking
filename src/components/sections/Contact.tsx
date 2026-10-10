@@ -203,7 +203,9 @@ export function Contact({
         if (result.success) {
           setStatus({
             success: true,
-            message: "Thank you! Your booking inquiry has been recorded. Our front desk will call you shortly to confirm your room.",
+            message: isMr
+              ? "धन्यवाद! तुमची आरक्षण चौकशी नोंदवली गेली आहे. आमचे स्वागत कक्ष लवकरच तुमच्याशी संपर्क साधेल."
+              : "Thank you! Your booking inquiry has been recorded. Our front desk will call you shortly to confirm your room.",
             bookingRef: result.reference,
           });
           formElement.reset();
@@ -214,12 +216,17 @@ export function Contact({
           });
         }
       } catch (err: unknown) {
+        const rawMsg = err instanceof Error ? err.message : "";
+        const isMinifiedReactError =
+          rawMsg.includes("Minified React error") || rawMsg.includes("react.dev/errors");
         setStatus({
           success: false,
           message:
-            err instanceof Error
-              ? err.message
-              : "A network error occurred. Please contact the front desk directly.",
+            !isMinifiedReactError && rawMsg
+              ? rawMsg
+              : isMr
+                ? "आरक्षण चौकशी पाठवताना त्रुटी आली. कृपया थेट रिसेप्शनला कॉल करा."
+                : "Unable to process your inquiry at this moment. Please call or WhatsApp our front desk directly.",
         });
       }
     });

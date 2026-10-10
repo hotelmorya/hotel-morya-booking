@@ -6,7 +6,7 @@ import { nextBookingRef } from "@/lib/booking-ref";
 import { sendEmail } from "@/lib/email/client";
 import { quoteStay, type RateOverride } from "@/lib/pricing";
 
-export const bookingSchema = z.object({
+const bookingSchema = z.object({
   guestName: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
   phone: z
     .string()
@@ -43,7 +43,7 @@ export async function submitBookingAction(input: BookingInput): Promise<BookingR
       return { success: false, error: "Unable to send request. Please try again." };
     }
 
-    const today = new Date().toISOString().slice(0, 10);
+    const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
     const start = new Date(`${data.checkIn}T00:00:00Z`);
     const end = new Date(`${data.checkOut}T00:00:00Z`);
 
