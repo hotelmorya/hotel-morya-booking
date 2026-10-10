@@ -228,7 +228,7 @@ export function HotelSettingsForm({ initialData }: HotelSettingsFormProps) {
             <Input
               type="email"
               {...register('email')}
-              placeholder="bookings@hotelkbpadmapur.in"
+              placeholder="bookings@hotelmoryaadmapur.in"
             />
           </Field>
         </div>

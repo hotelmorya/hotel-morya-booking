@@ -238,7 +238,7 @@ async function handler(request: Request): Promise<Response> {
     const hotel = hotelArr?.[0]
     const hotelName = hotel?.name ?? process.env.NEXT_PUBLIC_HOTEL_NAME ?? 'Hotel Morya Lodging'
     const ownerEmail =
-      hotel?.email ?? process.env.RESEND_FROM_EMAIL ?? 'bookings@hotelkbpadmapur.in'
+      hotel?.email ?? process.env.RESEND_FROM_EMAIL ?? 'bookings@hotelmoryaadmapur.in'
     const today = currentDateIST()
 
     // 5. Build email HTML

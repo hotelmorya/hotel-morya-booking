@@ -64,7 +64,7 @@ function hotelName(): string {
 }
 
 function appUrl(): string {
-  return getEnv('NEXT_PUBLIC_APP_URL', 'https://hotelkbp.vercel.app')
+  return getEnv('NEXT_PUBLIC_APP_URL', 'https://hotelmoryaadmapur.in')
 }
 
 /** Format a HH:MM:SS time string to "12:00 PM" */

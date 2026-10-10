@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
 
   const hotelName = process.env.NEXT_PUBLIC_HOTEL_NAME ?? 'Hotel Morya Lodging'
   const to =
-    process.env.RESEND_CONTACT_TO ?? 'hotelkbpadmapur@gmail.com'
+    process.env.RESEND_CONTACT_TO ?? 'hotelmoryaadmapur@gmail.com'
 
   // Escape user input before inserting into HTML body (T-tbt-04)
   const safe = {

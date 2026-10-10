@@ -281,7 +281,7 @@ export function PoliciesForm({ initialData }: PoliciesFormProps) {
             UPI ID
           </label>
           <p className="mb-3 text-small text-text-tertiary">
-            e.g. hotelkbp@okaxis — lets mobile guests tap to pay in their UPI app
+            e.g. hotelmorya@okaxis — lets mobile guests tap to pay in their UPI app
             (amount prefilled). The QR above is still used on desktop.
           </p>
           <Input placeholder="name@bank" {...register('upi_id')} />

@@ -16,12 +16,12 @@ function getResend(): Resend {
   return _resend
 }
 
-// Hotel-branded sender, e.g. "Hotel Morya Lodging Bookings <bookings@hotelkbpadmapur.in>".
-// The address MUST be on the Resend-verified domain (hotelkbpadmapur.in).
+// Hotel-branded sender, e.g. "Hotel Morya Lodging Bookings <bookings@hotelmoryaadmapur.in>".
+// The address MUST be on the Resend-verified domain (hotelmoryaadmapur.in).
 // Display name comes from RESEND_FROM_NAME, falling back to the hotel name.
 // If RESEND_FROM_EMAIL already includes a "Name <email>" form, it's used as-is.
 export function getFromAddress(): string {
-  const email = process.env.RESEND_FROM_EMAIL ?? 'bookings@hotelkbpadmapur.in'
+  const email = process.env.RESEND_FROM_EMAIL ?? 'bookings@hotelmoryaadmapur.in'
   if (email.includes('<')) return email
   const name =
     process.env.RESEND_FROM_NAME ??

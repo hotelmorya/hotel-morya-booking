@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useEffect, useTransition } from "react";
 import {
   AlertCircle,
   CalendarDays,
@@ -11,6 +11,7 @@ import {
   MessageSquare,
   Navigation,
   Phone,
+  Sparkles,
 } from "lucide-react";
 import { Reveal, SplitHeading } from "@/components/motion/primitives";
 import { MagneticLink } from "@/components/motion/magnetic-link";
@@ -29,17 +30,79 @@ export function Contact({ selectedRoom }: ContactProps) {
     bookingRef?: string;
   } | null>(null);
 
+  const [checkIn, setCheckIn] = useState<string>(() =>
+    new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" })
+  );
+  const [checkOut, setCheckOut] = useState<string>(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
+  });
+  const [roomType, setRoomType] = useState<string>(selectedRoom || "Deluxe AC Rooms");
+  const [guestCount, setGuestCount] = useState<number>(2);
+  const [availability, setAvailability] = useState<{
+    loading: boolean;
+    rooms?: Array<{
+      id: string;
+      name: { en: string; mr?: string };
+      available_count: number;
+      pricing: {
+        base_rate: number;
+        nights: number;
+        subtotal: number;
+        has_override?: boolean;
+        breakdown?: Array<{ date: string; rate: number }>;
+      };
+    }>;
+  }>({ loading: false });
+
+  useEffect(() => {
+    if (selectedRoom) {
+      setRoomType(selectedRoom);
+    }
+  }, [selectedRoom]);
+
+  useEffect(() => {
+    if (!checkIn || !checkOut || checkOut <= checkIn) return;
+    let active = true;
+    setAvailability((prev) => ({ ...prev, loading: true }));
+    fetch(`/api/availability?check_in=${checkIn}&check_out=${checkOut}&guests=${guestCount}`)
+      .then((res) => res.json())
+      .then((json) => {
+        if (active && json?.data?.room_types) {
+          setAvailability({ loading: false, rooms: json.data.room_types });
+        }
+      })
+      .catch(() => {
+        if (active) setAvailability({ loading: false });
+      });
+    return () => {
+      active = false;
+    };
+  }, [checkIn, checkOut, guestCount]);
+
+  const currentRoomData = availability.rooms?.find((r) => {
+    const titleLower = roomType.toLowerCase();
+    const nameLower = r.name.en.toLowerCase();
+    if (titleLower.includes("dormitory") && nameLower.includes("dormitory")) return true;
+    if (titleLower.includes("non-ac") && nameLower.includes("non-ac")) return true;
+    if (!titleLower.includes("non-ac") && titleLower.includes("ac") && nameLower === "ac room") return true;
+    return false;
+  });
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formElement = event.currentTarget;
 
-    const rawRoom = String(formData.get("roomType") || "AC room");
+    const rawRoom = String(formData.get("roomType") || "AC room").toLowerCase();
     let stayType: "AC room" | "Non-AC room" | "Non-AC dormitory" | "Mini hall" = "AC room";
-    if (rawRoom.includes("Non-AC") && rawRoom.includes("dormitory")) {
+    if (rawRoom.includes("dormitory")) {
       stayType = "Non-AC dormitory";
-    } else if (rawRoom.includes("Non-AC")) {
+    } else if (rawRoom.includes("non-ac")) {
       stayType = "Non-AC room";
+    } else {
+      stayType = "AC room";
     }
 
     const payload = {
@@ -187,7 +250,8 @@ export function Contact({ selectedRoom }: ContactProps) {
                       name="checkIn"
                       type="date"
                       required
-                      defaultValue={new Date().toISOString().split("T")[0]}
+                      value={checkIn}
+                      onChange={(e) => setCheckIn(e.target.value)}
                       className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground focus:outline-primary"
                     />
                   </div>
@@ -201,7 +265,8 @@ export function Contact({ selectedRoom }: ContactProps) {
                       name="checkOut"
                       type="date"
                       required
-                      defaultValue={new Date(Date.now() + 86400000).toISOString().split("T")[0]}
+                      value={checkOut}
+                      onChange={(e) => setCheckOut(e.target.value)}
                       className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground focus:outline-primary"
                     />
                   </div>
@@ -215,12 +280,13 @@ export function Contact({ selectedRoom }: ContactProps) {
                     <select
                       id="roomType"
                       name="roomType"
-                      defaultValue={selectedRoom || "Deluxe AC Rooms"}
+                      value={roomType}
+                      onChange={(e) => setRoomType(e.target.value)}
                       className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground focus:outline-primary"
                     >
-                      <option value="Deluxe AC Rooms">Deluxe AC Rooms (₹1,500)</option>
-                      <option value="Comfort Non-AC Rooms">Comfort Non-AC Rooms (₹1,000)</option>
-                      <option value="Spacious Group Dormitory">Group Dormitory (50+ Capacity)</option>
+                      <option value="Deluxe AC Rooms">Deluxe AC Rooms (₹1,500 / night)</option>
+                      <option value="Comfortable Non-AC Rooms">Comfortable Non-AC Rooms (₹800 / night)</option>
+                      <option value="Pilgrim Group Dormitory">Pilgrim Group Dormitory (₹2,200 / night)</option>
                     </select>
                   </div>
 
@@ -234,11 +300,45 @@ export function Contact({ selectedRoom }: ContactProps) {
                       type="number"
                       min="1"
                       max="100"
-                      defaultValue="2"
+                      value={guestCount}
+                      onChange={(e) => setGuestCount(Number(e.target.value) || 1)}
                       className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground focus:outline-primary"
                     />
                   </div>
                 </div>
+
+                {/* Live Database Sync — Availability & Rate Calculation */}
+                {currentRoomData && (
+                  <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 text-xs text-foreground transition-all duration-300">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold">
+                        {currentRoomData.available_count > 0 ? (
+                          <span className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-medium">
+                            <CheckCircle2 className="size-4 shrink-0" />
+                            {currentRoomData.available_count} {currentRoomData.available_count === 1 ? "room" : "rooms"} available for these dates
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-medium">
+                            <AlertCircle className="size-4 shrink-0" />
+                            Fully booked online. Front desk may assist with manual allotment.
+                          </span>
+                        )}
+                      </span>
+                      <span className="text-muted-foreground font-mono font-medium">
+                        {currentRoomData.pricing.nights} {currentRoomData.pricing.nights === 1 ? "night" : "nights"}
+                      </span>
+                    </div>
+
+                    <div className="mt-3 flex items-baseline justify-between border-t border-primary/10 pt-2.5">
+                      <span className="text-muted-foreground text-xs">
+                        Estimated Stay Total:
+                      </span>
+                      <span className="font-display text-lg font-bold text-foreground">
+                        ₹{currentRoomData.pricing.subtotal.toLocaleString("en-IN")}
+                      </span>
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <label htmlFor="notes" className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
