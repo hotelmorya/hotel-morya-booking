@@ -99,8 +99,8 @@ export function Hero() {
               className="object-cover"
             />
             {/* Scrim gradients */}
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-black/35" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent sm:max-w-4xl" />
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/85 via-zinc-950/40 to-black/20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent sm:max-w-4xl" />
           </motion.div>
         </AnimatePresence>
       </div>
