@@ -140,7 +140,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-black/60 px-3.5 py-1 sm:px-4 sm:py-1.5 text-[11px] sm:text-xs font-bold tracking-wider text-amber-300 uppercase backdrop-blur-md shadow-xs"
+            className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-black/60 px-4 py-1.5 text-xs font-bold tracking-wider text-amber-300 uppercase backdrop-blur-md shadow-xs"
           >
             <MapPin className="size-3.5 text-amber-400" />
             <span>{slides[current].badge}</span>
@@ -151,7 +151,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="mt-3 sm:mt-4 font-display text-[clamp(2.1rem,6vw,4.5rem)] font-light leading-[1.1] sm:leading-[1.08] tracking-tight text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.85)]"
+            className="mt-3.5 sm:mt-4 font-display text-[clamp(2.75rem,8.2vw,4.75rem)] font-light leading-[1.04] sm:leading-[1.06] tracking-tight text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)]"
           >
             {t("titleLine1")}{" "}
             <span className="block font-normal italic text-amber-300">
@@ -164,7 +164,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="mt-3 sm:mt-4 max-w-2xl text-xs sm:text-base leading-relaxed text-zinc-200/90 drop-shadow-[0_1px_6px_rgba(0,0,0,0.85)]"
+            className="mt-3.5 sm:mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-zinc-100/95 drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]"
           >
             {t("subtitle")}
           </motion.p>
@@ -178,7 +178,7 @@ export function Hero() {
           >
             <Link
               href="/book"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-6 py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-950 shadow-[0_4px_20px_rgba(245,184,0,0.4)] transition hover:bg-amber-300 hover:scale-[1.02] active:scale-[0.99]"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-zinc-950 shadow-[0_4px_20px_rgba(245,184,0,0.4)] transition hover:bg-amber-300 hover:scale-[1.02] active:scale-[0.99]"
             >
               <span>{t("ctaBook")}</span>
               <ArrowRight className="size-4" />
@@ -213,7 +213,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-wrap items-center gap-x-3 gap-y-1.5 sm:gap-x-5 sm:gap-y-2 text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-zinc-300 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]"
+          className="flex flex-wrap items-center gap-x-3.5 gap-y-1.5 sm:gap-x-5 sm:gap-y-2 text-[11px] sm:text-xs font-semibold tracking-wider uppercase text-zinc-200 drop-shadow-[0_1px_4px_rgba(0,0,0,0.85)]"
         >
           {trustBadges.map((badge, idx) => (
             <li key={idx} className="flex items-center gap-1.5">
