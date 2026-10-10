@@ -169,8 +169,19 @@ export function useGuestIdProofUrl(guestId: string | undefined, hasProof: boolea
     enabled: !!guestId && hasProof,
     queryFn: async () => {
       const res = await fetch(`/api/guests/${guestId}/id-proof`)
-      if (!res.ok) throw new Error((await res.json())?.error?.message ?? 'Could not fetch ID proof URL')
-      return (await res.json()).data
+      let json: {
+        error?: { message?: string }
+        data?: { signedUrl: string; expiresAt: string }
+      } | null = null
+      try {
+        json = await res.json()
+      } catch {
+        // Non-JSON response (e.g. server error page)
+      }
+      if (!res.ok) {
+        throw new Error(json?.error?.message ?? 'Could not fetch ID proof URL')
+      }
+      return json?.data ?? { signedUrl: '', expiresAt: '' }
     },
     staleTime: 50 * 60 * 1000, // 50 min — signed URL lasts 60 min
   })
