@@ -2,8 +2,11 @@
 
 import { MessageSquare } from "lucide-react";
 import { waHref } from "@/lib/site";
+import { useTranslations } from "next-intl";
 
 export function FloatingWhatsApp() {
+  const t = useTranslations("common");
+
   return (
     <a
       href={waHref("Namaskar, I would like to inquire about booking a room at Hotel Morya Lodging Admapur.")}
@@ -14,7 +17,7 @@ export function FloatingWhatsApp() {
     >
       <MessageSquare className="size-5" />
       <span className="text-xs font-bold tracking-wide hidden sm:inline-block">
-        WhatsApp Desk
+        {t("whatsappUs")}
       </span>
     </a>
   );

@@ -15,8 +15,10 @@ import {
 } from "lucide-react";
 import { Reveal, SplitHeading } from "@/components/motion/primitives";
 import { MagneticLink } from "@/components/motion/magnetic-link";
+import { Link } from "@/lib/navigation";
 import { submitBookingAction } from "@/lib/booking.actions";
 import { HOTEL, telHref, waHref, directionsHref, mapEmbedSrc } from "@/lib/site";
+import { useTranslations, useLocale } from "next-intl";
 
 import type { BackendRoomType } from "@/components/sections/Accommodations";
 
@@ -41,6 +43,11 @@ export function Contact({
   initialRoomTypes,
   hotelSettings,
 }: ContactProps) {
+  const t = useTranslations("contact");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+  const isMr = locale === "mr";
+
   const [isPending, startTransition] = useTransition();
   const [status, setStatus] = useState<{
     success: boolean;
@@ -50,38 +57,43 @@ export function Contact({
 
   const roomOptions =
     initialRoomTypes && initialRoomTypes.length > 0
-      ? initialRoomTypes.map((rt) => ({
-          id: rt.id,
-          title: rt.name.en,
-          rate: rt.base_rate,
-          isDorm:
+      ? initialRoomTypes.map((rt) => {
+          const roomTitle = isMr ? (rt.name.mr || rt.name.en) : rt.name.en;
+          const isDorm =
             rt.max_guests > 5 ||
-            (rt.name.en || "").toLowerCase().includes("dormitory"),
-          label: `${rt.name.en} (₹${Number(rt.base_rate).toLocaleString("en-IN")} / ${
-            rt.max_guests > 5 ? "group / night" : "night"
-          })`,
-        }))
+            (rt.name.en || "").toLowerCase().includes("dormitory");
+          const perText = isDorm
+            ? (isMr ? "ग्रुप / रात्र" : "group / night")
+            : (isMr ? "रात्र" : "night");
+          return {
+            id: rt.id,
+            title: roomTitle,
+            rate: rt.base_rate,
+            isDorm,
+            label: `${roomTitle} (₹${Number(rt.base_rate).toLocaleString("en-IN")} / ${perText})`,
+          };
+        })
       : [
           {
             id: "10000000-0000-0000-0000-000000000002",
-            title: "Deluxe AC Rooms",
+            title: isMr ? "डिलक्स AC रूम" : "Deluxe AC Rooms",
             rate: 1500,
             isDorm: false,
-            label: "Deluxe AC Rooms (₹1,500 / night)",
+            label: `${isMr ? "डिलक्स AC रूम" : "Deluxe AC Rooms"} (₹1,500 / ${isMr ? "रात्र" : "night"})`,
           },
           {
             id: "10000000-0000-0000-0000-000000000001",
-            title: "Comfortable Non-AC Rooms",
+            title: isMr ? "नॉन-AC रूम" : "Comfortable Non-AC Rooms",
             rate: 800,
             isDorm: false,
-            label: "Comfortable Non-AC Rooms (₹800 / night)",
+            label: `${isMr ? "नॉन-AC रूम" : "Comfortable Non-AC Rooms"} (₹800 / ${isMr ? "रात्र" : "night"})`,
           },
           {
             id: "10000000-0000-0000-0000-000000000003",
-            title: "Pilgrim Group Dormitory",
+            title: isMr ? "मोठा ग्रुप हॉल" : "Pilgrim Group Dormitory",
             rate: 2200,
             isDorm: true,
-            label: "Pilgrim Group Dormitory (₹2,200 / night)",
+            label: `${isMr ? "मोठा ग्रुप हॉल" : "Pilgrim Group Dormitory"} (₹2,200 / ${isMr ? "रात्र" : "night"})`,
           },
         ];
 
@@ -220,16 +232,16 @@ export function Contact({
           <Reveal>
             <p className="eyebrow text-primary">
               <span className="eyebrow-line" />
-              Reservations & Location
+              {t("eyebrow")}
             </p>
           </Reveal>
           <SplitHeading
-            text="Plan your stay in Admapur."
+            text={t("title")}
             className="mt-4 font-display text-[clamp(2rem,4.2vw,3.15rem)] font-light leading-[1.08] text-foreground"
           />
           <Reveal delay={0.1}>
             <p className="mt-4 text-base text-muted-foreground">
-              Submit your dates for an online inquiry or reach our front desk directly on WhatsApp and phone for immediate room allotment.
+              {t("subtitle")}
             </p>
           </Reveal>
         </div>
@@ -239,11 +251,27 @@ export function Contact({
           <div id="book" className="scroll-mt-24">
             <Reveal className="rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-lg">
               <h3 className="font-display text-2xl font-normal text-foreground">
-                Book Your Pilgrimage Stay
+                {t("formTitle")}
               </h3>
               <p className="mt-1 text-xs text-muted-foreground">
-                No advance credit card required. Our front desk will confirm your room instantly.
+                {t("formDesc")}
               </p>
+
+              {/* Instant Online Booking Prompt */}
+              <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 rounded-2xl border border-amber-400/40 bg-amber-400/10 p-3.5">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="size-4 text-amber-500 shrink-0" />
+                  <span className="text-xs font-semibold text-foreground">
+                    {t("instantOnlineBookingPrompt")}
+                  </span>
+                </div>
+                <Link
+                  href="/book"
+                  className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-primary hover:underline shrink-0"
+                >
+                  <span>{t("bookOnlineLink")}</span>
+                </Link>
+              </div>
 
               {status && (
                 <div
@@ -282,28 +310,28 @@ export function Contact({
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label htmlFor="guestName" className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Your Name *
+                      {t("fullName")} *
                     </label>
                     <input
                       id="guestName"
                       name="guestName"
                       type="text"
                       required
-                      placeholder="Full Name"
+                      placeholder={isMr ? "उदा. रमेश पाटील" : "e.g. Ramesh Patil"}
                       className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground focus:outline-primary"
                     />
                   </div>
 
                   <div>
                     <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Mobile Phone *
+                      {t("mobileNumber")} *
                     </label>
                     <input
                       id="phone"
                       name="phone"
                       type="tel"
                       required
-                      placeholder="10-digit mobile number"
+                      placeholder={isMr ? "१० अंकी मोबाईल नंबर" : "10-digit mobile number"}
                       className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground focus:outline-primary"
                     />
                   </div>
@@ -312,7 +340,7 @@ export function Contact({
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label htmlFor="checkIn" className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Check-in Date *
+                      {t("checkInDate")} *
                     </label>
                     <input
                       id="checkIn"
@@ -327,7 +355,7 @@ export function Contact({
 
                   <div>
                     <label htmlFor="checkOut" className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Check-out Date *
+                      {t("checkOutDate")} *
                     </label>
                     <input
                       id="checkOut"
@@ -344,7 +372,7 @@ export function Contact({
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label htmlFor="roomType" className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Room Choice *
+                      {t("roomType")} *
                     </label>
                     <select
                       id="roomType"
@@ -363,7 +391,7 @@ export function Contact({
 
                   <div>
                     <label htmlFor="guestCount" className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Number of Guests *
+                      {t("numGuests")} *
                     </label>
                     <input
                       id="guestCount"
@@ -386,23 +414,33 @@ export function Contact({
                         {currentRoomData.available_count > 0 ? (
                           <span className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-medium">
                             <CheckCircle2 className="size-4 shrink-0" />
-                            {currentRoomData.available_count} {currentRoomData.available_count === 1 ? "room" : "rooms"} available for these dates
+                            {currentRoomData.available_count}{" "}
+                            {isMr
+                              ? "खोल्या उपलब्ध आहेत"
+                              : `${currentRoomData.available_count === 1 ? "room" : "rooms"} available for these dates`}
                           </span>
                         ) : (
                           <span className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-medium">
                             <AlertCircle className="size-4 shrink-0" />
-                            Fully booked online. Front desk may assist with manual allotment.
+                            {isMr
+                              ? "ऑनलाइन आरक्षण पूर्ण भरले. मदतीसाठी रिसेप्शनला कॉल करा."
+                              : "Fully booked online. Front desk may assist with manual allotment."}
                           </span>
                         )}
                       </span>
                       <span className="text-muted-foreground font-mono font-medium">
-                        {currentRoomData.pricing.nights} {currentRoomData.pricing.nights === 1 ? "night" : "nights"}
+                        {currentRoomData.pricing.nights}{" "}
+                        {isMr
+                          ? "रात्री"
+                          : currentRoomData.pricing.nights === 1
+                          ? "night"
+                          : "nights"}
                       </span>
                     </div>
 
                     <div className="mt-3 flex items-baseline justify-between border-t border-primary/10 pt-2.5">
                       <span className="text-muted-foreground text-xs">
-                        Estimated Stay Total:
+                        {isMr ? "अंदाजे एकूण रक्कम:" : "Estimated Stay Total:"}
                       </span>
                       <span className="font-display text-lg font-bold text-foreground">
                         ₹{currentRoomData.pricing.subtotal.toLocaleString("en-IN")}
@@ -413,13 +451,17 @@ export function Contact({
 
                 <div>
                   <label htmlFor="notes" className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
-                    Special Notes / Arrival Time (Optional)
+                    {t("specialMessage")}
                   </label>
                   <textarea
                     id="notes"
                     name="notes"
                     rows={3}
-                    placeholder="Expected arrival time, senior citizen assistance, extra beds..."
+                    placeholder={
+                      isMr
+                        ? "उदा. पोहोचण्याची वेळ, ज्येष्ठ नागरिकांसाठी तळमजला..."
+                        : "Expected arrival time, senior citizen assistance, extra beds..."
+                    }
                     className="w-full rounded-xl border border-input bg-background p-3 text-sm text-foreground focus:outline-primary resize-none"
                   />
                 </div>
@@ -430,7 +472,7 @@ export function Contact({
                   className="w-full flex items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-sm font-bold uppercase tracking-wider text-primary-foreground shadow-md transition hover:opacity-95 disabled:opacity-50 cursor-pointer"
                 >
                   <CalendarDays className="size-4" />
-                  <span>{isPending ? "Submitting Inquiry..." : "Confirm Booking Request"}</span>
+                  <span>{isPending ? t("sending") : t("submitInquiry")}</span>
                 </button>
               </form>
             </Reveal>
@@ -440,10 +482,10 @@ export function Contact({
           <Reveal delay={0.1} className="flex flex-col justify-between rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-sm">
             <div>
               <h3 className="font-display text-2xl font-normal text-foreground">
-                Front Desk & Location
+                {t("locationAddress")}
               </h3>
               <p className="mt-1 text-xs text-muted-foreground">
-                We are right by the temple. Call or message us 24/7.
+                {isMr ? "मंदिराच्या अगदी जवळ. कधीही कॉल किंवा मेसेज करा." : "We are right by the temple. Call or message us 24/7."}
               </p>
 
               <div className="mt-8 space-y-6">
@@ -453,7 +495,7 @@ export function Contact({
                   </div>
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Booking Helpline
+                      {t("directHelpline")}
                     </p>
                     <div className="mt-1 flex flex-col gap-0.5">
                       {((hotelSettings?.phone ? [hotelSettings.phone, hotelSettings.phone_alt].filter(Boolean) : HOTEL.phones) as string[]).map((phone) => (
@@ -475,7 +517,7 @@ export function Contact({
                   </div>
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Address (200m from Temple)
+                      {isMr ? "पत्ता (मंदिरापासून २०० मीटर)" : "Address (200m from Temple)"}
                     </p>
                     <p className="mt-1 text-sm text-foreground leading-relaxed">
                       {hotelSettings?.address || `${HOTEL.address.street}, ${HOTEL.address.village}, Tal. ${HOTEL.address.taluka}, Dist. ${HOTEL.address.district}, ${HOTEL.address.state} - ${HOTEL.address.postalCode}`}
@@ -488,7 +530,7 @@ export function Contact({
                     <LogIn className="size-5 text-primary shrink-0" />
                     <div>
                       <p className="text-[0.65rem] font-bold uppercase tracking-wider text-muted-foreground">
-                        Check-in
+                        {isMr ? "चेक-इन" : "Check-in"}
                       </p>
                       <p className="text-sm font-semibold text-foreground">
                         {hotelSettings?.check_in_time ? hotelSettings.check_in_time.slice(0, 5) : HOTEL.checkIn}
@@ -500,7 +542,7 @@ export function Contact({
                     <Clock className="size-5 text-primary shrink-0" />
                     <div>
                       <p className="text-[0.65rem] font-bold uppercase tracking-wider text-muted-foreground">
-                        Check-out
+                        {isMr ? "चेक-आउट" : "Check-out"}
                       </p>
                       <p className="text-sm font-semibold text-foreground">
                         {hotelSettings?.check_out_time ? hotelSettings.check_out_time.slice(0, 5) : HOTEL.checkOut}
@@ -518,12 +560,12 @@ export function Contact({
                 external
               >
                 <MessageSquare className="size-4" />
-                <span>Message on WhatsApp</span>
+                <span>{tCommon("whatsappUs")}</span>
               </MagneticLink>
 
               <MagneticLink href={directionsHref} variant="outline" external>
                 <Navigation className="size-4" />
-                <span>Get Directions</span>
+                <span>{t("getDirections")}</span>
               </MagneticLink>
             </div>
           </Reveal>

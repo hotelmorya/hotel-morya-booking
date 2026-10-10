@@ -4,41 +4,41 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, Quote, Star } from "lucide-react";
 import { Reveal, SplitHeading } from "@/components/motion/primitives";
+import { useTranslations } from "next-intl";
 import { HOTEL } from "@/lib/site";
 
-const reviews = [
-  {
-    name: "Sambhaji Patil",
-    role: "Devotee from Kolhapur",
-    quote:
-      "Hotel Morya is the most convenient place to stay in Admapur. Being just 200 metres from Balumama Temple, my aged parents could attend both morning and evening aarti without exhaustion. The lift and 24-hour hot water made our stay effortless.",
-  },
-  {
-    name: "Anand Kulkarni",
-    role: "Yatri from Pune",
-    quote:
-      "Spotless rooms and extremely polite management. After driving 6 hours from Pune, stepping into a cool AC room with fresh bedsheets was such a relief. We also booked the dormitory for our extended family group, and everyone was thrilled.",
-  },
-  {
-    name: "Ganesh Shetti",
-    role: "Pilgrim from Belagavi",
-    quote:
-      "The safe car parking and proximity to the temple dining hall are major advantages. Very quiet and peaceful atmosphere at night, allowing us to rest peacefully after darshan.",
-  },
-];
-
 export function Testimonials() {
+  const t = useTranslations("reviews");
+
+  const reviews = [
+    {
+      name: t("review1Name"),
+      role: t("review1Role"),
+      quote: t("review1Quote"),
+    },
+    {
+      name: t("review2Name"),
+      role: t("review2Role"),
+      quote: t("review2Quote"),
+    },
+    {
+      name: t("review3Name"),
+      role: t("review3Role"),
+      quote: t("review3Quote"),
+    },
+  ];
+
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const reduceMotion = useReducedMotion();
 
   const next = useCallback(() => {
     setCurrent((c) => (c + 1) % reviews.length);
-  }, []);
+  }, [reviews.length]);
 
   const prev = useCallback(() => {
     setCurrent((c) => (c - 1 + reviews.length) % reviews.length);
-  }, []);
+  }, [reviews.length]);
 
   useEffect(() => {
     if (reduceMotion || paused) return;
@@ -62,13 +62,13 @@ export function Testimonials() {
         <Reveal>
           <p className="eyebrow text-amber-300">
             <span className="eyebrow-line bg-amber-300" />
-            Pilgrim Experiences
+            {t("eyebrow")}
           </p>
         </Reveal>
 
         <SplitHeading
           id="testimonials-heading"
-          text="Warm words from visiting devotees."
+          text={t("title")}
           className="mt-4 font-display text-[clamp(2rem,4.2vw,3.15rem)] font-light leading-[1.08] text-white"
         />
 
@@ -81,7 +81,7 @@ export function Testimonials() {
               <span className="text-white/60">/ 5.0</span>
             </div>
             <span className="text-white/30">•</span>
-            <span className="text-white/80">{HOTEL.reviews.count}+ Happy Devotee Reviews</span>
+            <span className="text-white/80">{t("googleBadge")}</span>
           </div>
         </Reveal>
 

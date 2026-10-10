@@ -1,5 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { getLocale } from "next-intl/server";
+import {
+  Cormorant_Garamond,
+  Manrope,
+  Noto_Sans_Devanagari,
+  Noto_Serif_Devanagari,
+  JetBrains_Mono,
+} from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
@@ -16,6 +23,26 @@ const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const notoSerifDevanagari = Noto_Serif_Devanagari({
+  subsets: ["devanagari"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-devanagari-serif",
+  display: "swap",
+});
+
+const notoSansDevanagari = Noto_Sans_Devanagari({
+  subsets: ["devanagari"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-devanagari-sans",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono-var",
   display: "swap",
 });
 
@@ -76,13 +103,23 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+const fontVars = [
+  cormorant.variable,
+  manrope.variable,
+  notoSerifDevanagari.variable,
+  notoSansDevanagari.variable,
+  jetbrainsMono.variable,
+].join(" ");
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" suppressHydrationWarning className={`${cormorant.variable} ${manrope.variable} scroll-smooth`}>
+    <html lang={locale} suppressHydrationWarning className={`${fontVars} scroll-smooth`}>
       <body className="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-hero-accent selection:text-hero-accent-foreground">
         <ThemeProvider
           attribute="class"

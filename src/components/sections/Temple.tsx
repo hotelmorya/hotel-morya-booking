@@ -12,32 +12,35 @@ import {
 } from "@/components/motion/primitives";
 import { ParallaxAura, ParallaxLayer } from "@/components/motion/parallax";
 import { MagneticLink } from "@/components/motion/magnetic-link";
+import { useTranslations } from "next-intl";
 import { directionsHref, waHref } from "@/lib/site";
 
-const templeHighlights = [
-  {
-    icon: MapPin,
-    title: "Just 200 Metres Away",
-    desc: "A relaxed 2-minute stroll from our lobby right to the temple mahadwar.",
-  },
-  {
-    icon: Clock,
-    title: "Seamless Aarti Timings",
-    desc: "Attend early morning Kakad Aarti (5:30 AM) and evening Shej Aarti with zero transit delays.",
-  },
-  {
-    icon: Sparkles,
-    title: "Temple Mahaprasad Proximity",
-    desc: "Conveniently located near the Sansthan Anna Chhatra (Mahaprasad dining hall).",
-  },
-  {
-    icon: HeartHandshake,
-    title: "Elder-Friendly Stay",
-    desc: "Seniors can easily return to air-conditioned rooms to rest between rituals and darshan.",
-  },
-];
-
 export function Temple() {
+  const t = useTranslations("temple");
+
+  const templeHighlights = [
+    {
+      icon: MapPin,
+      title: t("hlDistanceTitle"),
+      desc: t("hlDistanceDesc"),
+    },
+    {
+      icon: Clock,
+      title: t("hlAartiTitle"),
+      desc: t("hlAartiDesc"),
+    },
+    {
+      icon: Sparkles,
+      title: t("hlPrasadTitle"),
+      desc: t("hlPrasadDesc"),
+    },
+    {
+      icon: HeartHandshake,
+      title: t("hlEldersTitle"),
+      desc: t("hlEldersDesc"),
+    },
+  ];
+
   return (
     <section id="temple" className="relative overflow-hidden bg-amber-50/40 dark:bg-zinc-900/60 py-20 sm:py-28 lg:py-32 border-y border-amber-900/10 dark:border-white/10">
       <ParallaxAura className="top-1/4 -right-32 size-[36rem] bg-amber-500/10" />
@@ -48,25 +51,21 @@ export function Temple() {
           <Reveal>
             <p className="eyebrow text-amber-800 dark:text-amber-400">
               <span className="eyebrow-line bg-amber-800 dark:bg-amber-400" />
-              Sacred Proximity · Admapur Sansthan
+              {t("eyebrow")}
             </p>
           </Reveal>
 
           <SplitHeading
-            text="Stay 200 metres from the holy Samadhi Mandir of Shri Sant Balumama."
+            text={t("title")}
             className="mt-4 font-display text-[clamp(2rem,4.2vw,3.15rem)] font-light leading-[1.08] text-foreground"
           />
 
           <div className="mt-5 space-y-3.5 text-base leading-relaxed text-muted-foreground">
             <Reveal delay={0.05}>
-              <p>
-                Admapur is sanctified by the divine presence of <strong>Sadguru Shri Sant Balumama</strong>, whose miracles and boundless compassion draw millions of devotees from across India.
-              </p>
+              <p>{t("subtitle")}</p>
             </Reveal>
             <Reveal delay={0.1}>
-              <p>
-                Staying at <strong>Hotel Morya Lodging</strong> means you never have to worry about long walks, traffic congestion, or parking hassles. The temple gates are merely two minutes away on foot.
-              </p>
+              <p>{t("haldiDesc")}</p>
             </Reveal>
           </div>
 
@@ -101,7 +100,7 @@ export function Temple() {
               variant="whatsapp"
               external
             >
-              Inquire on WhatsApp
+              WhatsApp
             </MagneticLink>
           </Reveal>
         </div>

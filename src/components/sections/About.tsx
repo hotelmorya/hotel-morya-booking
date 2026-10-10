@@ -12,14 +12,18 @@ import {
 } from "@/components/motion/primitives";
 import { ParallaxAura, ParallaxLayer } from "@/components/motion/parallax";
 
-const stats = [
-  { value: 200, suffix: "m", label: "Distance to Temple" },
-  { value: 24, suffix: "/7", label: "Continuous Hot Water" },
-  { value: 50, suffix: "+", label: "Dormitory Capacity" },
-  { value: 100, suffix: "%", label: "Peaceful Hospitality" },
-];
+import { useTranslations } from "next-intl";
 
 export function About() {
+  const t = useTranslations("about");
+
+  const stats = [
+    { value: 200, suffix: "m", label: t("statTempleLabel") },
+    { value: 24, suffix: "/7", label: t("statSupportLabel") },
+    { value: 50, suffix: "+", label: t("statPilgrimsLabel") },
+    { value: 20, suffix: "+", label: t("statRoomsLabel") },
+  ];
+
   return (
     <section id="about" className="relative overflow-hidden bg-background py-20 sm:py-28 lg:py-32">
       <ParallaxAura className="top-10 -left-32 size-[32rem] bg-primary/5" />
@@ -29,25 +33,21 @@ export function About() {
           <Reveal>
             <p className="eyebrow text-primary">
               <span className="eyebrow-line" />
-              About Hotel Morya Lodging
+              {t("eyebrow")}
             </p>
           </Reveal>
 
           <SplitHeading
-            text="A sacred, peaceful sanctuary just steps from the holy temple."
+            text={t("title")}
             className="mt-4 font-display text-[clamp(2rem,4.5vw,3.25rem)] font-light leading-[1.08] text-foreground"
           />
 
           <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
             <Reveal delay={0.05}>
-              <p>
-                Situated in the sacred pilgrim village of <strong>Admapur</strong> in Kolhapur district, <strong>Hotel Morya Lodging</strong> offers devotees and visiting families a restful retreat just 200 metres from the revered <strong>Shri Sant Balumama Temple</strong>.
-              </p>
+              <p>{t("desc1")}</p>
             </Reveal>
             <Reveal delay={0.1}>
-              <p>
-                Whether you arrive after a long road journey from Pune, Mumbai, Goa, or Karnataka, our clean rooms, refreshing 24-hour hot water, easy lift access, and courteous care ensure that your focus remains wholeheartedly on your darshan and spiritual experience.
-              </p>
+              <p>{t("desc2")}</p>
             </Reveal>
           </div>
 

@@ -15,56 +15,59 @@ import {
 } from "lucide-react";
 import { Reveal, RevealGroup, SplitHeading, fadeUp } from "@/components/motion/primitives";
 import { ParallaxAura } from "@/components/motion/parallax";
-
-const amenities = [
-  {
-    icon: MapPin,
-    title: "200m from Temple",
-    body: "Literally a 2-minute level walk to the main Samadhi Mandir and temple entry gate.",
-  },
-  {
-    icon: Droplets,
-    title: "24/7 Hot Water",
-    body: "Reliable hot water at any hour of the day or night for pre-darshan morning holy snan.",
-  },
-  {
-    icon: Building2,
-    title: "Passenger Lift Access",
-    body: "Step-free elevator service to all room floors, deeply appreciated by senior citizens.",
-  },
-  {
-    icon: Zap,
-    title: "Power Backup",
-    body: "Full inverter and generator power backup ensures lighting and ventilation never halt.",
-  },
-  {
-    icon: Car,
-    title: "Safe Vehicle Parking",
-    body: "Spacious on-site parking for two-wheelers, cars, traveler vans, and pilgrim buses.",
-  },
-  {
-    icon: Users,
-    title: "Dormitory for Groups",
-    body: "Massive 50+ person shared accommodation for devotee sanghas, palkhis, and large family yatras.",
-  },
-  {
-    icon: Sparkles,
-    title: "Hygienic Bathrooms",
-    body: "Sparkling clean Western and Indian toilets with modern plumbing and high hygiene standards.",
-  },
-  {
-    icon: Clock,
-    title: "24-Hour Reception Desk",
-    body: "Round-the-clock front desk staff ready to welcome late arrivals and assist with local guidance.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Peaceful & Safe Ambience",
-    body: "CCTV security and calm surroundings so your family rests with complete peace of mind.",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function WhyUs() {
+  const t = useTranslations("amenities");
+
+  const amenities = [
+    {
+      icon: MapPin,
+      title: t("templeProximity"),
+      body: t("templeProximityDesc"),
+    },
+    {
+      icon: Droplets,
+      title: t("hotWater"),
+      body: t("hotWaterDesc"),
+    },
+    {
+      icon: Building2,
+      title: t("lift"),
+      body: t("liftDesc"),
+    },
+    {
+      icon: Zap,
+      title: t("backup"),
+      body: t("backupDesc"),
+    },
+    {
+      icon: Car,
+      title: t("parking"),
+      body: t("parkingDesc"),
+    },
+    {
+      icon: Users,
+      title: t("dormitory"),
+      body: t("dormitoryDesc"),
+    },
+    {
+      icon: Sparkles,
+      title: t("cleanliness"),
+      body: t("cleanlinessDesc"),
+    },
+    {
+      icon: Clock,
+      title: t("reception"),
+      body: t("receptionDesc"),
+    },
+    {
+      icon: ShieldCheck,
+      title: t("safety"),
+      body: t("safetyDesc"),
+    },
+  ];
+
   return (
     <section id="amenities" className="relative overflow-hidden bg-muted/40 py-20 sm:py-28 lg:py-32">
       <ParallaxAura className="top-20 -left-36 size-[34rem] bg-primary/5" />
@@ -75,16 +78,16 @@ export function WhyUs() {
           <Reveal>
             <p className="eyebrow text-primary">
               <span className="eyebrow-line" />
-              Pilgrimage Comforts
+              {t("eyebrow")}
             </p>
           </Reveal>
           <SplitHeading
-            text="Every detail considered for a pure, comfortable stay."
+            text={t("title")}
             className="mt-4 font-display text-[clamp(2rem,4.2vw,3.15rem)] font-light leading-[1.08] text-foreground"
           />
           <Reveal delay={0.1}>
             <p className="mt-4 text-base text-muted-foreground">
-              We understand the needs of yatris arriving after arduous travel. Our facilities are designed to deliver refreshment, cleanliness, and utmost peace.
+              {t("subtitle")}
             </p>
           </Reveal>
         </div>

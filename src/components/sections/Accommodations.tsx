@@ -4,6 +4,8 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { Check, MessageSquare, ArrowUpRight } from "lucide-react";
 import { Reveal, RevealGroup, SplitHeading, fadeUp } from "@/components/motion/primitives";
+import { useTranslations, useLocale } from "next-intl";
+import { Link } from "@/lib/navigation";
 import { HOTEL, waHref } from "@/lib/site";
 import { buildCloudinaryUrl } from "@/lib/cloudinary";
 
@@ -30,6 +32,10 @@ interface AccommodationsProps {
 }
 
 export function Accommodations({ initialRoomTypes, onSelectRoom }: AccommodationsProps) {
+  const t = useTranslations("rooms");
+  const locale = useLocale();
+  const isMr = locale === "mr";
+
   const stays =
     initialRoomTypes && initialRoomTypes.length > 0
       ? initialRoomTypes.map((rt) => {
@@ -54,28 +60,33 @@ export function Accommodations({ initialRoomTypes, onSelectRoom }: Accommodation
             rt.max_guests > 5 ||
             (rt.name.en || "").toLowerCase().includes("dormitory");
           const tagline = isDorm
-            ? "Spacious Accommodations"
+            ? (isMr ? "प्रशस्त ग्रुप निवास" : "Spacious Accommodations")
             : (rt.name.en || "").toLowerCase().includes("non-ac")
-            ? "Clean, Economical & Homely"
-            : "Cool & Peaceful Comfort";
+            ? (isMr ? "स्वच्छ, वाजवी व घरगुती" : "Clean, Economical & Homely")
+            : (isMr ? "थंड, शांत व आरामदायक" : "Cool & Peaceful Comfort");
+
+          const title = isMr ? (rt.name.mr || rt.name.en) : rt.name.en;
+          const description = isMr
+            ? (rt.description.mr || rt.description.en || "भाविकांच्या मुक्कामासाठी अतिशय स्वच्छ व शांत खोली.")
+            : (rt.description.en || "Pristine, hygienic, and peaceful room for your pilgrimage stay.");
 
           return {
             id: rt.id,
-            title: rt.name.en,
+            title,
             tagline,
             image: imageSrc,
             capacity: isDorm
-              ? `Up to ${rt.max_guests} Devotees`
-              : `2-${rt.max_guests} Guests`,
-            description:
-              rt.description.en ||
-              "Pristine, hygienic, and peaceful room for your pilgrimage stay.",
+              ? (isMr ? `${rt.max_guests} भाविकांची सोय` : `Up to ${rt.max_guests} Devotees`)
+              : (isMr ? `२-${rt.max_guests} भाविक` : `2-${rt.max_guests} Guests`),
+            description,
             price: `₹${Number(rt.base_rate).toLocaleString("en-IN")}`,
-            priceNote: isDorm ? "group / night" : "night",
+            priceNote: isDorm ? (isMr ? "ग्रुप / रात्र" : "group / night") : (isMr ? "रात्र" : "night"),
             features:
               rt.amenities && rt.amenities.length > 0
                 ? rt.amenities
-                : ["Attached Bath", "24/7 Hot Water", "Clean Linens"],
+                : (isMr
+                    ? ["अटॅच्ड बाथरूम", "२४/७ गरम पाणी", "स्वच्छ गाद्या"]
+                    : ["Attached Bath", "24/7 Hot Water", "Clean Linens"]),
           };
         })
       : HOTEL.stays;
@@ -86,16 +97,16 @@ export function Accommodations({ initialRoomTypes, onSelectRoom }: Accommodation
           <Reveal>
             <p className="eyebrow text-primary">
               <span className="eyebrow-line" />
-              Rest & Accommodations
+              {t("eyebrow")}
             </p>
           </Reveal>
           <SplitHeading
-            text="Clean, comfortable rooms thoughtfully prepared for your pilgrimage."
+            text={t("title")}
             className="mt-4 font-display text-[clamp(2rem,4.2vw,3.15rem)] font-light leading-[1.08] text-foreground"
           />
           <Reveal delay={0.1}>
             <p className="mt-4 text-base text-muted-foreground">
-              Whether you are travelling as a couple, bringing children and grandparents, or arriving with a group of devotees, Hotel Morya Lodging offers pristine and economical stays.
+              {t("subtitle")}
             </p>
           </Reveal>
         </div>
@@ -159,14 +170,13 @@ export function Accommodations({ initialRoomTypes, onSelectRoom }: Accommodation
 
               {/* Actions */}
               <div className="p-6 pt-0 flex flex-col gap-2">
-                <a
-                  href={`#book`}
-                  onClick={() => onSelectRoom?.(stay.id, stay.title)}
-                  className="flex items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-xs font-bold uppercase tracking-wider text-primary-foreground shadow-xs transition hover:opacity-95"
+                <Link
+                  href={`/book?room_type=${stay.id}`}
+                  className="flex items-center justify-center gap-2 rounded-xl bg-amber-400 py-2.5 text-xs font-bold uppercase tracking-wider text-zinc-950 shadow-xs transition hover:bg-amber-300"
                 >
-                  <span>Book This Room</span>
+                  <span>{t("bookRoom")}</span>
                   <ArrowUpRight className="size-3.5" />
-                </a>
+                </Link>
 
                 <a
                   href={waHref(`Namaskar, I want to inquire about availability for ${stay.title} at Hotel Morya Lodging Admapur.`)}
@@ -175,7 +185,7 @@ export function Accommodations({ initialRoomTypes, onSelectRoom }: Accommodation
                   className="flex items-center justify-center gap-1.5 rounded-xl border border-border bg-background py-2 text-xs font-semibold text-muted-foreground transition hover:border-[#25D366] hover:text-[#25D366]"
                 >
                   <MessageSquare className="size-3.5" />
-                  <span>Inquire on WhatsApp</span>
+                  <span>{t("inquireWhatsApp")}</span>
                 </a>
               </div>
             </motion.div>

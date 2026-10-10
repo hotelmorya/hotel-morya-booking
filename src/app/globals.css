@@ -333,7 +333,46 @@ a {
   --footer: oklch(0.18 0.019 41);
   --footer-foreground: oklch(0.98 0.004 70);
   --lightbox: oklch(0.1 0.01 45 / 94%);
+
+  /* Font chaining with Noto Devanagari for Marathi glyphs */
+  font-family: var(--font-manrope), var(--font-devanagari-sans), system-ui, -apple-system, sans-serif;
 }
+
+.light-scope :is(h1, h2, h3, h4, h5, h6),
+.light-scope .font-serif,
+.light-scope .font-display {
+  font-family: var(--font-cormorant), var(--font-devanagari-serif), Georgia, serif;
+}
+
+.light-scope .font-mono {
+  font-family: var(--font-mono-var), 'JetBrains Mono', monospace;
+}
+
+/* Devanagari (Marathi) reads small at Latin font sizes.
+   Bump the Tailwind type scale ~12.5% for Devanagari locale (mr)
+   so conjuncts and matras remain crisp and readable on mobile. */
+[data-locale="mr"] {
+  --text-xs: 0.84375rem;    /* 0.75rem  × 1.125 */
+  --text-sm: 0.984375rem;   /* 0.875rem × 1.125 */
+  --text-base: 1.125rem;    /* 1rem     × 1.125 */
+  --text-lg: 1.265625rem;   /* 1.125rem × 1.125 */
+  --text-xl: 1.40625rem;    /* 1.25rem  × 1.125 */
+  --text-2xl: 1.6875rem;    /* 1.5rem   × 1.125 */
+  --text-3xl: 2.109375rem;  /* 1.875rem × 1.125 */
+  --text-4xl: 2.53125rem;   /* 2.25rem  × 1.125 */
+  --text-5xl: 3.375rem;     /* 3rem     × 1.125 */
+  --text-6xl: 4.21875rem;   /* 3.75rem  × 1.125 */
+}
+
+/* Devanagari micro-scale overrides so badges don't blur */
+[data-locale="mr"] .text-micro      { font-size: 12px; }
+[data-locale="mr"] .text-label      { font-size: 13px; }
+[data-locale="mr"] .text-small      { font-size: 14px; }
+[data-locale="mr"] .text-body       { font-size: 15px; }
+[data-locale="mr"] .text-subsection { font-size: 16px; }
+[data-locale="mr"] .text-section    { font-size: 20px; }
+[data-locale="mr"] .text-page       { font-size: 24px; }
+
 
 @layer base {
   button:not(:disabled),

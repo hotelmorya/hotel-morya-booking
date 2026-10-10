@@ -1,8 +1,13 @@
+"use client";
+
 import Image from "next/image";
+import { Link } from "@/lib/navigation";
 import { MapPin, Phone, MessageSquare } from "lucide-react";
 import { HOTEL, telHref, waHref, mailtoHref, CREDIT } from "@/lib/site";
+import { useTranslations } from "next-intl";
 
 export function SiteFooter() {
+  const t = useTranslations("footer");
   const currentYear = new Date().getFullYear();
 
   return (
@@ -20,7 +25,7 @@ export function SiteFooter() {
               />
             </div>
             <p className="text-xs leading-relaxed text-zinc-400">
-              A serene and comfortable lodging situated just 200 metres from Shri Sant Balumama Temple in Admapur, Kolhapur.
+              {t("description")}
             </p>
             <div className="pt-2">
               <a
@@ -30,7 +35,7 @@ export function SiteFooter() {
                 className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-[#20bd5a]"
               >
                 <MessageSquare className="size-3.5" />
-                <span>Quick WhatsApp Inquiry</span>
+                <span>WhatsApp</span>
               </a>
             </div>
           </div>
@@ -38,37 +43,42 @@ export function SiteFooter() {
           {/* Quick links */}
           <div>
             <h4 className="text-xs font-bold uppercase tracking-widest text-amber-400">
-              Quick Links
+              {t("quickLinks")}
             </h4>
             <ul className="mt-4 space-y-2 text-xs text-zinc-400">
               <li>
+                <Link href="/book" className="hover:text-amber-400 font-semibold text-amber-300 transition">
+                  {t("linkBook")} →
+                </Link>
+              </li>
+              <li>
+                <Link href="/track" className="hover:text-amber-400 font-semibold text-amber-300 transition">
+                  {t("linkTrack")}
+                </Link>
+              </li>
+              <li>
                 <a href="#about" className="hover:text-white transition">
-                  About Hotel Morya
+                  {t("linkAbout")}
                 </a>
               </li>
               <li>
                 <a href="#temple" className="hover:text-white transition">
-                  Shri Balumama Temple (200m)
+                  {t("linkTemple")}
                 </a>
               </li>
               <li>
                 <a href="#accommodations" className="hover:text-white transition">
-                  AC & Non-AC Rooms
-                </a>
-              </li>
-              <li>
-                <a href="#accommodations" className="hover:text-white transition">
-                  50+ Person Dormitory
+                  {t("linkRooms")}
                 </a>
               </li>
               <li>
                 <a href="#amenities" className="hover:text-white transition">
-                  Amenities & Facilities
+                  {t("linkAmenities")}
                 </a>
               </li>
               <li>
                 <a href="#gallery" className="hover:text-white transition">
-                  Photo Gallery
+                  {t("linkGallery")}
                 </a>
               </li>
             </ul>
@@ -77,12 +87,12 @@ export function SiteFooter() {
           {/* Temple information */}
           <div>
             <h4 className="text-xs font-bold uppercase tracking-widest text-amber-400">
-              Temple Proximity
+              {t("locationTitle")}
             </h4>
             <ul className="mt-4 space-y-2 text-xs text-zinc-400">
               <li className="flex items-start gap-2">
                 <MapPin className="size-3.5 text-amber-400 shrink-0 mt-0.5" />
-                <span>2-minute walk (200m) to Temple Gate</span>
+                <span>200m to Temple Gate</span>
               </li>
               <li>Kakad Aarti: 5:30 AM</li>
               <li>Mahaprasad: 11:30 AM to 2:30 PM</li>
@@ -94,7 +104,7 @@ export function SiteFooter() {
           {/* Direct helpline */}
           <div>
             <h4 className="text-xs font-bold uppercase tracking-widest text-amber-400">
-              Front Desk Contact
+              {t("reservations")}
             </h4>
             <div className="mt-4 space-y-3 text-xs text-zinc-400">
               <div className="flex items-center gap-2">
@@ -124,9 +134,9 @@ export function SiteFooter() {
 
         {/* Bottom Credits Bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs text-zinc-500 sm:flex-row">
-          <p>© {currentYear} Hotel Morya Lodging · All rights reserved.</p>
+          <p>© {currentYear} {t("copyright")}</p>
           <p>
-            designed, developed & maintained by{" "}
+            {t("credit")}{" "}
             <a
               href={mailtoHref(CREDIT.email)}
               className="font-medium text-amber-300 hover:text-amber-200 underline decoration-amber-400/40 underline-offset-4 transition"

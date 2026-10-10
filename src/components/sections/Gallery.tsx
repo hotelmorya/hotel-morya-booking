@@ -75,7 +75,10 @@ interface GalleryProps {
   initialMedia?: BackendGalleryItem[];
 }
 
+import { useTranslations } from "next-intl";
+
 export function Gallery({ initialMedia }: GalleryProps) {
+  const t = useTranslations("gallery");
   const items =
     initialMedia && initialMedia.length > 0
       ? initialMedia.map((m, idx) => ({
@@ -123,17 +126,17 @@ export function Gallery({ initialMedia }: GalleryProps) {
             <Reveal>
               <p className="eyebrow text-primary">
                 <span className="eyebrow-line" />
-                Visual Tour
+                {t("eyebrow")}
               </p>
             </Reveal>
             <SplitHeading
-              text="A closer look inside Hotel Morya Lodging."
+              text={t("title")}
               className="mt-4 font-display text-[clamp(2rem,4.2vw,3.15rem)] font-light leading-[1.08] text-foreground"
             />
           </div>
           <Reveal delay={0.1}>
             <p className="text-sm text-muted-foreground sm:text-right">
-              Click any photograph to view in full resolution
+              {t("subtitle")}
             </p>
           </Reveal>
         </div>
