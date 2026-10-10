@@ -1,4 +1,4 @@
-import { HOTEL } from "@/lib/site";
+import { HOTEL, directionsHref, waHref } from "@/lib/site";
 
 interface HotelJsonLdProps {
   locale: string;
@@ -18,13 +18,17 @@ export function HotelJsonLd({ locale }: HotelJsonLdProps) {
   const hotelSchema = {
     "@context": "https://schema.org",
     "@type": ["Hotel", "LodgingBusiness"],
-    "@id": `${baseUrl}#hotel`,
+    "@id": `${baseUrl}/#hotel`,
     name: hotelName,
     alternateName: [
       "Hotel Morya",
       "हॉटेल मोरया",
       "Hotel Morya Lodging",
       "Hotel Morya Admapur",
+      "Hotel Morya Adamapur",
+      "Morya Lodging Admapur",
+      "Morya Lodge Admapur",
+      "Morya Lodging",
       "हॉटेल मोरया लॉजिंग आदमापूर",
     ],
     description: hotelDescription,
@@ -34,6 +38,11 @@ export function HotelJsonLd({ locale }: HotelJsonLdProps) {
     priceRange: "₹800 - ₹2,500",
     currenciesAccepted: "INR",
     paymentAccepted: "Cash, UPI, QR Code, Net Banking",
+    sameAs: [
+      directionsHref,
+      "https://maps.google.com/?cid=2413813958999557653",
+      waHref(),
+    ],
     image: [
       `${baseUrl}/images/hotel-morya-exterior-02.png`,
       `${baseUrl}/images/hotel-morya-exterior-01.png`,
@@ -56,9 +65,24 @@ export function HotelJsonLd({ locale }: HotelJsonLdProps) {
       latitude: HOTEL.geo.lat,
       longitude: HOTEL.geo.lng,
     },
-    hasMap: "https://www.google.com/maps/place/Hotel+Morya+Lodging/@16.4062602,74.1569327,17z",
+    hasMap: directionsHref,
     checkinTime: "09:00:00+05:30",
     checkoutTime: "10:00:00+05:30",
+    availableLanguage: ["English", "Marathi"],
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      opens: "00:00",
+      closes: "23:59",
+    },
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: HOTEL.reviews.rating,
@@ -104,6 +128,138 @@ export function HotelJsonLd({ locale }: HotelJsonLdProps) {
       },
     ],
   };
+
+  const webSiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${baseUrl}/#website`,
+    name: HOTEL.name,
+    url: baseUrl,
+    inLanguage: ["en", "mr"],
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: isMr ? "मुख्यपृष्ठ" : "Home",
+        item: `${baseUrl}/${locale}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: isMr ? "खोल्या आणि दर" : "Stays & Tariff",
+        item: `${baseUrl}/${locale}#stays`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: isMr ? "बुकिंग" : "Book Stay",
+        item: `${baseUrl}/${locale}/book`,
+      },
+    ],
+  };
+
+  const templeSchema = {
+    "@context": "https://schema.org",
+    "@type": ["PlaceOfWorship", "TouristAttraction"],
+    "@id": `${baseUrl}/#temple`,
+    name: isMr
+      ? "श्री संत बाळूमामा समाधी मंदिर आदमापूर"
+      : "Shri Sant Balumama Samadhi Temple Admapur",
+    description: isMr
+      ? "आदमापूर येथील श्री संत बाळूमामांचे पवित्र समाधी मंदिर, जे हॉटेल मोरयापासून फक्त २०० मीटर (२ मिनिटांच्या) अंतरावर आहे."
+      : "The sacred samadhi temple of Shri Sant Balumama in Admapur, Kolhapur, located just 200m walking distance from Hotel Morya.",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Near Shri Balumama Temple Gate",
+      addressLocality: "Admapur",
+      addressRegion: "Maharashtra",
+      postalCode: "416208",
+      addressCountry: "IN",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: HOTEL.geo.lat,
+      longitude: HOTEL.geo.lng,
+    },
+  };
+
+  const festivalEvents = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      name: isMr ? "श्री संत बाळूमामा जयंती उत्सव" : "Shri Sant Balumama Jayanti Utsav",
+      description: isMr
+        ? "अश्विन शुद्ध द्वादशीला आदमापूर येथील समाधी मंदिरात साजरी होणारी श्री बाळूमामांची जयंती."
+        : "Birth anniversary celebration of Shri Sant Balumama at Samadhi Temple in Admapur.",
+      startDate: "2026-10-23",
+      endDate: "2026-10-23",
+      eventStatus: "https://schema.org/EventScheduled",
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      location: {
+        "@id": `${baseUrl}/#temple`,
+      },
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "INR",
+        availability: "https://schema.org/InStock",
+        url: `${baseUrl}/${locale}#temple`,
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      name: isMr
+        ? "श्री संत बाळूमामा वार्षिक भंडारा उत्सव"
+        : "Shri Sant Balumama Annual Bhandara Utsav",
+      description: isMr
+        ? "आदमापूर येथे लाखो भाविकांच्या उपस्थितीत होणारा ऐतिहासिक हळदीचा भंडारा उत्सव."
+        : "Annual Bhandara festival in Admapur drawing lakhs of devotees as sacred turmeric is offered.",
+      startDate: "2027-03-05",
+      endDate: "2027-03-07",
+      eventStatus: "https://schema.org/EventScheduled",
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      location: {
+        "@id": `${baseUrl}/#temple`,
+      },
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "INR",
+        availability: "https://schema.org/InStock",
+        url: `${baseUrl}/${locale}#temple`,
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      name: isMr
+        ? "श्री संत बाळूमामा पुण्यतिथी सोहळा"
+        : "Shri Sant Balumama Punyatithi Observance",
+      description: isMr
+        ? "श्रावण वद्य चतुर्थीला आदमापूर येथे होणारा श्री संत बाळूमामांचा महासमाधी सोहळा."
+        : "Annual observance of Shri Sant Balumama Samadhi in Admapur on Shravan Vadya Chaturthi.",
+      startDate: "2027-08-22",
+      endDate: "2027-08-22",
+      eventStatus: "https://schema.org/EventScheduled",
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      location: {
+        "@id": `${baseUrl}/#temple`,
+      },
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "INR",
+        availability: "https://schema.org/InStock",
+        url: `${baseUrl}/${locale}#temple`,
+      },
+    },
+  ];
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -160,16 +316,19 @@ export function HotelJsonLd({ locale }: HotelJsonLdProps) {
     ],
   };
 
+  const schemas = [
+    hotelSchema,
+    webSiteSchema,
+    breadcrumbSchema,
+    templeSchema,
+    ...festivalEvents,
+    faqSchema,
+  ];
+
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(hotelSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
+    />
   );
 }

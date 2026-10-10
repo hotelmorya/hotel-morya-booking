@@ -21,12 +21,15 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "brand" });
-  const title = `${t("name")} | ${t("tagline")}`;
-  const description =
-    locale === "mr"
-      ? "श्री संत बाळूमामा मंदिरापासून फक्त २०० मीटर अंतरावर स्वच्छ AC खोल्या, नॉन-AC खोल्या आणि ५०+ भाविकांचा ग्रुप हॉल. हॉटेल मोरया लॉजिंग, आदमापूर."
-      : "Stay at Hotel Morya Lodging in Admapur, Kolhapur, just 200 metres from Shri Sant Balumama Temple. AC rooms, non-AC rooms, and group dormitory.";
+  const isMr = locale === "mr";
+
+  const title = isMr
+    ? "हॉटेल मोरया लॉजिंग आदमापूर | बाळूमामा मंदिरा जवळ"
+    : "Hotel Morya Lodging Admapur | Near Balumama Temple";
+
+  const description = isMr
+    ? "श्री संत बाळूमामा मंदिरापासून फक्त २०० मीटर अंतरावर स्वच्छ AC व नॉन-AC खोल्या आणि ग्रुप हॉल. २४ तास गरम पाणी, लिफ्ट व पार्किंग. कॉल करा: ९०२२३९७०९५."
+    : "Clean AC & Non-AC rooms and pilgrim dormitory in Admapur, just 200m from Shri Balumama Temple. 24/7 hot water, lift & parking. Call 9022397095 to book.";
 
   return {
     title: { absolute: title },

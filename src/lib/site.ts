@@ -2,9 +2,14 @@
  * Single source of truth for Hotel Morya Lodging business facts.
  */
 
+export const ORIGIN = (
+  process.env.NEXT_PUBLIC_APP_URL || "https://hotel-morya-booking.vercel.app"
+).replace(/\/$/, "");
+
 export const HOTEL = {
   name: "Hotel Morya Lodging",
   slug: "hotel-morya",
+  origin: ORIGIN,
   tagline: "Just 200m from Shri Sant Balumama Temple, Admapur",
   phones: ["9022397095"],
   whatsapp: "9022397095",
@@ -24,6 +29,8 @@ export const HOTEL = {
     lat: 16.4056894,
     lng: 74.1609358,
   },
+  googleCid: "2413813958999557653",
+  googleProfileHref: "https://maps.google.com/?cid=2413813958999557653",
   reviews: {
     rating: "4.8",
     count: "250",
