@@ -76,14 +76,18 @@ export function Temple() {
                 <motion.li
                   key={item.title}
                   variants={fadeUp}
-                  className="flex items-start gap-4 rounded-xl border border-amber-900/10 bg-white/70 dark:bg-zinc-800/60 p-3.5 shadow-xs"
+                  className="flex items-start gap-4 rounded-xl border border-amber-900/10 bg-white/80 dark:bg-zinc-800/60 p-4 sm:p-4.5 shadow-xs"
                 >
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300">
+                  <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300">
                     <Icon className="size-5" />
                   </span>
                   <div>
-                    <h4 className="font-semibold text-sm text-foreground">{item.title}</h4>
-                    <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">{item.desc}</p>
+                    <h4 className="font-sans font-bold text-base sm:text-[1.0625rem] text-foreground tracking-tight">
+                      {item.title}
+                    </h4>
+                    <p className="font-sans text-sm sm:text-base text-muted-foreground mt-1 leading-relaxed">
+                      {item.desc}
+                    </p>
                   </div>
                 </motion.li>
               );
@@ -120,7 +124,7 @@ export function Temple() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-white">
               <p className="text-xs uppercase tracking-wider font-semibold text-amber-300">Shri Sant Balumama Temple</p>
-              <p className="text-base sm:text-lg font-display">Admapur, Kolhapur</p>
+              <p className="text-base sm:text-lg font-semibold tracking-tight text-white drop-shadow-sm">Admapur, Kolhapur</p>
             </div>
           </Reveal>
 

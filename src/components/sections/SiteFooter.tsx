@@ -110,15 +110,22 @@ export function SiteFooter() {
               <div className="flex items-center gap-2">
                 <Phone className="size-3.5 text-amber-400 shrink-0" />
                 <div className="flex flex-col">
-                  {HOTEL.phones.map((phone) => (
-                    <a
-                      key={phone}
-                      href={telHref(phone)}
-                      className="hover:text-white transition font-medium"
-                    >
-                      +91 {phone}
-                    </a>
-                  ))}
+                  {Array.from(new Set(HOTEL.phones)).map((phone, idx) => {
+                    const digits = phone.replace(/\D/g, "");
+                    const display =
+                      digits.length === 10
+                        ? `+91 ${digits.slice(0, 5)} ${digits.slice(5)}`
+                        : `+91 ${phone}`;
+                    return (
+                      <a
+                        key={`${phone}-${idx}`}
+                        href={telHref(phone)}
+                        className="hover:text-white transition font-medium tabular-nums font-sans"
+                      >
+                        {display}
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
 

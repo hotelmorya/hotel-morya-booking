@@ -497,16 +497,32 @@ export function Contact({
                     <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                       {t("directHelpline")}
                     </p>
-                    <div className="mt-1 flex flex-col gap-0.5">
-                      {((hotelSettings?.phone ? [hotelSettings.phone, hotelSettings.phone_alt].filter(Boolean) : HOTEL.phones) as string[]).map((phone) => (
-                        <a
-                          key={phone}
-                          href={telHref(phone)}
-                          className="font-display text-xl font-semibold text-foreground hover:text-primary transition"
-                        >
-                          +91 {phone}
-                        </a>
-                      ))}
+                    <div className="mt-1 flex flex-col gap-1">
+                      {Array.from(
+                        new Set(
+                          (hotelSettings?.phone
+                            ? [hotelSettings.phone, hotelSettings.phone_alt].filter(Boolean)
+                            : HOTEL.phones) as string[]
+                        )
+                      ).map((phone, idx) => {
+                        const digits = phone.replace(/\D/g, "");
+                        const displayPhone =
+                          digits.length === 10
+                            ? `+91 ${digits.slice(0, 5)} ${digits.slice(5)}`
+                            : phone.startsWith("+")
+                              ? phone
+                              : `+91 ${phone}`;
+
+                        return (
+                          <a
+                            key={`${phone}-${idx}`}
+                            href={telHref(phone)}
+                            className="font-sans text-lg sm:text-xl font-bold tracking-tight tabular-nums text-foreground hover:text-primary transition"
+                          >
+                            {displayPhone}
+                          </a>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

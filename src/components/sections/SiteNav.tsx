@@ -163,7 +163,7 @@ export function SiteNav() {
               <span>{t("trackBooking")}</span>
             </Link>
 
-            <LocaleSwitcher onDark={!scrolled} />
+            <LocaleSwitcher onDark={!scrolled && !mobileOpen} />
 
             {/* Mobile hamburger button */}
             <button
@@ -209,14 +209,6 @@ export function SiteNav() {
             className={`fixed inset-x-0 bottom-0 z-40 flex flex-col justify-between bg-white dark:bg-zinc-950 p-6 lg:hidden border-t border-zinc-200 dark:border-white/10 overflow-y-auto ${scrolled ? "top-[56px] sm:top-[68px]" : "top-[76px] sm:top-[92px]"
               }`}
           >
-            {/* Language Switcher in Mobile Drawer */}
-            <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/10">
-              <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-                Language / भाषा
-              </span>
-              <LocaleSwitcher onDark={false} />
-            </div>
-
             <ul className="flex flex-col divide-y divide-zinc-200 dark:divide-white/10 text-base font-semibold">
               {navLinks.map((link) => (
                 <li key={link.id}>
