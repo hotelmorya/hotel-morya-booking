@@ -118,7 +118,7 @@ export function SiteNav() {
           </Link>
 
           {/* Desktop navigation links */}
-          <ul className="hidden items-center gap-1 lg:flex text-xs font-bold uppercase tracking-wider">
+          <ul className="hidden items-center gap-1.5 lg:flex text-sm font-semibold uppercase tracking-wider">
             {navLinks.map((link) => {
               const isActive = activeId === link.id;
               return (
@@ -127,7 +127,7 @@ export function SiteNav() {
                     href={`#${link.id}`}
                     onClick={(e) => handleNavClick(e, link.id)}
                     aria-current={isActive ? "true" : undefined}
-                    className={`relative rounded-full px-3 py-1.5 transition-colors font-medium tracking-wide ${isActive
+                    className={`relative rounded-full px-3.5 py-1.5 transition-colors font-semibold tracking-wide ${isActive
                       ? scrolled
                         ? "text-primary dark:text-amber-400 font-bold"
                         : "text-amber-300 font-bold drop-shadow-md"
@@ -140,7 +140,7 @@ export function SiteNav() {
                     {isActive && (
                       <motion.span
                         layoutId="nav-underline"
-                        className={`absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full ${scrolled ? "bg-primary dark:bg-amber-400" : "bg-amber-400"
+                        className={`absolute inset-x-3.5 -bottom-0.5 h-0.5 rounded-full ${scrolled ? "bg-primary dark:bg-amber-400" : "bg-amber-400"
                           }`}
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
@@ -152,15 +152,15 @@ export function SiteNav() {
           </ul>
 
           {/* Right Action buttons: Track Booking & LocaleSwitcher */}
-          <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3.5">
             <Link
               href="/track"
-              className={`hidden sm:inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${scrolled
+              className={`hidden sm:inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${scrolled
                 ? "border-zinc-300/80 bg-zinc-100/90 text-zinc-800 hover:bg-zinc-200/90 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
                 : "border-white/30 bg-black/40 text-white hover:bg-black/60 backdrop-blur-md shadow-xs"
                 }`}
             >
-              <Search className={`size-3.5 ${scrolled ? "text-primary dark:text-amber-400" : "text-amber-300"}`} />
+              <Search className={`size-4 ${scrolled ? "text-primary dark:text-amber-400" : "text-amber-300"}`} />
               <span>{t("trackBooking")}</span>
             </Link>
 
@@ -210,16 +210,16 @@ export function SiteNav() {
             className={`fixed inset-x-0 bottom-0 z-40 flex flex-col justify-between bg-white dark:bg-zinc-950 p-6 lg:hidden border-t border-zinc-200 dark:border-white/10 overflow-y-auto ${scrolled ? "top-[56px] sm:top-[68px]" : "top-[76px] sm:top-[92px]"
               }`}
           >
-            <ul className="flex flex-col divide-y divide-zinc-200 dark:divide-white/10 text-base font-semibold">
+            <ul className="flex flex-col divide-y divide-zinc-200 dark:divide-white/10 text-lg font-bold">
               {navLinks.map((link) => (
                 <li key={link.id}>
                   <a
                     href={`#${link.id}`}
                     onClick={(e) => handleNavClick(e, link.id)}
-                    className="flex items-center justify-between py-3.5 text-zinc-800 dark:text-white/90 hover:text-amber-500 transition"
+                    className="flex items-center justify-between py-4 text-zinc-900 dark:text-white hover:text-amber-500 transition"
                   >
                     <span>{link.label}</span>
-                    <span className="text-xs text-amber-500">→</span>
+                    <span className="text-sm font-bold text-amber-500">→</span>
                   </a>
                 </li>
               ))}
@@ -227,13 +227,13 @@ export function SiteNav() {
                 <Link
                   href="/track"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-between py-3.5 text-zinc-800 dark:text-white/90 hover:text-amber-500 transition"
+                  className="flex items-center justify-between py-4 text-zinc-900 dark:text-white hover:text-amber-500 transition"
                 >
-                  <span className="flex items-center gap-2">
-                    <Search className="size-4 text-amber-500" />
+                  <span className="flex items-center gap-2.5">
+                    <Search className="size-4.5 text-amber-500" />
                     <span>{t("trackBooking")}</span>
                   </span>
-                  <span className="text-xs text-amber-500">→</span>
+                  <span className="text-sm font-bold text-amber-500">→</span>
                 </Link>
               </li>
             </ul>
@@ -242,17 +242,17 @@ export function SiteNav() {
               <Link
                 href="/book"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-xl bg-amber-400 py-3.5 text-sm font-bold uppercase tracking-wider text-zinc-950 shadow-md transition hover:bg-amber-300 active:scale-[0.99]"
+                className="flex items-center justify-center gap-2 rounded-xl bg-amber-400 py-3.5 text-base font-bold uppercase tracking-wider text-zinc-950 shadow-md transition hover:bg-amber-300 active:scale-[0.99]"
               >
                 <span>{t("bookNow")}</span>
-                <ArrowRight className="size-4" />
+                <ArrowRight className="size-5" />
               </Link>
               <a
                 href={telHref(HOTEL.phones[0])}
-                className="flex items-center justify-center gap-2 rounded-xl border border-zinc-300 bg-zinc-100 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-200 dark:border-white/20 dark:bg-white/10 dark:text-white"
+                className="flex items-center justify-center gap-2 rounded-xl border border-zinc-300 bg-zinc-100 py-3.5 text-base font-bold text-zinc-900 transition hover:bg-zinc-200 dark:border-white/20 dark:bg-white/10 dark:text-white"
               >
-                <Phone className="size-4 text-amber-500" />
-                <span className="font-sans tabular-nums">+91 {HOTEL.phones[0]}</span>
+                <Phone className="size-5 text-amber-500" />
+                <span className="font-sans tabular-nums tracking-wide">+91 {HOTEL.phones[0]}</span>
               </a>
             </div>
           </motion.div>
