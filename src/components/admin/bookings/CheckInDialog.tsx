@@ -208,8 +208,6 @@ export function CheckInDialog({
   const guestUpdatedAt = liveGuest?.updated_at ?? guest.updated_at
   const hasId = !!idType_ && !!idNumber_ && !!idProofUrl
 
-  const unassignedLines = bookingRooms.filter((br) => !br.room_id)
-
   function handleAssign(bookingRoomId: string, roomId: string) {
     setAssignments((prev) => ({ ...prev, [bookingRoomId]: roomId }))
   }
@@ -275,14 +273,14 @@ export function CheckInDialog({
       return
     }
 
-    // Validate all unassigned lines now have a room selected
-    const missing = unassignedLines.filter((br) => !assignments[br.id])
+    // Validate all lines now have a room selected
+    const missing = bookingRooms.filter((br) => !assignments[br.id])
     if (missing.length > 0) {
       toast.error('Please assign a room to all room lines before checking in')
       return
     }
 
-    const assignmentList = unassignedLines.map((br) => ({
+    const assignmentList = bookingRooms.map((br) => ({
       booking_room_id: br.id,
       room_id: assignments[br.id],
     }))
@@ -316,12 +314,12 @@ export function CheckInDialog({
         </DialogHeader>
 
         <div className="flex flex-col gap-4 overflow-y-auto -mx-1 px-1">
-          {unassignedLines.length === 0 ? (
+          {bookingRooms.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              All rooms are already assigned. Confirm check-in to proceed.
+              No rooms found for this booking.
             </p>
           ) : (
-            unassignedLines.map((line) => (
+            bookingRooms.map((line) => (
               <RoomAssignRow
                 key={line.id}
                 line={line}

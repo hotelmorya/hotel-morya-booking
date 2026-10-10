@@ -3,6 +3,7 @@ import { recordActivity } from '@/lib/activity-log/service'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
+import { uuidLike } from '@/schemas/shared'
 import type { UserRole } from '@/types/database'
 
 const ALLOWED_ROLES: UserRole[] = [
@@ -14,7 +15,7 @@ const ALLOWED_ROLES: UserRole[] = [
 ]
 
 const bodySchema = z.object({
-  room_id: z.string().uuid(),
+  room_id: uuidLike,
 })
 
 // POST /api/housekeeping/start

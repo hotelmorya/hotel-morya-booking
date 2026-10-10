@@ -9,11 +9,12 @@
 
 import { z } from 'zod'
 import { OPERATIONAL, getCurrentProfile } from '@/lib/auth'
+import { uuidLike } from '@/schemas/shared'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 
 const releaseHoldsSchema = z.object({
-  ids: z.array(z.string().uuid()).min(1, 'At least one hold id is required'),
+  ids: z.array(uuidLike).min(1, 'At least one hold id is required'),
 })
 
 export async function DELETE(request: Request) {

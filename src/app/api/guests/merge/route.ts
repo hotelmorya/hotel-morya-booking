@@ -1,13 +1,14 @@
 import { z } from 'zod'
 import { MANAGER_PLUS, getCurrentProfile } from '@/lib/auth'
+import { uuidLike } from '@/schemas/shared'
 import { recordActivity } from '@/lib/activity-log/service'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 
 const mergeSchema = z
   .object({
-    keep_id: z.string().uuid('Invalid keep_id'),
-    merge_id: z.string().uuid('Invalid merge_id'),
+    keep_id: uuidLike,
+    merge_id: uuidLike,
   })
   .refine((d) => d.keep_id !== d.merge_id, {
     message: 'Cannot merge a guest with themselves',

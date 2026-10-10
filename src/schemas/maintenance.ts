@@ -1,7 +1,8 @@
 import { z } from 'zod'
+import { uuidLike } from './shared'
 
 export const reportIssueSchema = z.object({
-  room_id: z.string().uuid(),
+  room_id: uuidLike,
   reason: z.string().min(5).max(255),
   category: z
     .enum(['electrical', 'plumbing', 'furniture', 'cleaning', 'other'])

@@ -891,6 +891,7 @@ export function BookingDetail({ id, role }: BookingDetailProps) {
       />
 
       <CheckInDialog
+        key={showCheckIn ? `checkin-${b.id}-${b.updated_at}` : 'checkin-closed'}
         bookingId={b.id}
         updatedAt={b.updated_at}
         bookingRooms={b.booking_rooms}

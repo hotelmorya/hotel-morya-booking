@@ -26,7 +26,7 @@ export const publicBookingSchema = z
     payment_path: z.enum(['hotel', 'upi']).default('hotel'),
     special_requests: z.string().trim().max(500).optional(),
     session_id: z.string().trim().max(100).optional(), // to release holds
-    idempotency_key: z.string().uuid().optional(),
+    idempotency_key: uuidLike.optional(),
     turnstile_token: z.string().min(1, 'Turnstile token is required'),
   })
   .refine((b) => b.check_out > b.check_in, {

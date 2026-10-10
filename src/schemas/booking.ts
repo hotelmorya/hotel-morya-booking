@@ -65,8 +65,8 @@ export const checkInSchema = z
     assignments: z
       .array(
         z.object({
-          booking_room_id: z.string().uuid(),
-          room_id: z.string().uuid(),
+          booking_room_id: uuidLike,
+          room_id: uuidLike,
         })
       )
       .min(1, 'Assign at least one room'),
@@ -95,14 +95,14 @@ export type SetVehicleInput = z.infer<typeof setVehicleSchema>
 // existing bookings.
 export const bookingRoomSchema = z.object({
   room_type_id: uuidLike,
-  room_id: z.string().uuid().nullable().optional(),
+  room_id: uuidLike.nullable().optional(),
   rate_per_night: money,
   nights: z.coerce.number().int().positive(),
 })
 
 export const bookingSchema = z
   .object({
-    guest_id: z.string().uuid().optional(), // omitted when guest is created in the same request
+    guest_id: uuidLike.optional(), // omitted when guest is created in the same request
     check_in: isoDate,
     check_out: isoDate,
     stay_type: stayTypeSchema.default('overnight'),
@@ -128,7 +128,7 @@ export const bookingSchema = z
     backdated_reason: z.string().trim().max(255).optional(),
     // Frontend-generated UUID; duplicate submissions within 5 min return the
     // existing booking instead of creating another.
-    idempotency_key: z.string().uuid().optional(),
+    idempotency_key: uuidLike.optional(),
   })
   .refine((b) => b.check_out > b.check_in, {
     message: 'Check-out must be after check-in',
