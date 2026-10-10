@@ -9,9 +9,12 @@ declare global {
         container: HTMLElement | string,
         options: {
           sitekey: string
+          action?: string
           callback: (token: string) => void
           'expired-callback'?: () => void
+          'error-callback'?: () => void
           theme?: 'light' | 'dark' | 'auto'
+          size?: 'normal' | 'compact' | 'flexible'
         },
       ) => string
       reset: (widgetId: string) => void
@@ -24,9 +27,18 @@ declare global {
 interface TurnstileWidgetProps {
   onToken: (token: string) => void
   onExpire?: () => void
+  action?: string
+  resetTrigger?: number
+  className?: string
 }
 
-export function TurnstileWidget({ onToken, onExpire }: TurnstileWidgetProps) {
+export function TurnstileWidget({
+  onToken,
+  onExpire,
+  action = 'booking',
+  resetTrigger = 0,
+  className,
+}: TurnstileWidgetProps) {
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
   const containerRef = useRef<HTMLDivElement>(null)
   const widgetIdRef = useRef<string | null>(null)
@@ -35,6 +47,13 @@ export function TurnstileWidget({ onToken, onExpire }: TurnstileWidgetProps) {
 
   onTokenRef.current = onToken
   onExpireRef.current = onExpire
+
+  // Imperatively reset the Turnstile widget when parent signals a reset (e.g. failed attempt)
+  useEffect(() => {
+    if (resetTrigger > 0 && widgetIdRef.current && window.turnstile) {
+      window.turnstile.reset(widgetIdRef.current)
+    }
+  }, [resetTrigger])
 
   useEffect(() => {
     if (!siteKey) {
@@ -48,11 +67,19 @@ export function TurnstileWidget({ onToken, onExpire }: TurnstileWidgetProps) {
 
       widgetIdRef.current = window.turnstile.render(containerRef.current, {
         sitekey: siteKey!,
+        action,
         callback: (token: string) => {
           onTokenRef.current(token)
         },
         'expired-callback': () => {
+          onTokenRef.current('')
           if (onExpireRef.current) onExpireRef.current()
+          if (widgetIdRef.current && window.turnstile) {
+            window.turnstile.reset(widgetIdRef.current)
+          }
+        },
+        'error-callback': () => {
+          onTokenRef.current('')
           if (widgetIdRef.current && window.turnstile) {
             window.turnstile.reset(widgetIdRef.current)
           }
@@ -84,7 +111,7 @@ export function TurnstileWidget({ onToken, onExpire }: TurnstileWidgetProps) {
         widgetIdRef.current = null
       }
     }
-  }, [siteKey])
+  }, [siteKey, action])
 
   if (!siteKey) {
     return (
@@ -97,5 +124,12 @@ export function TurnstileWidget({ onToken, onExpire }: TurnstileWidgetProps) {
     )
   }
 
-  return <div ref={containerRef} />
+  return (
+    <div
+      ref={containerRef}
+      className={
+        className ?? 'min-h-[65px] flex items-center justify-center sm:justify-start'
+      }
+    />
+  )
 }

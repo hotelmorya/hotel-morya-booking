@@ -48,6 +48,7 @@ export function PaymentPanel({
   )
   const [isProcessing, setIsProcessing] = useState(false)
   const [turnstileToken, setTurnstileToken] = useState<string>('')
+  const [turnstileResetCount, setTurnstileResetCount] = useState(0)
   const [qrFailed, setQrFailed] = useState(false)
 
   const createBooking = useCreatePublicBooking()
@@ -82,6 +83,9 @@ export function PaymentPanel({
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Could not create booking')
       setIsProcessing(false)
+      // Single-use token was consumed on submit attempt; reset for retry
+      setTurnstileToken('')
+      setTurnstileResetCount((c) => c + 1)
     }
   }
 
@@ -149,7 +153,12 @@ export function PaymentPanel({
 
       {/* Human bot verification */}
       <div className="pt-1">
-        <TurnstileWidget onToken={(token) => setTurnstileToken(token)} />
+        <TurnstileWidget
+          action="booking"
+          resetTrigger={turnstileResetCount}
+          onToken={(token) => setTurnstileToken(token)}
+          onExpire={() => setTurnstileToken('')}
+        />
       </div>
 
       {/* Confirm CTA */}

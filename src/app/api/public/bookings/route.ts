@@ -48,7 +48,15 @@ export async function POST(request: Request) {
 
   // 1) Turnstile verification — bot protection. Verify before any DB work.
   try {
-    const tokenValid = await verifyTurnstileToken(input.turnstile_token)
+    const clientIp =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      request.headers.get('x-real-ip') ||
+      undefined
+
+    const tokenValid = await verifyTurnstileToken(input.turnstile_token, {
+      action: 'booking',
+      remoteip: clientIp,
+    })
     if (!tokenValid) {
       return Response.json(
         { error: { code: 'TURNSTILE_FAILED', message: 'Human verification failed. Please refresh and try again.' } },

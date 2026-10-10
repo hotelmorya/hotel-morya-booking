@@ -15,7 +15,8 @@ function getIntegrationStatus() {
       process.env.CLOUDINARY_API_KEY
     ),
     turnstile: !!(
-      process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && process.env.TURNSTILE_SECRET_KEY
+      process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY &&
+      (process.env.TURNSTILE_SECRET_KEY || process.env.TURNSTILE_SECRET)
     ),
     resend: !!(process.env.RESEND_API_KEY),
   }
