@@ -58,13 +58,13 @@ export function HeroAvailabilityBar() {
 
   return (
     <div className="w-full max-w-5xl rounded-2xl border border-amber-400/30 bg-zinc-950/85 p-3 sm:p-4 shadow-[0_16px_48px_-12px_rgba(0,0,0,0.85)] backdrop-blur-xl">
-      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-12 lg:items-center lg:gap-3">
+      <div className="grid grid-cols-2 gap-2 sm:gap-2.5 lg:grid-cols-12 lg:items-center lg:gap-3">
         {/* Check-In Field */}
-        <div className="lg:col-span-3">
-          <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 transition hover:border-amber-400/40 hover:bg-white/8">
-            <Calendar className="size-5 shrink-0 text-amber-400" />
+        <div className="col-span-1 lg:col-span-3">
+          <label className="flex cursor-pointer items-center gap-2 sm:gap-3 rounded-xl border border-white/10 bg-white/5 px-2.5 py-2 sm:px-3.5 sm:py-2.5 transition hover:border-amber-400/40 hover:bg-white/8">
+            <Calendar className="size-4 sm:size-5 shrink-0 text-amber-400" />
             <div className="flex min-w-0 flex-1 flex-col">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300/80">
+              <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-amber-300/80">
                 {t("stripCheckin")}
               </span>
               <input
@@ -73,22 +73,22 @@ export function HeroAvailabilityBar() {
                 value={checkIn}
                 onClick={openPicker}
                 onChange={(e) => handleCheckInChange(e.target.value)}
-                className="w-full cursor-pointer bg-transparent text-base sm:text-sm font-semibold tabular-nums text-white outline-none [color-scheme:dark]"
+                className="w-full cursor-pointer bg-transparent text-xs sm:text-sm font-semibold tabular-nums text-white outline-none [color-scheme:dark]"
               />
             </div>
           </label>
         </div>
 
         {/* Check-Out Field */}
-        <div className="lg:col-span-3">
-          <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 transition hover:border-amber-400/40 hover:bg-white/8">
-            <Calendar className="size-5 shrink-0 text-amber-400" />
+        <div className="col-span-1 lg:col-span-3">
+          <label className="flex cursor-pointer items-center gap-2 sm:gap-3 rounded-xl border border-white/10 bg-white/5 px-2.5 py-2 sm:px-3.5 sm:py-2.5 transition hover:border-amber-400/40 hover:bg-white/8">
+            <Calendar className="size-4 sm:size-5 shrink-0 text-amber-400" />
             <div className="flex min-w-0 flex-1 flex-col">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300/80">
+                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-amber-300/80">
                   {t("stripCheckout")}
                 </span>
-                <span className="rounded bg-amber-400/15 px-1.5 py-0.2 text-[9px] font-bold text-amber-300 uppercase">
+                <span className="rounded bg-amber-400/15 px-1 py-0.2 text-[8px] sm:text-[9px] font-bold text-amber-300 uppercase">
                   {t("nightsCount", { count: nights })}
                 </span>
               </div>
@@ -98,19 +98,19 @@ export function HeroAvailabilityBar() {
                 value={checkOut}
                 onClick={openPicker}
                 onChange={(e) => setCheckOut(e.target.value)}
-                className="w-full cursor-pointer bg-transparent text-base sm:text-sm font-semibold tabular-nums text-white outline-none [color-scheme:dark]"
+                className="w-full cursor-pointer bg-transparent text-xs sm:text-sm font-semibold tabular-nums text-white outline-none [color-scheme:dark]"
               />
             </div>
           </label>
         </div>
 
         {/* Devotees / Guests Field */}
-        <div className="lg:col-span-3">
-          <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 transition hover:border-amber-400/40 hover:bg-white/8">
+        <div className="col-span-2 sm:col-span-1 lg:col-span-3">
+          <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2 sm:px-3.5 sm:py-2.5 transition hover:border-amber-400/40 hover:bg-white/8">
             <div className="flex items-center gap-2.5">
-              <Users className="size-5 shrink-0 text-amber-400" />
+              <Users className="size-4 sm:size-5 shrink-0 text-amber-400" />
               <div className="flex flex-col">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300/80">
+                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-amber-300/80">
                   {tb("guests")}
                 </span>
                 <span className="text-xs font-semibold text-white">
@@ -126,29 +126,29 @@ export function HeroAvailabilityBar() {
                 aria-label="Decrease guests"
                 onClick={() => setGuests((g) => Math.max(1, g - 1))}
                 disabled={guests <= 1}
-                className="flex size-8 touch-manipulation items-center justify-center rounded-lg border border-white/20 bg-white/10 text-white transition hover:bg-white/20 active:scale-95 disabled:opacity-40"
+                className="flex size-7 sm:size-8 touch-manipulation items-center justify-center rounded-lg border border-white/20 bg-white/10 text-white transition hover:bg-white/20 active:scale-95 disabled:opacity-40"
               >
-                <Minus className="size-4" />
+                <Minus className="size-3.5 sm:size-4" />
               </button>
               <button
                 type="button"
                 aria-label="Increase guests"
                 onClick={() => setGuests((g) => Math.min(50, g + 1))}
                 disabled={guests >= 50}
-                className="flex size-8 touch-manipulation items-center justify-center rounded-lg border border-white/20 bg-white/10 text-white transition hover:bg-white/20 active:scale-95 disabled:opacity-40"
+                className="flex size-7 sm:size-8 touch-manipulation items-center justify-center rounded-lg border border-white/20 bg-white/10 text-white transition hover:bg-white/20 active:scale-95 disabled:opacity-40"
               >
-                <Plus className="size-4" />
+                <Plus className="size-3.5 sm:size-4" />
               </button>
             </div>
           </div>
         </div>
 
         {/* Submit / Check Availability Button */}
-        <div className="lg:col-span-3">
+        <div className="col-span-2 sm:col-span-1 lg:col-span-3">
           <button
             type="button"
             onClick={handleCheckAvailability}
-            className="group flex h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-zinc-950 shadow-[0_4px_20px_rgba(245,184,0,0.35)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_6px_28px_rgba(245,184,0,0.5)] active:scale-[0.99]"
+            className="group flex h-[44px] sm:h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 px-4 py-2 sm:px-5 sm:py-2.5 text-xs font-bold uppercase tracking-wider text-zinc-950 shadow-[0_4px_20px_rgba(245,184,0,0.35)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_6px_28px_rgba(245,184,0,0.5)] active:scale-[0.99]"
           >
             <span>{t("stripCta")}</span>
             <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />

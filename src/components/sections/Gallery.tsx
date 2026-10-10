@@ -81,6 +81,16 @@ const CAPTION_KEYS = [
   "captionTemple",
 ] as const;
 
+const GALLERY_FOCAL = [
+  "object-[50%_15%] sm:object-center", // Exterior facade & signage
+  "object-[74%_center] sm:object-center", // AC Room bed & pillows
+  "object-[52%_center] sm:object-center", // Reception counter & Balumama portrait
+  "object-center",
+  "object-center",
+  "object-center",
+  "object-center",
+];
+
 interface GalleryProps {
   initialMedia?: BackendGalleryItem[];
 }
@@ -174,7 +184,7 @@ export function Gallery({ initialMedia }: GalleryProps) {
                 alt={item.caption}
                 fill
                 sizes="(min-width: 1024px) 33vw, 50vw"
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-106"
+                className={`object-cover transition-transform duration-700 ease-out group-hover:scale-106 ${GALLERY_FOCAL[idx % GALLERY_FOCAL.length] || "object-center"}`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 

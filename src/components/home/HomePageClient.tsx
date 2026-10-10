@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { SiteNav } from "@/components/sections/SiteNav";
 import { Hero } from "@/components/sections/Hero";
+import { HeroAvailabilityBar } from "@/components/public/HeroAvailabilityBar";
 import { About } from "@/components/sections/About";
 import { Temple } from "@/components/sections/Temple";
 import {
@@ -61,6 +62,17 @@ export function HomePageClient({
 
       {/* 1. Fullscreen Hero Slider & Proximity */}
       <Hero />
+
+      {/* 1.5 Quick Booking & Availability Panel (Bridging Hero & Content) */}
+      <section
+        id="check-availability"
+        aria-label="Check room availability"
+        className="relative z-20 border-b border-zinc-800/80 bg-zinc-950 py-4 sm:py-6 shadow-md"
+      >
+        <div className="mx-auto max-w-5xl px-4 sm:px-8">
+          <HeroAvailabilityBar />
+        </div>
+      </section>
 
       {/* 2. About Morya & Spring-animated Stats */}
       <About />

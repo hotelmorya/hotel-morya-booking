@@ -493,3 +493,23 @@ a {
   }
 }
 
+/* Hero Slider Mobile Focal Alignment */
+.hero-slide-exterior {
+  object-position: 50% 12%;
+}
+
+.hero-slide-lobby {
+  object-position: 52% 35%;
+}
+
+.hero-slide-room {
+  object-position: 74% 45%;
+}
+
+@media (min-width: 640px) {
+  .hero-slide-exterior,
+  .hero-slide-lobby,
+  .hero-slide-room {
+    object-position: center center;
+  }
+}
