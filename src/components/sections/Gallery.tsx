@@ -17,13 +17,13 @@ export interface BackendGalleryItem {
 }
 
 const SPAN_PATTERNS = [
-  "col-span-2 row-span-2 aspect-square",
-  "col-span-1 row-span-1 aspect-square",
-  "col-span-1 row-span-1 aspect-square",
-  "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto sm:h-full",
-  "col-span-1 row-span-1 aspect-square",
-  "col-span-1 row-span-1 aspect-square",
-  "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto sm:h-full",
+  "col-span-2 row-span-2 aspect-square sm:aspect-auto h-full",
+  "col-span-1 row-span-1 aspect-square sm:aspect-auto h-full",
+  "col-span-1 row-span-1 aspect-square sm:aspect-auto h-full",
+  "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto h-full",
+  "col-span-1 row-span-1 aspect-square sm:aspect-auto h-full",
+  "col-span-1 row-span-1 aspect-square sm:aspect-auto h-full",
+  "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto h-full",
 ];
 
 const fallbackGalleryItems = [
@@ -31,43 +31,43 @@ const fallbackGalleryItems = [
     src: "/images/hotel-morya-exterior-02.png",
     caption: "Hotel Morya Lodging facade and building in Admapur",
     category: "Exterior",
-    span: "col-span-2 row-span-2 aspect-square",
+    span: "col-span-2 row-span-2 aspect-square sm:aspect-auto h-full",
   },
   {
     src: "/images/hotel-morya-ac-room.png",
     caption: "Air-conditioned deluxe bedroom with comfortable linen",
     category: "Rooms",
-    span: "col-span-1 row-span-1 aspect-square",
+    span: "col-span-1 row-span-1 aspect-square sm:aspect-auto h-full",
   },
   {
     src: "/images/hotel-morya-reception-lobby.png",
     caption: "Reception desk, lift lobby, and check-in counter",
     category: "Lobby",
-    span: "col-span-1 row-span-1 aspect-square",
+    span: "col-span-1 row-span-1 aspect-square sm:aspect-auto h-full",
   },
   {
     src: "/images/hotel-morya-dormitory.png",
     caption: "Large group dormitory accommodating up to 50 pilgrims",
     category: "Dormitory",
-    span: "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto sm:h-full",
+    span: "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto h-full",
   },
   {
     src: "/images/hotel-morya-non-ac-room.png",
     caption: "Naturally ventilated, spotless non-AC room",
     category: "Rooms",
-    span: "col-span-1 row-span-1 aspect-square",
+    span: "col-span-1 row-span-1 aspect-square sm:aspect-auto h-full",
   },
   {
     src: "/images/hotel-morya-washroom.png",
     caption: "Clean, hygienic attached washroom with 24/7 hot water",
     category: "Hygiene",
-    span: "col-span-1 row-span-1 aspect-square",
+    span: "col-span-1 row-span-1 aspect-square sm:aspect-auto h-full",
   },
   {
     src: "/images/balumama-temple.jpg",
     caption: "Shri Sant Balumama Temple Admapur (just 200m away)",
     category: "Temple",
-    span: "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto sm:h-full",
+    span: "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto h-full",
   },
 ];
 
@@ -144,7 +144,7 @@ export function Gallery({ initialMedia }: GalleryProps) {
         {/* Masonry / Grid */}
         <RevealGroup
           as="div"
-          className="mt-12 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-4 sm:gap-4"
+          className="mt-12 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-4 sm:gap-4 sm:auto-rows-[280px] md:auto-rows-[360px]"
         >
           {items.map((item, idx) => (
             <motion.div
