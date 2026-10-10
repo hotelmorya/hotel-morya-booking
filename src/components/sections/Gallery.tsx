@@ -52,15 +52,15 @@ const fallbackGalleryItems = [
     span: "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto h-full",
   },
   {
-    src: "/images/hotel-morya-non-ac-room.png",
-    caption: "Naturally ventilated, spotless non-AC room",
-    category: "Rooms",
-    span: "col-span-1 row-span-1 aspect-square sm:aspect-auto h-full",
-  },
-  {
     src: "/images/hotel-morya-washroom.png",
     caption: "Clean, hygienic attached washroom with 24/7 hot water",
     category: "Hygiene",
+    span: "col-span-1 row-span-1 aspect-square sm:aspect-auto h-full",
+  },
+  {
+    src: "/images/hotel-morya-non-ac-room.png",
+    caption: "Naturally ventilated, spotless non-AC room",
+    category: "Rooms",
     span: "col-span-1 row-span-1 aspect-square sm:aspect-auto h-full",
   },
   {
@@ -70,6 +70,16 @@ const fallbackGalleryItems = [
     span: "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto h-full",
   },
 ];
+
+const CAPTION_KEYS = [
+  "captionExterior",
+  "captionAcRoom",
+  "captionLobby",
+  "captionDormitory",
+  "captionWashroom",
+  "captionNonAcRoom",
+  "captionTemple",
+] as const;
 
 interface GalleryProps {
   initialMedia?: BackendGalleryItem[];
@@ -87,11 +97,17 @@ export function Gallery({ initialMedia }: GalleryProps) {
             (m.public_id
               ? buildCloudinaryUrl(m.public_id, { width: 1200 })
               : "/images/hotel-morya-exterior-02.png"),
-          caption: m.alt_text || "Hotel Morya Lodging Admapur",
+          caption:
+            idx < CAPTION_KEYS.length
+              ? t(CAPTION_KEYS[idx])
+              : (m.alt_text || "Hotel Morya Lodging Admapur"),
           category: "Gallery",
           span: SPAN_PATTERNS[idx % SPAN_PATTERNS.length],
         }))
-      : fallbackGalleryItems;
+      : fallbackGalleryItems.map((item, idx) => ({
+          ...item,
+          caption: idx < CAPTION_KEYS.length ? t(CAPTION_KEYS[idx]) : item.caption,
+        }));
 
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
@@ -144,7 +160,7 @@ export function Gallery({ initialMedia }: GalleryProps) {
         {/* Masonry / Grid */}
         <RevealGroup
           as="div"
-          className="mt-12 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-4 sm:gap-4 sm:auto-rows-[280px] md:auto-rows-[360px]"
+          className="gallery-bento-grid mt-12 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-4 sm:gap-4"
         >
           {items.map((item, idx) => (
             <motion.div
@@ -161,7 +177,7 @@ export function Gallery({ initialMedia }: GalleryProps) {
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-106"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              
+
               <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white opacity-0 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 group-hover:opacity-100">
                 <span className="text-xs font-medium line-clamp-1">{item.caption}</span>
                 <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-white">
@@ -244,7 +260,7 @@ export function Gallery({ initialMedia }: GalleryProps) {
                 {items[activeIdx].caption}
               </p>
               <p className="mt-1 text-xs text-white/50">
-                {activeIdx + 1} of {items.length}
+                {activeIdx + 1} / {items.length}
               </p>
             </motion.div>
           </motion.div>

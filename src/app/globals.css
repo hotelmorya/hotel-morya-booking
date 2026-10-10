@@ -479,3 +479,17 @@ a {
     display: none !important;
   }
 }
+
+/* Gallery Bento Grid Layout */
+@media (min-width: 640px) {
+  .gallery-bento-grid {
+    grid-template-rows: 280px 280px 280px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery-bento-grid {
+    grid-template-rows: 360px 360px 360px;
+  }
+}
+

@@ -145,7 +145,14 @@
     "tabAll": "All Photos",
     "tabRooms": "Rooms & Dormitory",
     "tabProperty": "Hotel Exterior & Facilities",
-    "tabTemple": "Shri Balumama Temple"
+    "tabTemple": "Shri Balumama Temple",
+    "captionExterior": "Hotel Morya Lodging facade and building in Admapur",
+    "captionAcRoom": "Air-conditioned deluxe bedroom with comfortable linen",
+    "captionLobby": "Reception desk, lift lobby, and check-in counter",
+    "captionDormitory": "Large group dormitory accommodating up to 50 pilgrims",
+    "captionWashroom": "Clean, hygienic attached washroom with 24/7 hot water",
+    "captionNonAcRoom": "Naturally ventilated, spotless non-AC room",
+    "captionTemple": "Shri Sant Balumama Temple Admapur (just 200m away)"
   },
   "reviews": {
     "eyebrow": "Devotee Experiences",
