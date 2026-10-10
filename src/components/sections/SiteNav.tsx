@@ -89,116 +89,125 @@ export function SiteNav() {
   }, []);
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled || mobileOpen
-        ? "bg-white/95 dark:bg-zinc-950/95 text-zinc-900 dark:text-white shadow-md backdrop-blur-xl border-b border-zinc-200/90 dark:border-white/10 py-2.5 sm:py-3"
-        : "bg-transparent text-white border-b border-transparent shadow-none py-4 sm:py-5"
-        }`}
-    >
-      <nav
-        aria-label="Main Navigation"
-        className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-8"
+    <>
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled || mobileOpen
+          ? "bg-white/95 dark:bg-zinc-950/95 text-zinc-900 dark:text-white shadow-md backdrop-blur-xl border-b border-zinc-200/90 dark:border-white/10 py-2.5 sm:py-3"
+          : "bg-transparent text-white border-b border-transparent shadow-none py-4 sm:py-5"
+          }`}
       >
-        {/* Logo with natural contrast */}
-        <Link href="/" className="flex shrink-0 items-center group py-1" aria-label="Hotel Morya Lodging">
-          <div
-            className={`relative aspect-[3/1] overflow-hidden rounded-md transition-all duration-300 group-hover:scale-102 ${scrolled ? "h-9 sm:h-11" : "h-11 sm:h-13"
-              }`}
-          >
-            <Image
-              src="/images/morya-logo-white-bg.jpg"
-              alt="Hotel Morya Lodging"
-              fill
-              priority
-              className="object-cover rounded-md"
-            />
-          </div>
-        </Link>
-
-        {/* Desktop navigation links */}
-        <ul className="hidden items-center gap-1 lg:flex text-xs font-bold uppercase tracking-wider">
-          {navLinks.map((link) => {
-            const isActive = activeId === link.id;
-            return (
-              <li key={link.id}>
-                <a
-                  href={`#${link.id}`}
-                  onClick={(e) => handleNavClick(e, link.id)}
-                  aria-current={isActive ? "true" : undefined}
-                  className={`relative rounded-full px-3 py-1.5 transition-colors font-medium tracking-wide ${isActive
-                    ? scrolled
-                      ? "text-primary dark:text-amber-400 font-bold"
-                      : "text-amber-300 font-bold drop-shadow-md"
-                    : scrolled
-                      ? "text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
-                      : "text-white/90 hover:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]"
-                    }`}
-                >
-                  {link.label}
-                  {isActive && (
-                    <motion.span
-                      layoutId="nav-underline"
-                      className={`absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full ${scrolled ? "bg-primary dark:bg-amber-400" : "bg-amber-400"
-                        }`}
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-
-        {/* Right Action buttons: Track Booking & LocaleSwitcher */}
-        <div className="flex items-center gap-2.5 sm:gap-3">
-          <Link
-            href="/track"
-            className={`hidden sm:inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${scrolled
-              ? "border-zinc-300/80 bg-zinc-100/90 text-zinc-800 hover:bg-zinc-200/90 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
-              : "border-white/30 bg-black/40 text-white hover:bg-black/60 backdrop-blur-md shadow-xs"
-              }`}
-          >
-            <Search className={`size-3.5 ${scrolled ? "text-primary dark:text-amber-400" : "text-amber-300"}`} />
-            <span>{t("trackBooking")}</span>
+        <nav
+          aria-label="Main Navigation"
+          className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-8"
+        >
+          {/* Logo with natural contrast */}
+          <Link href="/" className="flex shrink-0 items-center group py-1" aria-label="Hotel Morya Lodging">
+            <div
+              className={`relative aspect-[3/1] overflow-hidden rounded-md transition-all duration-300 group-hover:scale-102 ${scrolled ? "h-9 sm:h-11" : "h-11 sm:h-13"
+                }`}
+            >
+              <Image
+                src="/images/morya-logo-white-bg.jpg"
+                alt="Hotel Morya Lodging"
+                fill
+                priority
+                className="object-cover rounded-md"
+              />
+            </div>
           </Link>
 
-          <LocaleSwitcher onDark={!scrolled} />
+          {/* Desktop navigation links */}
+          <ul className="hidden items-center gap-1 lg:flex text-xs font-bold uppercase tracking-wider">
+            {navLinks.map((link) => {
+              const isActive = activeId === link.id;
+              return (
+                <li key={link.id}>
+                  <a
+                    href={`#${link.id}`}
+                    onClick={(e) => handleNavClick(e, link.id)}
+                    aria-current={isActive ? "true" : undefined}
+                    className={`relative rounded-full px-3 py-1.5 transition-colors font-medium tracking-wide ${isActive
+                      ? scrolled
+                        ? "text-primary dark:text-amber-400 font-bold"
+                        : "text-amber-300 font-bold drop-shadow-md"
+                      : scrolled
+                        ? "text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
+                        : "text-white/90 hover:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]"
+                      }`}
+                  >
+                    {link.label}
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-underline"
+                        className={`absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full ${scrolled ? "bg-primary dark:bg-amber-400" : "bg-amber-400"
+                          }`}
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
 
-          {/* Mobile hamburger button */}
-          <button
-            type="button"
-            onClick={() => setMobileOpen((o) => !o)}
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            className={`inline-flex size-9 sm:size-10 items-center justify-center rounded-xl border transition ${scrolled
-              ? "border-zinc-300 bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:border-white/20 dark:bg-white/10 dark:text-white"
-              : "border-white/30 bg-black/40 text-white hover:bg-black/60 backdrop-blur-md"
-              } lg:hidden`}
-          >
-            {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
-        </div>
-      </nav>
+          {/* Right Action buttons: Track Booking & LocaleSwitcher */}
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <Link
+              href="/track"
+              className={`hidden sm:inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${scrolled
+                ? "border-zinc-300/80 bg-zinc-100/90 text-zinc-800 hover:bg-zinc-200/90 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
+                : "border-white/30 bg-black/40 text-white hover:bg-black/60 backdrop-blur-md shadow-xs"
+                }`}
+            >
+              <Search className={`size-3.5 ${scrolled ? "text-primary dark:text-amber-400" : "text-amber-300"}`} />
+              <span>{t("trackBooking")}</span>
+            </Link>
 
-      {/* Scroll Progress indicator pinned to the bottom border of the header */}
-      <motion.div
-        aria-hidden
-        className="absolute bottom-0 inset-x-0 h-0.5 origin-left bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 pointer-events-none"
-        style={{
-          scaleX: scrollYProgress,
-          opacity: scrolled ? 1 : 0,
-          transition: "opacity 300ms ease",
-        }}
-      />
+            <LocaleSwitcher onDark={!scrolled} />
 
-      {/* Mobile Drawer Menu */}
+            {/* Mobile hamburger button */}
+            <button
+              type="button"
+              onClick={() => setMobileOpen((o) => !o)}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              className={`inline-flex size-9 sm:size-10 items-center justify-center rounded-xl border transition ${scrolled
+                ? "border-zinc-300 bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:border-white/20 dark:bg-white/10 dark:text-white"
+                : "border-white/30 bg-black/40 text-white hover:bg-black/60 backdrop-blur-md"
+                } lg:hidden`}
+            >
+              {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            </button>
+          </div>
+        </nav>
+
+        {/* Scroll Progress indicator pinned to the bottom border of the header */}
+        <motion.div
+          aria-hidden
+          className="absolute bottom-0 inset-x-0 h-0.5 origin-left bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 pointer-events-none"
+          style={{
+            scaleX: scrollYProgress,
+            opacity: scrolled ? 1 : 0,
+            transition: "opacity 300ms ease",
+          }}
+        />
+      </header>
+
+      {/*
+        Mobile Drawer — MUST be outside <header> to escape the backdrop-filter
+        containing block created by backdrop-blur-xl on the header.
+        top-* values match the header height in each scroll state:
+          unscrolled: py-4 (32px) + h-11 (44px) = 76px  |  sm: py-5 (40px) + h-13 (52px) = 92px
+          scrolled:   py-2.5 (20px) + h-9 (36px) = 56px  |  sm: py-3 (24px) + h-11 (44px) = 68px
+      */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -16 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 top-[60px] sm:top-[68px] z-40 flex flex-col justify-between bg-white/98 dark:bg-zinc-950/98 p-6 backdrop-blur-2xl lg:hidden border-t border-zinc-200 dark:border-white/10 overflow-y-auto"
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className={`fixed inset-x-0 bottom-0 z-40 flex flex-col justify-between bg-white dark:bg-zinc-950 p-6 lg:hidden border-t border-zinc-200 dark:border-white/10 overflow-y-auto ${scrolled ? "top-[56px] sm:top-[68px]" : "top-[76px] sm:top-[92px]"
+              }`}
           >
             {/* Language Switcher in Mobile Drawer */}
             <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/10">
@@ -249,6 +258,7 @@ export function SiteNav() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
+
