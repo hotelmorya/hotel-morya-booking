@@ -17,13 +17,13 @@ export interface BackendGalleryItem {
 }
 
 const SPAN_PATTERNS = [
-  "col-span-2 row-span-2 aspect-square sm:aspect-auto",
+  "col-span-2 row-span-2 aspect-square",
   "col-span-1 row-span-1 aspect-square",
   "col-span-1 row-span-1 aspect-square",
-  "col-span-1 sm:col-span-2 row-span-1 aspect-[2/1] sm:aspect-auto",
+  "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto sm:h-full",
   "col-span-1 row-span-1 aspect-square",
   "col-span-1 row-span-1 aspect-square",
-  "col-span-1 sm:col-span-2 row-span-1 aspect-[2/1] sm:aspect-auto",
+  "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto sm:h-full",
 ];
 
 const fallbackGalleryItems = [
@@ -31,7 +31,7 @@ const fallbackGalleryItems = [
     src: "/images/hotel-morya-exterior-02.png",
     caption: "Hotel Morya Lodging facade and building in Admapur",
     category: "Exterior",
-    span: "col-span-2 row-span-2 aspect-square sm:aspect-auto",
+    span: "col-span-2 row-span-2 aspect-square",
   },
   {
     src: "/images/hotel-morya-ac-room.png",
@@ -49,7 +49,7 @@ const fallbackGalleryItems = [
     src: "/images/hotel-morya-dormitory.png",
     caption: "Large group dormitory accommodating up to 50 pilgrims",
     category: "Dormitory",
-    span: "col-span-1 sm:col-span-2 row-span-1 aspect-[2/1] sm:aspect-auto",
+    span: "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto sm:h-full",
   },
   {
     src: "/images/hotel-morya-non-ac-room.png",
@@ -67,7 +67,7 @@ const fallbackGalleryItems = [
     src: "/images/balumama-temple.jpg",
     caption: "Shri Sant Balumama Temple Admapur (just 200m away)",
     category: "Temple",
-    span: "col-span-1 sm:col-span-2 row-span-1 aspect-[2/1] sm:aspect-auto",
+    span: "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto sm:h-full",
   },
 ];
 
@@ -144,7 +144,7 @@ export function Gallery({ initialMedia }: GalleryProps) {
         {/* Masonry / Grid */}
         <RevealGroup
           as="div"
-          className="mt-12 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-4 sm:gap-4 auto-rows-[12rem] sm:auto-rows-[15rem]"
+          className="mt-12 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-4 sm:gap-4"
         >
           {items.map((item, idx) => (
             <motion.div
