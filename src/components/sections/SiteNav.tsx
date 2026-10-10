@@ -26,7 +26,7 @@ export function SiteNav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 300);
+      setScrolled(window.scrollY > 150);
     };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -91,8 +91,8 @@ export function SiteNav() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled || mobileOpen
-          ? "bg-white/95 dark:bg-zinc-950/95 text-zinc-900 dark:text-white shadow-md backdrop-blur-xl border-b border-zinc-200/90 dark:border-white/10 py-2.5 sm:py-3"
-          : "bg-transparent text-white border-b border-transparent shadow-none py-4 sm:py-5"
+        ? "bg-white/95 dark:bg-zinc-950/95 text-zinc-900 dark:text-white shadow-md backdrop-blur-xl border-b border-zinc-200/90 dark:border-white/10 py-2.5 sm:py-3"
+        : "bg-transparent text-white border-b border-transparent shadow-none py-4 sm:py-5"
         }`}
     >
       <nav
@@ -102,15 +102,15 @@ export function SiteNav() {
         {/* Logo with natural contrast */}
         <Link href="/" className="flex shrink-0 items-center group py-1" aria-label="Hotel Morya Lodging">
           <div
-            className={`relative transition-all duration-300 group-hover:scale-102 ${scrolled ? "h-9 w-28 sm:h-11 sm:w-36" : "h-11 w-36 sm:h-13 sm:w-44"
+            className={`relative aspect-[3/1] overflow-hidden rounded-md transition-all duration-300 group-hover:scale-102 ${scrolled ? "h-9 sm:h-11" : "h-11 sm:h-13"
               }`}
           >
             <Image
-              src="/images/morya-logo.png"
+              src="/images/morya-logo-white-bg.jpg"
               alt="Hotel Morya Lodging"
               fill
               priority
-              className="object-contain object-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] filter brightness-105"
+              className="object-cover rounded-md"
             />
           </div>
         </Link>
@@ -126,12 +126,12 @@ export function SiteNav() {
                   onClick={(e) => handleNavClick(e, link.id)}
                   aria-current={isActive ? "true" : undefined}
                   className={`relative rounded-full px-3 py-1.5 transition-colors font-medium tracking-wide ${isActive
-                      ? scrolled
-                        ? "text-primary dark:text-amber-400 font-bold"
-                        : "text-amber-300 font-bold drop-shadow-md"
-                      : scrolled
-                        ? "text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
-                        : "text-white/90 hover:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]"
+                    ? scrolled
+                      ? "text-primary dark:text-amber-400 font-bold"
+                      : "text-amber-300 font-bold drop-shadow-md"
+                    : scrolled
+                      ? "text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
+                      : "text-white/90 hover:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]"
                     }`}
                 >
                   {link.label}
@@ -154,8 +154,8 @@ export function SiteNav() {
           <Link
             href="/track"
             className={`hidden sm:inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${scrolled
-                ? "border-zinc-300/80 bg-zinc-100/90 text-zinc-800 hover:bg-zinc-200/90 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
-                : "border-white/30 bg-black/40 text-white hover:bg-black/60 backdrop-blur-md shadow-xs"
+              ? "border-zinc-300/80 bg-zinc-100/90 text-zinc-800 hover:bg-zinc-200/90 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
+              : "border-white/30 bg-black/40 text-white hover:bg-black/60 backdrop-blur-md shadow-xs"
               }`}
           >
             <Search className={`size-3.5 ${scrolled ? "text-primary dark:text-amber-400" : "text-amber-300"}`} />
@@ -170,8 +170,8 @@ export function SiteNav() {
             onClick={() => setMobileOpen((o) => !o)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             className={`inline-flex size-9 sm:size-10 items-center justify-center rounded-xl border transition ${scrolled
-                ? "border-zinc-300 bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:border-white/20 dark:bg-white/10 dark:text-white"
-                : "border-white/30 bg-black/40 text-white hover:bg-black/60 backdrop-blur-md"
+              ? "border-zinc-300 bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:border-white/20 dark:bg-white/10 dark:text-white"
+              : "border-white/30 bg-black/40 text-white hover:bg-black/60 backdrop-blur-md"
               } lg:hidden`}
           >
             {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -179,10 +179,10 @@ export function SiteNav() {
         </div>
       </nav>
 
-      {/* Scroll Progress indicator */}
+      {/* Scroll Progress indicator pinned to the bottom border of the header */}
       <motion.div
         aria-hidden
-        className="h-0.5 origin-left bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600"
+        className="absolute bottom-0 inset-x-0 h-0.5 origin-left bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 pointer-events-none"
         style={{
           scaleX: scrollYProgress,
           opacity: scrolled ? 1 : 0,
