@@ -26,12 +26,24 @@ export function SiteNav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 300);
     };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    targetId: string
+  ) => {
+    e.preventDefault();
+    setMobileOpen(false);
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   // Scrollspy observer to highlight active section
   useEffect(() => {
@@ -77,96 +89,106 @@ export function SiteNav() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      {/* ── Main Sticky Navigation Bar ────────────────────────────────────── */}
-      <div
-        className={`transition-all duration-300 ${
-          scrolled
-            ? "bg-white/95 dark:bg-zinc-950/95 text-zinc-900 dark:text-white shadow-md backdrop-blur-xl border-b border-zinc-200/90 dark:border-white/10"
-            : "bg-white/90 dark:bg-zinc-950/90 text-zinc-900 dark:text-white shadow-xs backdrop-blur-xl border-b border-zinc-200/70 dark:border-white/10"
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled || mobileOpen
+          ? "bg-white/95 dark:bg-zinc-950/95 text-zinc-900 dark:text-white shadow-md backdrop-blur-xl border-b border-zinc-200/90 dark:border-white/10 py-2.5 sm:py-3"
+          : "bg-transparent text-white border-b border-transparent shadow-none py-4 sm:py-5"
         }`}
+    >
+      <nav
+        aria-label="Main Navigation"
+        className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-8"
       >
-        <nav
-          aria-label="Main Navigation"
-          className="mx-auto flex h-16 sm:h-18 max-w-7xl items-center justify-between px-4 sm:px-8"
-        >
-          {/* Logo with natural contrast */}
-          <Link href="/" className="flex shrink-0 items-center group py-1" aria-label="Hotel Morya Lodging">
-            <div className="relative h-10 w-32 sm:h-12 sm:w-40 transition-transform duration-300 group-hover:scale-102">
-              <Image
-                src="/images/morya-logo.png"
-                alt="Hotel Morya Lodging"
-                fill
-                priority
-                className="object-contain object-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] filter brightness-105"
-              />
-            </div>
+        {/* Logo with natural contrast */}
+        <Link href="/" className="flex shrink-0 items-center group py-1" aria-label="Hotel Morya Lodging">
+          <div
+            className={`relative transition-all duration-300 group-hover:scale-102 ${scrolled ? "h-9 w-28 sm:h-11 sm:w-36" : "h-11 w-36 sm:h-13 sm:w-44"
+              }`}
+          >
+            <Image
+              src="/images/morya-logo.png"
+              alt="Hotel Morya Lodging"
+              fill
+              priority
+              className="object-contain object-left drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] filter brightness-105"
+            />
+          </div>
+        </Link>
+
+        {/* Desktop navigation links */}
+        <ul className="hidden items-center gap-1 lg:flex text-xs font-bold uppercase tracking-wider">
+          {navLinks.map((link) => {
+            const isActive = activeId === link.id;
+            return (
+              <li key={link.id}>
+                <a
+                  href={`#${link.id}`}
+                  onClick={(e) => handleNavClick(e, link.id)}
+                  aria-current={isActive ? "true" : undefined}
+                  className={`relative rounded-full px-3 py-1.5 transition-colors font-medium tracking-wide ${isActive
+                      ? scrolled
+                        ? "text-primary dark:text-amber-400 font-bold"
+                        : "text-amber-300 font-bold drop-shadow-md"
+                      : scrolled
+                        ? "text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
+                        : "text-white/90 hover:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]"
+                    }`}
+                >
+                  {link.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-underline"
+                      className={`absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full ${scrolled ? "bg-primary dark:bg-amber-400" : "bg-amber-400"
+                        }`}
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+
+        {/* Right Action buttons: Track Booking & LocaleSwitcher */}
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <Link
+            href="/track"
+            className={`hidden sm:inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${scrolled
+                ? "border-zinc-300/80 bg-zinc-100/90 text-zinc-800 hover:bg-zinc-200/90 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
+                : "border-white/30 bg-black/40 text-white hover:bg-black/60 backdrop-blur-md shadow-xs"
+              }`}
+          >
+            <Search className={`size-3.5 ${scrolled ? "text-primary dark:text-amber-400" : "text-amber-300"}`} />
+            <span>{t("trackBooking")}</span>
           </Link>
 
-          {/* Desktop navigation links */}
-          <ul className="hidden items-center gap-1 lg:flex text-xs font-bold uppercase tracking-wider">
-            {navLinks.map((link) => {
-              const isActive = activeId === link.id;
-              return (
-                <li key={link.id}>
-                  <a
-                    href={`#${link.id}`}
-                    aria-current={isActive ? "true" : undefined}
-                    className={`relative rounded-full px-3 py-2 transition-colors ${
-                      isActive
-                        ? "text-primary dark:text-amber-400 font-bold"
-                        : "text-zinc-600 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
-                    }`}
-                  >
-                    {link.label}
-                    {isActive && (
-                      <motion.span
-                        layoutId="nav-underline"
-                        className="absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-primary dark:bg-amber-400"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
+          <LocaleSwitcher onDark={!scrolled} />
 
-          {/* Right Action buttons: Track Booking & LocaleSwitcher */}
-          <div className="flex items-center gap-2.5 sm:gap-3">
-            <Link
-              href="/track"
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-zinc-300/80 bg-zinc-100/90 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-800 transition hover:bg-zinc-200/90 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
-            >
-              <Search className="size-3.5 text-primary dark:text-amber-400" />
-              <span>{t("trackBooking")}</span>
-            </Link>
+          {/* Mobile hamburger button */}
+          <button
+            type="button"
+            onClick={() => setMobileOpen((o) => !o)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            className={`inline-flex size-9 sm:size-10 items-center justify-center rounded-xl border transition ${scrolled
+                ? "border-zinc-300 bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:border-white/20 dark:bg-white/10 dark:text-white"
+                : "border-white/30 bg-black/40 text-white hover:bg-black/60 backdrop-blur-md"
+              } lg:hidden`}
+          >
+            {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
+      </nav>
 
-            <LocaleSwitcher onDark={false} />
-
-            {/* Mobile hamburger button */}
-            <button
-              type="button"
-              onClick={() => setMobileOpen((o) => !o)}
-              aria-label={mobileOpen ? "Close menu" : "Open menu"}
-              className="inline-flex size-9 sm:size-10 items-center justify-center rounded-xl border border-zinc-300 bg-zinc-100 text-zinc-900 transition hover:bg-zinc-200 dark:border-white/20 dark:bg-white/10 dark:text-white lg:hidden"
-            >
-              {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-            </button>
-          </div>
-        </nav>
-
-        {/* Scroll Progress indicator */}
-        <motion.div
-          aria-hidden
-          className="h-0.5 origin-left bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600"
-          style={{
-            scaleX: scrollYProgress,
-            opacity: scrolled ? 1 : 0,
-            transition: "opacity 300ms ease",
-          }}
-        />
-      </div>
+      {/* Scroll Progress indicator */}
+      <motion.div
+        aria-hidden
+        className="h-0.5 origin-left bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600"
+        style={{
+          scaleX: scrollYProgress,
+          opacity: scrolled ? 1 : 0,
+          transition: "opacity 300ms ease",
+        }}
+      />
 
       {/* Mobile Drawer Menu */}
       <AnimatePresence>
@@ -176,7 +198,7 @@ export function SiteNav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 top-16 sm:top-18 z-40 flex flex-col justify-between bg-white/98 dark:bg-zinc-950/98 p-6 backdrop-blur-2xl lg:hidden border-t border-zinc-200 dark:border-white/10 overflow-y-auto"
+            className="fixed inset-0 top-[60px] sm:top-[68px] z-40 flex flex-col justify-between bg-white/98 dark:bg-zinc-950/98 p-6 backdrop-blur-2xl lg:hidden border-t border-zinc-200 dark:border-white/10 overflow-y-auto"
           >
             {/* Language Switcher in Mobile Drawer */}
             <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/10">
@@ -191,7 +213,7 @@ export function SiteNav() {
                 <li key={link.id}>
                   <a
                     href={`#${link.id}`}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={(e) => handleNavClick(e, link.id)}
                     className="flex items-center justify-between py-3.5 text-zinc-800 dark:text-white/90 hover:text-amber-500 transition"
                   >
                     <span>{link.label}</span>
