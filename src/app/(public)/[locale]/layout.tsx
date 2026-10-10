@@ -5,6 +5,8 @@ import { setRequestLocale } from 'next-intl/server'
 import { Providers } from '@/components/providers'
 import { locales } from '@/lib/i18n'
 
+import { HotelJsonLd } from '@/components/seo/HotelJsonLd'
+
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
@@ -29,6 +31,22 @@ export async function generateMetadata({
       canonical: `${base}/${locale}`,
       languages,
     },
+    openGraph: {
+      locale: locale === 'mr' ? 'mr_IN' : 'en_IN',
+      alternateLocale: locale === 'mr' ? ['en_IN'] : ['mr_IN'],
+      url: `${base}/${locale}`,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   }
 }
 
@@ -51,6 +69,7 @@ export default async function PublicLocaleLayout({
           className="light-scope flex min-h-dvh flex-col bg-background text-foreground [color-scheme:light]"
           data-locale={locale}
         >
+          <HotelJsonLd locale={locale} />
           {children}
         </div>
       </Providers>

@@ -46,8 +46,11 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const appBaseUrl =
+  process.env.NEXT_PUBLIC_APP_URL || "https://hotel-morya-booking.vercel.app";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hotel-morya-booking.vercel.app"),
+  metadataBase: new URL(appBaseUrl),
   title: "Hotel Morya Lodging | Stay Near Shri Balumama Temple, Admapur",
   description:
     "Stay at Hotel Morya Lodging in Admapur, Kolhapur, just 200 metres from Shri Balumama Temple. Explore AC rooms, non-AC rooms, and spacious dormitory stays.",
@@ -66,7 +69,7 @@ export const metadata: Metadata = {
     title: "Hotel Morya Lodging | Admapur, Kolhapur",
     description:
       "A comfortable stay 200 metres from Shri Balumama Temple. Explore AC rooms, non-AC rooms, and group dormitory accommodation in Admapur.",
-    url: "https://hotel-morya-booking.vercel.app",
+    url: appBaseUrl,
     siteName: "Hotel Morya Lodging",
     images: [
       {
@@ -120,6 +123,10 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning className={`${fontVars} scroll-smooth`}>
+      <head>
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+      </head>
       <body className="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-hero-accent selection:text-hero-accent-foreground">
         <ThemeProvider
           attribute="class"

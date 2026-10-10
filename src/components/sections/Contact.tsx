@@ -318,7 +318,7 @@ export function Contact({
                       type="text"
                       required
                       placeholder={isMr ? "उदा. रमेश पाटील" : "e.g. Ramesh Patil"}
-                      className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground focus:outline-primary"
+                      className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-base sm:text-sm text-foreground focus:outline-primary"
                     />
                   </div>
 
@@ -332,7 +332,7 @@ export function Contact({
                       type="tel"
                       required
                       placeholder={isMr ? "१० अंकी मोबाईल नंबर" : "10-digit mobile number"}
-                      className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground focus:outline-primary"
+                      className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-base sm:text-sm text-foreground focus:outline-primary"
                     />
                   </div>
                 </div>
@@ -349,7 +349,7 @@ export function Contact({
                       required
                       value={checkIn}
                       onChange={(e) => setCheckIn(e.target.value)}
-                      className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground focus:outline-primary"
+                      className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-base sm:text-sm text-foreground focus:outline-primary"
                     />
                   </div>
 
@@ -364,7 +364,7 @@ export function Contact({
                       required
                       value={checkOut}
                       onChange={(e) => setCheckOut(e.target.value)}
-                      className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground focus:outline-primary"
+                      className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-base sm:text-sm text-foreground focus:outline-primary"
                     />
                   </div>
                 </div>
@@ -379,7 +379,7 @@ export function Contact({
                       name="roomType"
                       value={selectedId}
                       onChange={(e) => setSelectedId(e.target.value)}
-                      className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground focus:outline-primary"
+                      className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-base sm:text-sm text-foreground focus:outline-primary"
                     >
                       {roomOptions.map((opt) => (
                         <option key={opt.id} value={opt.id}>
@@ -401,7 +401,7 @@ export function Contact({
                       max="100"
                       value={guestCount}
                       onChange={(e) => setGuestCount(Number(e.target.value) || 1)}
-                      className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground focus:outline-primary"
+                      className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-base sm:text-sm text-foreground focus:outline-primary"
                     />
                   </div>
                 </div>
@@ -462,7 +462,7 @@ export function Contact({
                         ? "उदा. पोहोचण्याची वेळ, ज्येष्ठ नागरिकांसाठी तळमजला..."
                         : "Expected arrival time, senior citizen assistance, extra beds..."
                     }
-                    className="w-full rounded-xl border border-input bg-background p-3 text-sm text-foreground focus:outline-primary resize-none"
+                    className="w-full rounded-xl border border-input bg-background p-3 text-base sm:text-sm text-foreground focus:outline-primary resize-none"
                   />
                 </div>
 
@@ -594,6 +594,8 @@ export function Contact({
           title="Hotel Morya Lodging Location Map Admapur"
           src={mapEmbedSrc}
           loading="lazy"
+          allowFullScreen
+          referrerPolicy="strict-origin-when-cross-origin"
           className="h-[22rem] sm:h-[28rem] w-full border-0"
         />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-background to-transparent" />

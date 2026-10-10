@@ -40,9 +40,12 @@ export async function saveHotelSettings(
         error: parsed.error.issues[0]?.message ?? 'Validation failed',
       }
     }
+    const cleanPayload = Object.fromEntries(
+      Object.entries(parsed.data).map(([k, v]) => [k, v === '' ? null : v])
+    )
     const { error } = await supabase
       .from('hotel_settings')
-      .update({ ...parsed.data, updated_at: new Date().toISOString() })
+      .update({ ...cleanPayload, updated_at: new Date().toISOString() })
       .eq('id', existing.id)
     if (error) return { success: false, error: error.message }
   } else {
@@ -51,7 +54,10 @@ export async function saveHotelSettings(
     if (!parsed.success) {
       return { success: false, error: 'Please complete the Hotel info tab first.' }
     }
-    const { error } = await supabase.from('hotel_settings').insert(parsed.data)
+    const cleanPayload = Object.fromEntries(
+      Object.entries(parsed.data).map(([k, v]) => [k, v === '' ? null : v])
+    )
+    const { error } = await supabase.from('hotel_settings').insert(cleanPayload)
     if (error) return { success: false, error: error.message }
   }
 

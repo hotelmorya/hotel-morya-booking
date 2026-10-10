@@ -16,6 +16,7 @@ import {
 } from "@/components/sections/Gallery";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Contact } from "@/components/sections/Contact";
+import { FloatingWhatsApp } from "@/components/sections/FloatingWhatsApp";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 
 interface HomePageClientProps {
@@ -90,7 +91,10 @@ export function HomePageClient({
         hotelSettings={hotelSettings}
       />
 
-      {/* 9. Site Footer with Developer Credit */}
+      {/* 9. Floating WhatsApp Direct Assistance */}
+      <FloatingWhatsApp />
+
+      {/* 10. Site Footer with Developer Credit */}
       <SiteFooter />
     </div>
   );

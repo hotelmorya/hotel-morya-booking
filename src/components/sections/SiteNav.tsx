@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useScroll } from "motion/react";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, Search, ArrowRight, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/lib/navigation";
 import { LocaleSwitcher } from "@/components/public/LocaleSwitcher";
+import { HOTEL, telHref } from "@/lib/site";
 
 export function SiteNav() {
   const t = useTranslations("nav");
@@ -237,15 +238,22 @@ export function SiteNav() {
               </li>
             </ul>
 
-            <div className="pt-6 pb-6 flex flex-col gap-3">
+            <div className="pt-6 pb-8 flex flex-col gap-3">
               <Link
-                href="/track"
+                href="/book"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-xl border border-zinc-300 bg-zinc-100 py-3 text-sm font-semibold text-zinc-900 dark:border-white/20 dark:bg-white/10 dark:text-white"
+                className="flex items-center justify-center gap-2 rounded-xl bg-amber-400 py-3.5 text-sm font-bold uppercase tracking-wider text-zinc-950 shadow-md transition hover:bg-amber-300 active:scale-[0.99]"
               >
-                <Search className="size-4 text-amber-500" />
-                {t("trackBooking")}
+                <span>{t("bookNow")}</span>
+                <ArrowRight className="size-4" />
               </Link>
+              <a
+                href={telHref(HOTEL.phones[0])}
+                className="flex items-center justify-center gap-2 rounded-xl border border-zinc-300 bg-zinc-100 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-200 dark:border-white/20 dark:bg-white/10 dark:text-white"
+              >
+                <Phone className="size-4 text-amber-500" />
+                <span className="font-sans tabular-nums">+91 {HOTEL.phones[0]}</span>
+              </a>
             </div>
           </motion.div>
         )}

@@ -6,11 +6,11 @@ export const HOTEL = {
   name: "Hotel Morya Lodging",
   slug: "hotel-morya",
   tagline: "Just 200m from Shri Sant Balumama Temple, Admapur",
-  phones: ["7709995261", "9421114161"],
-  whatsapp: "7709995261",
+  phones: ["9022397095"],
+  whatsapp: "9022397095",
   email: "hotelmoryaadmapur@gmail.com",
-  checkIn: "12:00 PM",
-  checkOut: "11:00 AM",
+  checkIn: "09:00 AM",
+  checkOut: "10:00 AM",
   address: {
     street: "Near Shri Balumama Temple Gate",
     village: "Admapur",
@@ -21,8 +21,8 @@ export const HOTEL = {
     country: "IN",
   },
   geo: {
-    lat: 16.4062602,
-    lng: 74.1569327,
+    lat: 16.4056894,
+    lng: 74.1609358,
   },
   reviews: {
     rating: "4.8",
@@ -92,7 +92,7 @@ export function mailtoHref(email: string): string {
 }
 
 export const directionsHref =
-  "https://www.google.com/maps/search/?api=1&query=Hotel+Morya+Lodging+Admapur+Kolhapur+Maharashtra";
+  "https://www.google.com/maps/place/Morya+lodging/@16.4056894,74.1609358,17z";
 
 export const mapEmbedSrc =
-  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3826.684157546684!2d74.15435777591632!3d16.406260184325785!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc05700778a4639%3A0xe543ef88d55fa242!2sHotel%20Morya%20Lodging!5e0!3m2!1sen!2sin!4v1718000000000!5m2!1sen!2sin";
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3827.376592537467!2d74.16093579999999!3d16.4056894!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc059003ee71d47%3A0x217fa812e7c62615!2sMorya%20lodging!5e0!3m2!1sen!2sin!4v1791628238448!5m2!1sen!2sin";

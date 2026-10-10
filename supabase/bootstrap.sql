@@ -38,8 +38,8 @@ create table hotel_settings (
   city                            varchar(50)  not null default 'Admapur',
   state                           varchar(50)  not null default 'Maharashtra',
   phone                           varchar(10)  not null check (phone ~ '^[6-9][0-9]{9}$'),
-  phone_alt                       varchar(10)  check (phone_alt ~ '^[6-9][0-9]{9}$'),
-  whatsapp                        varchar(10)  check (whatsapp ~ '^[6-9][0-9]{9}$'),
+  phone_alt                       varchar(10)  check (phone_alt is null or phone_alt = '' or phone_alt ~ '^[6-9][0-9]{9}$'),
+  whatsapp                        varchar(10)  check (whatsapp is null or whatsapp = '' or whatsapp ~ '^[6-9][0-9]{9}$'),
   email                           varchar(255),
 
   logo_url                        text,

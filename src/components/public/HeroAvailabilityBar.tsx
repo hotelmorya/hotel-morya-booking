@@ -73,7 +73,7 @@ export function HeroAvailabilityBar() {
                 value={checkIn}
                 onClick={openPicker}
                 onChange={(e) => handleCheckInChange(e.target.value)}
-                className="w-full cursor-pointer bg-transparent text-sm font-semibold tabular-nums text-white outline-none [color-scheme:dark]"
+                className="w-full cursor-pointer bg-transparent text-base sm:text-sm font-semibold tabular-nums text-white outline-none [color-scheme:dark]"
               />
             </div>
           </label>
@@ -98,7 +98,7 @@ export function HeroAvailabilityBar() {
                 value={checkOut}
                 onClick={openPicker}
                 onChange={(e) => setCheckOut(e.target.value)}
-                className="w-full cursor-pointer bg-transparent text-sm font-semibold tabular-nums text-white outline-none [color-scheme:dark]"
+                className="w-full cursor-pointer bg-transparent text-base sm:text-sm font-semibold tabular-nums text-white outline-none [color-scheme:dark]"
               />
             </div>
           </label>
@@ -126,18 +126,18 @@ export function HeroAvailabilityBar() {
                 aria-label="Decrease guests"
                 onClick={() => setGuests((g) => Math.max(1, g - 1))}
                 disabled={guests <= 1}
-                className="flex size-7 items-center justify-center rounded-lg border border-white/20 bg-white/10 text-white transition hover:bg-white/20 disabled:opacity-40"
+                className="flex size-8 touch-manipulation items-center justify-center rounded-lg border border-white/20 bg-white/10 text-white transition hover:bg-white/20 active:scale-95 disabled:opacity-40"
               >
-                <Minus className="size-3.5" />
+                <Minus className="size-4" />
               </button>
               <button
                 type="button"
                 aria-label="Increase guests"
                 onClick={() => setGuests((g) => Math.min(50, g + 1))}
                 disabled={guests >= 50}
-                className="flex size-7 items-center justify-center rounded-lg border border-white/20 bg-white/10 text-white transition hover:bg-white/20 disabled:opacity-40"
+                className="flex size-8 touch-manipulation items-center justify-center rounded-lg border border-white/20 bg-white/10 text-white transition hover:bg-white/20 active:scale-95 disabled:opacity-40"
               >
-                <Plus className="size-3.5" />
+                <Plus className="size-4" />
               </button>
             </div>
           </div>

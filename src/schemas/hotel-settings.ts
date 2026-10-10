@@ -11,14 +11,14 @@ const baseHotelSettings = z.object({
     city: z.string().trim().max(50).default('Admapur'),
     state: z.string().trim().max(50).default('Maharashtra'),
     phone: indianPhone,
-    phone_alt: indianPhone.optional().or(z.literal('')),
-    whatsapp: indianPhone.optional().or(z.literal('')),
-    email: z.string().trim().email().max(255).optional().or(z.literal('')),
+    phone_alt: indianPhone.optional().nullable().or(z.literal('')).transform((v) => (!v ? null : v)),
+    whatsapp: indianPhone.optional().nullable().or(z.literal('')).transform((v) => (!v ? null : v)),
+    email: z.string().trim().email().max(255).optional().nullable().or(z.literal('')).transform((v) => (!v ? null : v)),
 
     check_in_time: z.string().regex(/^\d{2}:\d{2}(:\d{2})?$/).default('12:00'),
     check_out_time: z.string().regex(/^\d{2}:\d{2}(:\d{2})?$/).default('11:00'),
 
-    upi_qr_url: z.string().trim().url().optional().or(z.literal('')),
+    upi_qr_url: z.string().trim().url().optional().nullable().or(z.literal('')).transform((v) => (!v ? null : v)),
     // UPI VPA (e.g. hotelkbp@okaxis) — powers the mobile "Pay with UPI app"
     // deep link (upi://pay). Lenient handle@bank check.
     upi_id: z
@@ -26,7 +26,9 @@ const baseHotelSettings = z.object({
       .trim()
       .regex(/^[^\s@]{2,}@[^\s@]{2,}$/, 'Enter a valid UPI ID (e.g. name@bank)')
       .optional()
-      .or(z.literal('')),
+      .nullable()
+      .or(z.literal(''))
+      .transform((v) => (!v ? null : v)),
     fee_passthrough_enabled: z.boolean().default(false),
     fee_passthrough_percent: z.coerce.number().min(0).max(100).default(3),
 
@@ -41,7 +43,9 @@ const baseHotelSettings = z.object({
       .trim()
       .regex(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/, 'Enter a valid 15-character GSTIN')
       .optional()
-      .or(z.literal('')),
+      .nullable()
+      .or(z.literal(''))
+      .transform((v) => (!v ? null : v)),
     gst_rate: z.coerce.number().min(0).max(28).default(12),
   })
 
