@@ -3,10 +3,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useScroll } from "motion/react";
-import { Menu, Phone, X, Calendar, MapPin, Search } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/lib/navigation";
-import { HOTEL, telHref } from "@/lib/site";
 import { LocaleSwitcher } from "@/components/public/LocaleSwitcher";
 
 export function SiteNav() {
@@ -79,42 +78,6 @@ export function SiteNav() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* ── Top Pilgrim Utility Bar ────────────────────────────────────────── */}
-      <div className="border-b border-amber-400/20 bg-zinc-950/90 text-white backdrop-blur-md transition-all duration-300">
-        <div className="mx-auto flex h-9 max-w-7xl items-center justify-between px-4 text-[11px] sm:px-8">
-          {/* Temple proximity indicator */}
-          <div className="flex items-center gap-2">
-            <span className="flex size-2 rounded-full bg-amber-400 animate-pulse" />
-            <span className="font-medium text-amber-300/90 truncate max-w-[220px] sm:max-w-none">
-              {t("templeDistance")}
-            </span>
-          </div>
-
-          {/* Right helper links: Helpline + Track Booking + LocaleSwitcher */}
-          <div className="flex items-center gap-3 sm:gap-5">
-            <a
-              href={telHref(HOTEL.phones[0])}
-              className="hidden md:flex items-center gap-1.5 text-zinc-300 hover:text-amber-300 transition"
-            >
-              <Phone className="size-3 text-amber-400" />
-              <span>+91 {HOTEL.phones[0]}</span>
-            </a>
-
-            <Link
-              href="/track"
-              className="flex items-center gap-1 text-zinc-300 hover:text-amber-300 transition font-medium"
-            >
-              <Search className="size-3 text-amber-400" />
-              <span>{t("trackBooking")}</span>
-            </Link>
-
-            <div className="pl-1 border-l border-white/20">
-              <LocaleSwitcher onDark={true} />
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* ── Main Sticky Navigation Bar ────────────────────────────────────── */}
       <div
         className={`transition-all duration-300 ${
@@ -169,23 +132,17 @@ export function SiteNav() {
             })}
           </ul>
 
-          {/* Right Action buttons */}
+          {/* Right Action buttons: Track Booking & LocaleSwitcher */}
           <div className="flex items-center gap-2.5 sm:gap-3">
-            <a
-              href={telHref(HOTEL.phones[0])}
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-zinc-300/80 bg-zinc-100/90 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-800 transition hover:bg-zinc-200/90 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
-            >
-              <Phone className="size-3.5 text-primary dark:text-amber-400" />
-              <span>+91 {HOTEL.phones[0]}</span>
-            </a>
-
             <Link
-              href="/book"
-              className="inline-flex items-center gap-1.5 rounded-xl bg-amber-400 px-4 py-2 sm:px-5 sm:py-2.5 text-xs font-bold uppercase tracking-wider text-zinc-950 shadow-[0_2px_12px_rgba(245,184,0,0.35)] transition-all duration-200 hover:bg-amber-300 hover:scale-[1.02] active:scale-[0.99]"
+              href="/track"
+              className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-zinc-300/80 bg-zinc-100/90 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-800 transition hover:bg-zinc-200/90 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
             >
-              <Calendar className="size-3.5" />
-              <span>{t("bookNow")}</span>
+              <Search className="size-3.5 text-primary dark:text-amber-400" />
+              <span>{t("trackBooking")}</span>
             </Link>
+
+            <LocaleSwitcher onDark={false} />
 
             {/* Mobile hamburger button */}
             <button
@@ -219,7 +176,7 @@ export function SiteNav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 top-[100px] z-40 flex flex-col justify-between bg-white/98 dark:bg-zinc-950/98 p-6 backdrop-blur-2xl lg:hidden border-t border-zinc-200 dark:border-white/10 overflow-y-auto"
+            className="fixed inset-0 top-16 sm:top-18 z-40 flex flex-col justify-between bg-white/98 dark:bg-zinc-950/98 p-6 backdrop-blur-2xl lg:hidden border-t border-zinc-200 dark:border-white/10 overflow-y-auto"
           >
             {/* Language Switcher in Mobile Drawer */}
             <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/10">
@@ -258,20 +215,13 @@ export function SiteNav() {
             </ul>
 
             <div className="pt-6 pb-6 flex flex-col gap-3">
-              <a
-                href={telHref(HOTEL.phones[0])}
+              <Link
+                href="/track"
+                onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center gap-2 rounded-xl border border-zinc-300 bg-zinc-100 py-3 text-sm font-semibold text-zinc-900 dark:border-white/20 dark:bg-white/10 dark:text-white"
               >
-                <Phone className="size-4 text-amber-500" />
-                Call +91 {HOTEL.phones[0]}
-              </a>
-              <Link
-                href="/book"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-xl bg-amber-400 py-3.5 text-sm font-bold uppercase tracking-wider text-zinc-950 shadow-sm"
-              >
-                <Calendar className="size-4" />
-                {t("bookNow")}
+                <Search className="size-4 text-amber-500" />
+                {t("trackBooking")}
               </Link>
             </div>
           </motion.div>

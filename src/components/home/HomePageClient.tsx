@@ -17,7 +17,6 @@ import {
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Contact } from "@/components/sections/Contact";
 import { SiteFooter } from "@/components/sections/SiteFooter";
-import { FloatingWhatsApp } from "@/components/sections/FloatingWhatsApp";
 
 interface HomePageClientProps {
   roomTypes: BackendRoomType[];
@@ -93,9 +92,6 @@ export function HomePageClient({
 
       {/* 9. Site Footer with Developer Credit */}
       <SiteFooter />
-
-      {/* 10. Floating WhatsApp Quick Help */}
-      <FloatingWhatsApp />
     </div>
   );
 }
