@@ -1,63 +1,50 @@
-"use client";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { HomePageClient } from "@/components/home/HomePageClient";
 
-import { useState } from "react";
-import { SiteNav } from "@/components/sections/SiteNav";
-import { Hero } from "@/components/sections/Hero";
-import { About } from "@/components/sections/About";
-import { Temple } from "@/components/sections/Temple";
-import { Accommodations } from "@/components/sections/Accommodations";
-import { WhyUs } from "@/components/sections/WhyUs";
-import { Gallery } from "@/components/sections/Gallery";
-import { Testimonials } from "@/components/sections/Testimonials";
-import { Contact } from "@/components/sections/Contact";
-import { SiteFooter } from "@/components/sections/SiteFooter";
-import { FloatingWhatsApp } from "@/components/sections/FloatingWhatsApp";
+// Revalidate public landing page every 60 seconds (ISR)
+export const revalidate = 60;
 
-export default function HomePage() {
-  const [selectedRoom, setSelectedRoom] = useState<string>("Deluxe AC Rooms");
+function getPublicClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
+  const key =
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    "";
+  return createSupabaseClient(url, key);
+}
 
-  const handleSelectRoom = (roomTitle: string) => {
-    setSelectedRoom(roomTitle);
-    const element = document.getElementById("book");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+export default async function HomePage() {
+  const supabase = getPublicClient();
+
+  const [
+    { data: roomTypes },
+    { data: galleryMedia },
+    { data: hotelSettings },
+  ] = await Promise.all([
+    supabase
+      .from("room_types")
+      .select("*, room_photos(*)")
+      .eq("is_active", true)
+      .is("deleted_at", null)
+      .order("sort_order", { ascending: true }),
+    supabase
+      .from("gallery_media")
+      .select("id, media_type, public_id, url, alt_text, sort_order")
+      .eq("is_active", true)
+      .is("deleted_at", null)
+      .order("sort_order", { ascending: true }),
+    supabase
+      .from("hotel_settings")
+      .select("*")
+      .limit(1)
+      .maybeSingle(),
+  ]);
 
   return (
-    <div className="light-scope relative min-h-screen bg-background text-foreground">
-      {/* Navigation Header */}
-      <SiteNav />
-
-      {/* 1. Fullscreen Hero Slider & Proximity */}
-      <Hero />
-
-      {/* 2. About Morya & Spring-animated Stats */}
-      <About />
-
-      {/* 3. Dedicated Shri Balumama Temple Section (200m) */}
-      <Temple />
-
-      {/* 4. Accommodations: AC, Non-AC & Dormitory */}
-      <Accommodations onSelectRoom={handleSelectRoom} />
-
-      {/* 5. Why Choose Us / Pilgrimage Amenities */}
-      <WhyUs />
-
-      {/* 6. Interactive Masonry Gallery & Lightbox */}
-      <Gallery />
-
-      {/* 7. Pilgrim Testimonials & Google Rating Badge */}
-      <Testimonials />
-
-      {/* 8. Booking Form & Location Map */}
-      <Contact selectedRoom={selectedRoom} />
-
-      {/* 9. Site Footer with Developer Credit */}
-      <SiteFooter />
-
-      {/* 10. Floating WhatsApp Quick Help */}
-      <FloatingWhatsApp />
-    </div>
+    <HomePageClient
+      roomTypes={roomTypes ?? []}
+      galleryMedia={galleryMedia ?? []}
+      hotelSettings={hotelSettings}
+    />
   );
 }

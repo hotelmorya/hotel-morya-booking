@@ -18,6 +18,14 @@ export function buildCloudinaryUrl(
   publicId: string,
   { width }: { width: number }
 ): string {
+  if (!publicId) return ''
+  if (
+    publicId.startsWith('http://') ||
+    publicId.startsWith('https://') ||
+    publicId.startsWith('/')
+  ) {
+    return publicId
+  }
   if (!CLOUD_NAME) {
     // Return a placeholder if the env var is not configured. This prevents a
     // blank string URL from causing 404 errors in development.

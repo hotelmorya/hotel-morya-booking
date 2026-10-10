@@ -5,8 +5,28 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight, Plus, X } from "lucide-react";
 import { Reveal, RevealGroup, SplitHeading, fadeUp } from "@/components/motion/primitives";
+import { buildCloudinaryUrl } from "@/lib/cloudinary";
 
-const galleryItems = [
+export interface BackendGalleryItem {
+  id: string;
+  media_type: "image" | "video";
+  public_id?: string | null;
+  url?: string | null;
+  alt_text?: string | null;
+  sort_order: number;
+}
+
+const SPAN_PATTERNS = [
+  "col-span-2 row-span-2 aspect-square sm:aspect-auto",
+  "col-span-1 row-span-1 aspect-square",
+  "col-span-1 row-span-1 aspect-square",
+  "col-span-1 sm:col-span-2 row-span-1 aspect-[2/1] sm:aspect-auto",
+  "col-span-1 row-span-1 aspect-square",
+  "col-span-1 row-span-1 aspect-square",
+  "col-span-1 sm:col-span-2 row-span-1 aspect-[2/1] sm:aspect-auto",
+];
+
+const fallbackGalleryItems = [
   {
     src: "/images/hotel-morya-exterior-02.png",
     caption: "Hotel Morya Lodging facade and building in Admapur",
@@ -51,20 +71,38 @@ const galleryItems = [
   },
 ];
 
-export function Gallery() {
+interface GalleryProps {
+  initialMedia?: BackendGalleryItem[];
+}
+
+export function Gallery({ initialMedia }: GalleryProps) {
+  const items =
+    initialMedia && initialMedia.length > 0
+      ? initialMedia.map((m, idx) => ({
+          src:
+            m.url ||
+            (m.public_id
+              ? buildCloudinaryUrl(m.public_id, { width: 1200 })
+              : "/images/hotel-morya-exterior-02.png"),
+          caption: m.alt_text || "Hotel Morya Lodging Admapur",
+          category: "Gallery",
+          span: SPAN_PATTERNS[idx % SPAN_PATTERNS.length],
+        }))
+      : fallbackGalleryItems;
+
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
   const close = () => setActiveIdx(null);
 
   const prev = useCallback(() => {
     if (activeIdx === null) return;
-    setActiveIdx((prev) => (prev! - 1 + galleryItems.length) % galleryItems.length);
-  }, [activeIdx]);
+    setActiveIdx((curr) => (curr! - 1 + items.length) % items.length);
+  }, [activeIdx, items.length]);
 
   const next = useCallback(() => {
     if (activeIdx === null) return;
-    setActiveIdx((prev) => (prev! + 1) % galleryItems.length);
-  }, [activeIdx]);
+    setActiveIdx((curr) => (curr! + 1) % items.length);
+  }, [activeIdx, items.length]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -105,7 +143,7 @@ export function Gallery() {
           as="div"
           className="mt-12 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-4 sm:gap-4 auto-rows-[12rem] sm:auto-rows-[15rem]"
         >
-          {galleryItems.map((item, idx) => (
+          {items.map((item, idx) => (
             <motion.div
               key={item.src}
               variants={fadeUp}
@@ -192,18 +230,18 @@ export function Gallery() {
             >
               <div className="relative h-[65vh] sm:h-[75vh] w-full">
                 <Image
-                  src={galleryItems[activeIdx].src}
-                  alt={galleryItems[activeIdx].caption}
+                  src={items[activeIdx].src}
+                  alt={items[activeIdx].caption}
                   fill
                   sizes="100vw"
                   className="object-contain"
                 />
               </div>
               <p className="mt-4 text-center text-sm font-medium text-white/80 max-w-xl">
-                {galleryItems[activeIdx].caption}
+                {items[activeIdx].caption}
               </p>
               <p className="mt-1 text-xs text-white/50">
-                {activeIdx + 1} of {galleryItems.length}
+                {activeIdx + 1} of {items.length}
               </p>
             </motion.div>
           </motion.div>

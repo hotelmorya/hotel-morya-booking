@@ -18,17 +18,72 @@ import { MagneticLink } from "@/components/motion/magnetic-link";
 import { submitBookingAction } from "@/lib/booking.actions";
 import { HOTEL, telHref, waHref, directionsHref, mapEmbedSrc } from "@/lib/site";
 
+import type { BackendRoomType } from "@/components/sections/Accommodations";
+
 interface ContactProps {
   selectedRoom?: string;
+  selectedRoomId?: string;
+  initialRoomTypes?: BackendRoomType[];
+  hotelSettings?: {
+    phone?: string | null;
+    phone_alt?: string | null;
+    whatsapp?: string | null;
+    email?: string | null;
+    check_in_time?: string | null;
+    check_out_time?: string | null;
+    address?: string | null;
+  } | null;
 }
 
-export function Contact({ selectedRoom }: ContactProps) {
+export function Contact({
+  selectedRoom,
+  selectedRoomId,
+  initialRoomTypes,
+  hotelSettings,
+}: ContactProps) {
   const [isPending, startTransition] = useTransition();
   const [status, setStatus] = useState<{
     success: boolean;
     message: string;
     bookingRef?: string;
   } | null>(null);
+
+  const roomOptions =
+    initialRoomTypes && initialRoomTypes.length > 0
+      ? initialRoomTypes.map((rt) => ({
+          id: rt.id,
+          title: rt.name.en,
+          rate: rt.base_rate,
+          isDorm:
+            rt.max_guests > 5 ||
+            (rt.name.en || "").toLowerCase().includes("dormitory"),
+          label: `${rt.name.en} (₹${Number(rt.base_rate).toLocaleString("en-IN")} / ${
+            rt.max_guests > 5 ? "group / night" : "night"
+          })`,
+        }))
+      : [
+          {
+            id: "10000000-0000-0000-0000-000000000002",
+            title: "Deluxe AC Rooms",
+            rate: 1500,
+            isDorm: false,
+            label: "Deluxe AC Rooms (₹1,500 / night)",
+          },
+          {
+            id: "10000000-0000-0000-0000-000000000001",
+            title: "Comfortable Non-AC Rooms",
+            rate: 800,
+            isDorm: false,
+            label: "Comfortable Non-AC Rooms (₹800 / night)",
+          },
+          {
+            id: "10000000-0000-0000-0000-000000000003",
+            title: "Pilgrim Group Dormitory",
+            rate: 2200,
+            isDorm: true,
+            label: "Pilgrim Group Dormitory (₹2,200 / night)",
+          },
+        ];
 
   const [checkIn, setCheckIn] = useState<string>(() =>
     new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" })
@@ -38,7 +93,20 @@ export function Contact({ selectedRoom }: ContactProps) {
     d.setDate(d.getDate() + 1);
     return d.toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
   });
-  const [roomType, setRoomType] = useState<string>(selectedRoom || "Deluxe AC Rooms");
+
+  const [selectedId, setSelectedId] = useState<string>(() => {
+    if (selectedRoomId) return selectedRoomId;
+    if (selectedRoom) {
+      const match = roomOptions.find(
+        (o) =>
+          o.title.toLowerCase().includes(selectedRoom.toLowerCase()) ||
+          selectedRoom.toLowerCase().includes(o.title.toLowerCase())
+      );
+      if (match) return match.id;
+    }
+    return roomOptions[0]?.id || "10000000-0000-0000-0000-000000000002";
+  });
+
   const [guestCount, setGuestCount] = useState<number>(2);
   const [availability, setAvailability] = useState<{
     loading: boolean;
@@ -57,10 +125,17 @@ export function Contact({ selectedRoom }: ContactProps) {
   }>({ loading: false });
 
   useEffect(() => {
-    if (selectedRoom) {
-      setRoomType(selectedRoom);
+    if (selectedRoomId) {
+      setSelectedId(selectedRoomId);
+    } else if (selectedRoom) {
+      const match = roomOptions.find(
+        (o) =>
+          o.title.toLowerCase().includes(selectedRoom.toLowerCase()) ||
+          selectedRoom.toLowerCase().includes(o.title.toLowerCase())
+      );
+      if (match) setSelectedId(match.id);
     }
-  }, [selectedRoom]);
+  }, [selectedRoomId, selectedRoom, roomOptions]);
 
   useEffect(() => {
     if (!checkIn || !checkOut || checkOut <= checkIn) return;
@@ -81,29 +156,22 @@ export function Contact({ selectedRoom }: ContactProps) {
     };
   }, [checkIn, checkOut, guestCount]);
 
-  const currentRoomData = availability.rooms?.find((r) => {
-    const titleLower = roomType.toLowerCase();
-    const nameLower = r.name.en.toLowerCase();
-    if (titleLower.includes("dormitory") && nameLower.includes("dormitory")) return true;
-    if (titleLower.includes("non-ac") && nameLower.includes("non-ac")) return true;
-    if (!titleLower.includes("non-ac") && titleLower.includes("ac") && nameLower === "ac room") return true;
-    return false;
-  });
+  const currentRoomData =
+    availability.rooms?.find((r) => r.id === selectedId) ||
+    availability.rooms?.find((r) => {
+      const activeOpt = roomOptions.find((o) => o.id === selectedId);
+      return (
+        activeOpt &&
+        r.name.en.toLowerCase() === activeOpt.title.toLowerCase()
+      );
+    });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formElement = event.currentTarget;
 
-    const rawRoom = String(formData.get("roomType") || "AC room").toLowerCase();
-    let stayType: "AC room" | "Non-AC room" | "Non-AC dormitory" | "Mini hall" = "AC room";
-    if (rawRoom.includes("dormitory")) {
-      stayType = "Non-AC dormitory";
-    } else if (rawRoom.includes("non-ac")) {
-      stayType = "Non-AC room";
-    } else {
-      stayType = "AC room";
-    }
+    const activeOpt = roomOptions.find((o) => o.id === selectedId);
 
     const payload = {
       guestName: String(formData.get("guestName") || "").trim(),
@@ -111,7 +179,8 @@ export function Contact({ selectedRoom }: ContactProps) {
       checkIn: String(formData.get("checkIn") || ""),
       checkOut: String(formData.get("checkOut") || ""),
       guests: Number(formData.get("guestCount")) || 2,
-      stayType,
+      roomTypeId: selectedId,
+      stayType: activeOpt?.title || "AC room",
       note: String(formData.get("notes") || "").trim() || undefined,
       website: String(formData.get("website") || "") || undefined,
     };
@@ -280,13 +349,15 @@ export function Contact({ selectedRoom }: ContactProps) {
                     <select
                       id="roomType"
                       name="roomType"
-                      value={roomType}
-                      onChange={(e) => setRoomType(e.target.value)}
+                      value={selectedId}
+                      onChange={(e) => setSelectedId(e.target.value)}
                       className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground focus:outline-primary"
                     >
-                      <option value="Deluxe AC Rooms">Deluxe AC Rooms (₹1,500 / night)</option>
-                      <option value="Comfortable Non-AC Rooms">Comfortable Non-AC Rooms (₹800 / night)</option>
-                      <option value="Pilgrim Group Dormitory">Pilgrim Group Dormitory (₹2,200 / night)</option>
+                      {roomOptions.map((opt) => (
+                        <option key={opt.id} value={opt.id}>
+                          {opt.label}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -385,7 +456,7 @@ export function Contact({ selectedRoom }: ContactProps) {
                       Booking Helpline
                     </p>
                     <div className="mt-1 flex flex-col gap-0.5">
-                      {HOTEL.phones.map((phone) => (
+                      {((hotelSettings?.phone ? [hotelSettings.phone, hotelSettings.phone_alt].filter(Boolean) : HOTEL.phones) as string[]).map((phone) => (
                         <a
                           key={phone}
                           href={telHref(phone)}
@@ -407,7 +478,7 @@ export function Contact({ selectedRoom }: ContactProps) {
                       Address (200m from Temple)
                     </p>
                     <p className="mt-1 text-sm text-foreground leading-relaxed">
-                      {HOTEL.address.street}, {HOTEL.address.village}, Tal. {HOTEL.address.taluka}, Dist. {HOTEL.address.district}, {HOTEL.address.state} - {HOTEL.address.postalCode}
+                      {hotelSettings?.address || `${HOTEL.address.street}, ${HOTEL.address.village}, Tal. ${HOTEL.address.taluka}, Dist. ${HOTEL.address.district}, ${HOTEL.address.state} - ${HOTEL.address.postalCode}`}
                     </p>
                   </div>
                 </div>
@@ -419,7 +490,9 @@ export function Contact({ selectedRoom }: ContactProps) {
                       <p className="text-[0.65rem] font-bold uppercase tracking-wider text-muted-foreground">
                         Check-in
                       </p>
-                      <p className="text-sm font-semibold text-foreground">{HOTEL.checkIn}</p>
+                      <p className="text-sm font-semibold text-foreground">
+                        {hotelSettings?.check_in_time ? hotelSettings.check_in_time.slice(0, 5) : HOTEL.checkIn}
+                      </p>
                     </div>
                   </div>
 
@@ -429,7 +502,9 @@ export function Contact({ selectedRoom }: ContactProps) {
                       <p className="text-[0.65rem] font-bold uppercase tracking-wider text-muted-foreground">
                         Check-out
                       </p>
-                      <p className="text-sm font-semibold text-foreground">{HOTEL.checkOut}</p>
+                      <p className="text-sm font-semibold text-foreground">
+                        {hotelSettings?.check_out_time ? hotelSettings.check_out_time.slice(0, 5) : HOTEL.checkOut}
+                      </p>
                     </div>
                   </div>
                 </div>

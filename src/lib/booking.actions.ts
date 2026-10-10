@@ -15,7 +15,8 @@ export const bookingSchema = z.object({
   checkIn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid check-in date"),
   checkOut: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid check-out date"),
   guests: z.number().int().min(1, "Minimum 1 guest").max(100, "Maximum 100 guests"),
-  stayType: z.enum(["AC room", "Non-AC room", "Non-AC dormitory", "Mini hall"]),
+  roomTypeId: z.string().optional(),
+  stayType: z.string().min(1),
   note: z.string().trim().max(500).optional(),
   website: z.string().max(200).optional(),
 });
@@ -105,7 +106,7 @@ export async function submitBookingAction(input: BookingInput): Promise<BookingR
     }
 
     // 2. Resolve room type & nightly rate (including seasonal/festival overrides)
-    const roomTypeId = ROOM_TYPE_MAP[data.stayType] || "10000000-0000-0000-0000-000000000001";
+    const roomTypeId = data.roomTypeId || ROOM_TYPE_MAP[data.stayType] || "10000000-0000-0000-0000-000000000001";
     const [{ data: rt }, { data: overrides }] = await Promise.all([
       admin
         .from("room_types")
