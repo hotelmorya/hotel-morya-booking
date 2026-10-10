@@ -59,6 +59,9 @@ export async function createRateOverride(
   const supabase = await createClient()
   const { error } = await supabase.from('rate_overrides').insert({
     ...parsed.data,
+    from_date: parsed.data.start_date,
+    to_date: parsed.data.end_date,
+    reason: parsed.data.label || '',
     created_by: profile.id,
   })
 
@@ -89,7 +92,13 @@ export async function updateRateOverride(
   const supabase = await createClient()
   const { error } = await supabase
     .from('rate_overrides')
-    .update({ ...parsed.data, updated_by: profile.id })
+    .update({
+      ...parsed.data,
+      from_date: parsed.data.start_date,
+      to_date: parsed.data.end_date,
+      reason: parsed.data.label || '',
+      updated_by: profile.id,
+    })
     .eq('id', id)
 
   if (error) return { success: false, error: error.message }

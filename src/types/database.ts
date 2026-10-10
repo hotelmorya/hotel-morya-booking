@@ -782,42 +782,42 @@ export type Database = {
           created_at: string | null
           created_by: string | null
           end_date: string
-          from_date: string
+          from_date: string | null
           id: string
           label: string | null
           rate: number
-          reason: string
+          reason: string | null
           room_type_id: string
           start_date: string
-          to_date: string
+          to_date: string | null
           updated_by: string | null
         }
         Insert: {
           created_at?: string | null
           created_by?: string | null
           end_date: string
-          from_date: string
+          from_date?: string | null
           id?: string
           label?: string | null
           rate: number
-          reason: string
+          reason?: string | null
           room_type_id: string
           start_date: string
-          to_date: string
+          to_date?: string | null
           updated_by?: string | null
         }
         Update: {
           created_at?: string | null
           created_by?: string | null
           end_date?: string
-          from_date?: string
+          from_date?: string | null
           id?: string
           label?: string | null
           rate?: number
-          reason?: string
+          reason?: string | null
           room_type_id?: string
           start_date?: string
-          to_date?: string
+          to_date?: string | null
           updated_by?: string | null
         }
         Relationships: [
@@ -1269,7 +1269,6 @@ export const Constants = {
   },
 } as const
 
-
 // Convenience domain aliases
 export type UserRole = Database["public"]["Enums"]["user_role"]
 export type RoomStatus = Database["public"]["Enums"]["room_status"]
@@ -1296,3 +1295,4 @@ export type ActivityLog = Database["public"]["Tables"]["activity_log"]["Row"]
 export type MaintenanceBlock = Database["public"]["Tables"]["maintenance_blocks"]["Row"]
 export type CleaningLock = Database["public"]["Tables"]["cleaning_locks"]["Row"]
 export type GalleryMedia = Database["public"]["Tables"]["gallery_media"]["Row"]
+
