@@ -1,10 +1,12 @@
 'use client'
 
 import {
+  IconArchive,
   IconArrowRight,
   IconCheck,
   IconChevronDown,
   IconPlus,
+  IconRestore,
   IconTrash,
   IconUser,
   IconX,
@@ -13,6 +15,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
@@ -27,6 +30,7 @@ import {
 } from '@/lib/room-status'
 import type { Tables } from '@/types/database'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -73,6 +77,17 @@ async function fetchRooms(): Promise<RoomWithType[]> {
   return (data ?? []) as RoomWithType[]
 }
 
+async function fetchDeletedRooms(): Promise<RoomWithType[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('rooms')
+    .select('*, room_types(id, name)')
+    .not('deleted_at', 'is', null)
+    .order('room_number')
+  if (error) throw error
+  return (data ?? []) as RoomWithType[]
+}
+
 // Room assignments for active bookings — lets the grid derive occupancy from
 // the booking truth (checked-in guest) rather than the physical rooms.status,
 // which can drift if a room is cleaned/edited while still occupied.
@@ -106,10 +121,12 @@ async function fetchRoomTypes(): Promise<Pick<RoomType, 'id' | 'name'>[]> {
 
 function AddRoomDialog({
   roomTypes,
+  deletedRooms,
   onClose,
   onAdded,
 }: {
   roomTypes: Pick<RoomType, 'id' | 'name'>[]
+  deletedRooms: RoomWithType[]
   onClose: () => void
   onAdded: () => void
 }) {
@@ -119,10 +136,37 @@ function AddRoomDialog({
   const [floor, setFloor] = useState(0)
   const [status, setStatus] = useState<'available' | 'cleaning' | 'maintenance'>('available')
   const [error, setError] = useState<string | null>(null)
+  const [deletedMatch, setDeletedMatch] = useState<RoomWithType | null>(null)
   const [saving, setSaving] = useState(false)
+
+  async function handleRestoreDeleted() {
+    if (!deletedMatch) return
+    setSaving(true)
+    setError(null)
+    const { error: dbErr } = await supabase
+      .from('rooms')
+      .update({
+        room_type_id: roomTypeId,
+        floor,
+        status,
+        deleted_at: null,
+        deleted_by: null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', deletedMatch.id)
+    setSaving(false)
+    if (dbErr) {
+      setError(dbErr.message)
+      return
+    }
+    toast.success(`Room ${deletedMatch.room_number} restored successfully`)
+    onAdded()
+    onClose()
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    setDeletedMatch(null)
     if (!roomNumber.trim()) {
       setError('Room number is required')
       return
@@ -144,12 +188,23 @@ function AddRoomDialog({
     setSaving(false)
     if (dbErr) {
       if (dbErr.code === '23505') {
-        setError(`Room number "${roomNumber.trim()}" already exists`)
+        const match = deletedRooms.find(
+          (r) => r.room_number.toLowerCase() === roomNumber.trim().toLowerCase()
+        )
+        if (match) {
+          setError(
+            `Room number "${roomNumber.trim()}" was previously deleted. You can restore it instead.`
+          )
+          setDeletedMatch(match)
+        } else {
+          setError(`Room number "${roomNumber.trim()}" already exists`)
+        }
       } else {
         setError(dbErr.message)
       }
       return
     }
+    toast.success(`Room ${roomNumber.trim()} added successfully`)
     onAdded()
     onClose()
   }
@@ -238,9 +293,21 @@ function AddRoomDialog({
           </div>
 
           {error && (
-            <p className="rounded bg-danger/10 px-3 py-2 text-small text-danger">
-              {error}
-            </p>
+            <div className="rounded bg-danger/10 px-3 py-2 text-small text-danger">
+              <p>{error}</p>
+              {deletedMatch && (
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={handleRestoreDeleted}
+                  disabled={saving}
+                  className="mt-2 w-full gap-1.5 bg-accent-500 font-medium text-white hover:bg-accent-700"
+                >
+                  <IconRestore size={14} />
+                  Restore Room {deletedMatch.room_number} instead
+                </Button>
+              )}
+            </div>
           )}
 
           <div className="flex gap-2 pt-1">
@@ -357,6 +424,24 @@ function EditRoomDialog({
       setError(dbErr.message)
       return
     }
+    toast.success(`Room ${room.room_number} removed`, {
+      action: {
+        label: 'Undo',
+        onClick: async () => {
+          await supabase
+            .from('rooms')
+            .update({
+              deleted_at: null,
+              deleted_by: null,
+              updated_at: new Date().toISOString(),
+              status: 'available',
+            })
+            .eq('id', room.id)
+          onUpdated()
+          toast.success(`Room ${room.room_number} restored`)
+        },
+      },
+    })
     onUpdated()
     onClose()
   }
@@ -517,7 +602,7 @@ function EditRoomDialog({
           ) : (
             <div className="rounded border-hairline border-danger/40 bg-danger/5 p-3">
               <p className="mb-2 text-small text-text-secondary">
-                Remove room {room.room_number}? This cannot be undone via the UI.
+                Remove room {room.room_number}? You can restore it later from Deleted Rooms.
               </p>
               <div className="flex gap-2">
                 <Button
@@ -687,6 +772,194 @@ function StatusSummaryStrip({
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Deleted Rooms Dialog
+// ─────────────────────────────────────────────────────────────────────────────
+
+function DeletedRoomsDialog({
+  onClose,
+  onRestored,
+}: {
+  onClose: () => void
+  onRestored: () => void
+}) {
+  const supabase = createClient()
+  const [restoringId, setRestoringId] = useState<string | null>(null)
+  const [restoringAll, setRestoringAll] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const { data: deletedRooms = [], isLoading, refetch } = useQuery({
+    queryKey: ['deleted-rooms'],
+    queryFn: fetchDeletedRooms,
+  })
+
+  async function handleRestore(room: RoomWithType) {
+    setRestoringId(room.id)
+    setError(null)
+    const { error: dbErr } = await supabase
+      .from('rooms')
+      .update({
+        deleted_at: null,
+        deleted_by: null,
+        updated_at: new Date().toISOString(),
+        status: 'available',
+      })
+      .eq('id', room.id)
+
+    setRestoringId(null)
+    if (dbErr) {
+      setError(dbErr.message)
+      toast.error(`Failed to restore Room ${room.room_number}: ${dbErr.message}`)
+      return
+    }
+
+    toast.success(`Room ${room.room_number} restored successfully`)
+    refetch()
+    onRestored()
+  }
+
+  async function handleRestoreAll() {
+    if (deletedRooms.length === 0) return
+    setRestoringAll(true)
+    setError(null)
+    const ids = deletedRooms.map((r) => r.id)
+    const { error: dbErr } = await supabase
+      .from('rooms')
+      .update({
+        deleted_at: null,
+        deleted_by: null,
+        updated_at: new Date().toISOString(),
+        status: 'available',
+      })
+      .in('id', ids)
+
+    setRestoringAll(false)
+    if (dbErr) {
+      setError(dbErr.message)
+      toast.error(`Failed to restore rooms: ${dbErr.message}`)
+      return
+    }
+
+    toast.success(`All ${deletedRooms.length} rooms restored successfully`)
+    refetch()
+    onRestored()
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-overlay flex items-center justify-center bg-black/50 p-4"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
+      <div className="w-full max-w-lg rounded-xl border-hairline border-border bg-surface-1 p-5 shadow-xl">
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <h2 className="flex items-center gap-2 text-subsection font-medium text-text-primary">
+              <IconArchive size={18} className="text-text-secondary" />
+              Deleted rooms
+            </h2>
+            <p className="mt-0.5 text-small text-text-tertiary">
+              Restore soft-deleted rooms to make them available again.
+            </p>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="text-text-tertiary hover:bg-surface-2"
+          >
+            <IconX size={16} />
+          </Button>
+        </div>
+
+        {error && (
+          <p className="mb-3 rounded bg-danger/10 px-3 py-2 text-small text-danger">
+            {error}
+          </p>
+        )}
+
+        {isLoading ? (
+          <div className="space-y-2 py-4">
+            <Skeleton className="h-12 w-full rounded-lg bg-surface-2" />
+            <Skeleton className="h-12 w-full rounded-lg bg-surface-2" />
+          </div>
+        ) : deletedRooms.length === 0 ? (
+          <div className="rounded-lg border border-dashed border-border py-8 text-center">
+            <p className="text-body text-text-secondary">No deleted rooms found.</p>
+            <p className="mt-1 text-small text-text-tertiary">
+              All configured rooms are active.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between px-1">
+              <span className="text-small font-medium text-text-secondary">
+                {deletedRooms.length} deleted room{deletedRooms.length === 1 ? '' : 's'}
+              </span>
+              {deletedRooms.length > 1 && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={restoringAll || !!restoringId}
+                  onClick={handleRestoreAll}
+                  className="gap-1.5 border-hairline border-border text-xs font-medium"
+                >
+                  <IconRestore size={14} />
+                  {restoringAll ? 'Restoring all…' : 'Restore all'}
+                </Button>
+              )}
+            </div>
+
+            <div className="max-h-[60vh] divide-y divide-border overflow-y-auto rounded-lg border border-border">
+              {deletedRooms.map((room) => {
+                const typeName = getRoomTypeName(room.room_types?.name ?? {})
+                const isRestoring = restoringId === room.id
+                return (
+                  <div
+                    key={room.id}
+                    className="flex items-center justify-between p-3 transition-colors hover:bg-surface-2"
+                  >
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <span className="text-body font-semibold text-text-primary">
+                          Room {room.room_number}
+                        </span>
+                        <span className="rounded bg-surface-3 px-1.5 py-0.5 text-xs text-text-secondary">
+                          Floor {room.floor}
+                        </span>
+                      </div>
+                      <div className="mt-0.5 flex items-center gap-2 text-small text-text-tertiary">
+                        <span>{typeName}</span>
+                        <span>•</span>
+                        <span>Deleted {relativeTime(room.deleted_at)}</span>
+                      </div>
+                    </div>
+
+                    <Button
+                      size="sm"
+                      disabled={isRestoring || restoringAll}
+                      onClick={() => handleRestore(room)}
+                      className="gap-1.5 bg-accent-500 font-medium text-white hover:bg-accent-700"
+                    >
+                      <IconRestore size={15} />
+                      {isRestoring ? 'Restoring…' : 'Restore'}
+                    </Button>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        <div className="mt-4 flex justify-end">
+          <Button variant="outline" onClick={onClose}>
+            Close
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Main: RoomStatusGrid
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -695,12 +968,19 @@ export function RoomStatusGrid() {
   const queryClient = useQueryClient()
 
   const [showAddRoom, setShowAddRoom] = useState(false)
+  const [showDeletedRooms, setShowDeletedRooms] = useState(false)
   const [editRoom, setEditRoom] = useState<RoomWithType | null>(null)
   const [filter, setFilter] = useState<DerivedRoomStatus | null>(null)
 
   const { data: rooms = [], isLoading: roomsLoading } = useQuery({
     queryKey: ['rooms-grid'],
     queryFn: fetchRooms,
+    staleTime: 30_000,
+  })
+
+  const { data: deletedRooms = [], isLoading: deletedLoading } = useQuery({
+    queryKey: ['deleted-rooms'],
+    queryFn: fetchDeletedRooms,
     staleTime: 30_000,
   })
 
@@ -720,6 +1000,7 @@ export function RoomStatusGrid() {
   useEffect(() => {
     const refresh = () => {
       queryClient.invalidateQueries({ queryKey: ['rooms-grid'] })
+      queryClient.invalidateQueries({ queryKey: ['deleted-rooms'] })
       queryClient.invalidateQueries({ queryKey: ['rooms-grid-assignments'] })
     }
     const channel = supabase
@@ -749,7 +1030,7 @@ export function RoomStatusGrid() {
     },
   })
 
-  const isLoading = roomsLoading || typesLoading
+  const isLoading = roomsLoading || typesLoading || deletedLoading
 
   if (isLoading) {
     return (
@@ -823,14 +1104,27 @@ export function RoomStatusGrid() {
 
   return (
     <div className="space-y-6">
-      {/* Status summary strip + primary action */}
+      {/* Status summary strip + primary actions */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <StatusSummaryStrip
           counts={counts}
           activeFilter={filter}
           onToggleFilter={(s) => setFilter((cur) => (cur === s ? null : s))}
         />
-        {rooms.length > 0 && (
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            onClick={() => setShowDeletedRooms(true)}
+            className="gap-1.5 border-hairline border-border bg-surface-1 text-text-secondary hover:bg-surface-2 hover:text-text-primary"
+          >
+            <IconArchive size={16} />
+            Deleted rooms
+            {deletedRooms.length > 0 && (
+              <Badge variant="secondary" className="ml-0.5 h-5 px-1.5 text-xs font-semibold">
+                {deletedRooms.length}
+              </Badge>
+            )}
+          </Button>
           <Button
             onClick={() => setShowAddRoom(true)}
             className="gap-1.5 bg-accent-500 font-medium text-white hover:bg-accent-700"
@@ -838,20 +1132,32 @@ export function RoomStatusGrid() {
             <IconPlus size={16} />
             Add room
           </Button>
-        )}
+        </div>
       </div>
 
       {rooms.length === 0 ? (
         <Card className="flex min-h-[200px] flex-col items-center justify-center rounded-xl border-hairline border-border bg-surface-1 p-8 text-center">
           <CardContent className="flex flex-col items-center p-0">
-            <p className="text-body text-text-secondary">No rooms configured yet.</p>
-            <Button
-              onClick={() => setShowAddRoom(true)}
-              className="mt-3 gap-1.5 bg-accent-500 font-medium text-white hover:bg-accent-700"
-            >
-              <IconPlus size={16} />
-              Add first room
-            </Button>
+            <p className="text-body text-text-secondary">No active rooms configured.</p>
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
+              {deletedRooms.length > 0 && (
+                <Button
+                  onClick={() => setShowDeletedRooms(true)}
+                  variant="outline"
+                  className="gap-1.5 border-hairline border-border"
+                >
+                  <IconArchive size={16} />
+                  Deleted rooms ({deletedRooms.length})
+                </Button>
+              )}
+              <Button
+                onClick={() => setShowAddRoom(true)}
+                className="gap-1.5 bg-accent-500 font-medium text-white hover:bg-accent-700"
+              >
+                <IconPlus size={16} />
+                Add room
+              </Button>
+            </div>
           </CardContent>
         </Card>
       ) : (
@@ -900,8 +1206,12 @@ export function RoomStatusGrid() {
       {showAddRoom && (
         <AddRoomDialog
           roomTypes={roomTypes}
+          deletedRooms={deletedRooms}
           onClose={() => setShowAddRoom(false)}
-          onAdded={() => queryClient.invalidateQueries({ queryKey: ['rooms-grid'] })}
+          onAdded={() => {
+            queryClient.invalidateQueries({ queryKey: ['rooms-grid'] })
+            queryClient.invalidateQueries({ queryKey: ['deleted-rooms'] })
+          }}
         />
       )}
 
@@ -911,7 +1221,21 @@ export function RoomStatusGrid() {
           room={editRoom}
           roomTypes={roomTypes}
           onClose={() => setEditRoom(null)}
-          onUpdated={() => queryClient.invalidateQueries({ queryKey: ['rooms-grid'] })}
+          onUpdated={() => {
+            queryClient.invalidateQueries({ queryKey: ['rooms-grid'] })
+            queryClient.invalidateQueries({ queryKey: ['deleted-rooms'] })
+          }}
+        />
+      )}
+
+      {/* Deleted Rooms Dialog */}
+      {showDeletedRooms && (
+        <DeletedRoomsDialog
+          onClose={() => setShowDeletedRooms(false)}
+          onRestored={() => {
+            queryClient.invalidateQueries({ queryKey: ['rooms-grid'] })
+            queryClient.invalidateQueries({ queryKey: ['deleted-rooms'] })
+          }}
         />
       )}
 
