@@ -5,7 +5,7 @@ import {
   Car,
   Clock,
   Droplets,
-  Building2,
+  GlassWater,
   MapPin,
   ShieldCheck,
   Sparkles,
@@ -31,9 +31,9 @@ export function WhyUs() {
       body: t("hotWaterDesc"),
     },
     {
-      icon: Building2,
-      title: t("lift"),
-      body: t("liftDesc"),
+      icon: GlassWater,
+      title: t("roWater"),
+      body: t("roWaterDesc"),
     },
     {
       icon: Zap,

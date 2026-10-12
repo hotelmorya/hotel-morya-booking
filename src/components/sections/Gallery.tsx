@@ -41,7 +41,7 @@ const fallbackGalleryItems = [
   },
   {
     src: "/images/hotel-morya-reception-lobby.png",
-    caption: "Reception desk, lift lobby, and check-in counter",
+    caption: "Reception desk, welcome lounge, and check-in counter",
     category: "Lobby",
     span: "col-span-1 row-span-1 aspect-square sm:aspect-auto h-full",
   },

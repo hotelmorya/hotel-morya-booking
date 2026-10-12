@@ -33,8 +33,8 @@ export async function generateMetadata({
     : 'Hotel Morya Lodging Admapur | Stay Near Balumama Temple'
 
   const description = isMr
-    ? 'श्री संत बाळूमामा मंदिरापासून फक्त २०० मीटर अंतरावर स्वच्छ AC व नॉन-AC खोल्या आणि ग्रुप हॉल. २४ तास गरम पाणी, लिफ्ट व पार्किंग. कॉल करा: ९०२२३९७०९५.'
-    : 'Clean AC & Non-AC rooms and pilgrim dormitory in Admapur, just 200m from Shri Balumama Temple. 24/7 hot water, lift & parking. Call 9022397095 to book.'
+    ? 'श्री संत बाळूमामा मंदिरापासून फक्त २०० मीटर अंतरावर स्वच्छ AC व नॉन-AC खोल्या आणि ग्रुप हॉल. २४ तास गरम पाणी, शुद्ध RO पाणी व पार्किंग. कॉल करा: ९०२२३९७०९५.'
+    : 'Clean AC & Non-AC rooms and pilgrim dormitory in Admapur, just 200m from Shri Balumama Temple. 24/7 hot water, RO drinking water & parking. Call 9022397095 to book.'
 
   const keywords = isMr
     ? [

@@ -45,7 +45,7 @@ export function Hero() {
       alt: isMr
         ? "हॉटेल मोरया लॉजिंगचे स्वागत कक्ष व रिसेप्शन लॉबी"
         : "Reception lobby at Hotel Morya Lodging",
-      badge: t("badgeLift"),
+      badge: t("badgeReception"),
       title: "Come in.",
       italic: "Feel at ease.",
       description: t("subtitle"),
@@ -70,7 +70,7 @@ export function Hero() {
     t("badgeDorm"),
     t("badgeWater"),
     t("badgeParking"),
-    t("badgeLift"),
+    t("badgeRoWater"),
   ];
 
   const nextSlide = useCallback(() => {

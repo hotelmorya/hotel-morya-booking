@@ -12,8 +12,8 @@ export function HotelJsonLd({ locale }: HotelJsonLdProps) {
 
   const hotelName = isMr ? "हॉटेल मोरया लॉजिंग आदमापूर" : "Hotel Morya Lodging Admapur";
   const hotelDescription = isMr
-    ? "श्री संत बाळूमामा मंदिरापासून फक्त २०० मीटर अंतरावर स्वच्छ AC खोल्या, नॉन-AC खोल्या आणि ५०+ भाविकांचा ग्रुप हॉल. २४ तास गरम पाणी, लिफ्ट व खाजगी पार्किंग सोय."
-    : "Stay at Hotel Morya Lodging in Admapur, Kolhapur, located just 200 metres from Shri Sant Balumama Temple Gate. Clean AC rooms, non-AC rooms, 50+ pilgrim dormitory, 24/7 hot water, elevator, and secure parking.";
+    ? "श्री संत बाळूमामा मंदिरापासून फक्त २०० मीटर अंतरावर स्वच्छ AC खोल्या, नॉन-AC खोल्या आणि ५०+ भाविकांचा ग्रुप हॉल. २४ तास गरम पाणी, शुद्ध RO पाणी व खाजगी पार्किंग सोय."
+    : "Stay at Hotel Morya Lodging in Admapur, Kolhapur, located just 200 metres from Shri Sant Balumama Temple Gate. Clean AC rooms, non-AC rooms, 50+ pilgrim dormitory, 24/7 hot water, RO purified drinking water, and secure parking.";
 
   const hotelSchema = {
     "@context": "https://schema.org",
@@ -93,7 +93,7 @@ export function HotelJsonLd({ locale }: HotelJsonLdProps) {
       { "@type": "LocationFeatureSpecification", name: "Free Guest Parking", value: true },
       { "@type": "LocationFeatureSpecification", name: "24/7 Hot Geyser Water", value: true },
       { "@type": "LocationFeatureSpecification", name: "Air Conditioning", value: true },
-      { "@type": "LocationFeatureSpecification", name: "Passenger Lift / Elevator", value: true },
+      { "@type": "LocationFeatureSpecification", name: "RO Purified Drinking Water", value: true },
       { "@type": "LocationFeatureSpecification", name: "Generator Power Backup", value: true },
       { "@type": "LocationFeatureSpecification", name: "CCTV Security Surveillance", value: true },
       { "@type": "LocationFeatureSpecification", name: "200m Walking Distance to Temple", value: true },
