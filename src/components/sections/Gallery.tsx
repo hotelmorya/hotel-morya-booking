@@ -64,7 +64,7 @@ const fallbackGalleryItems = [
     span: "col-span-1 row-span-1 aspect-square sm:aspect-auto h-full",
   },
   {
-    src: "/images/balumama-temple.jpg",
+    src: "/images/balumama-temple.png",
     caption: "Shri Sant Balumama Temple Admapur (just 200m away)",
     category: "Temple",
     span: "col-span-1 sm:col-span-2 row-span-1 aspect-square sm:aspect-auto h-full",
@@ -102,22 +102,22 @@ export function Gallery({ initialMedia }: GalleryProps) {
   const items =
     initialMedia && initialMedia.length > 0
       ? initialMedia.map((m, idx) => ({
-          src:
-            m.url ||
-            (m.public_id
-              ? buildCloudinaryUrl(m.public_id, { width: 1200 })
-              : "/images/hotel-morya-exterior-02.png"),
-          caption:
-            idx < CAPTION_KEYS.length
-              ? t(CAPTION_KEYS[idx])
-              : (m.alt_text || "Hotel Morya Lodging Admapur"),
-          category: "Gallery",
-          span: SPAN_PATTERNS[idx % SPAN_PATTERNS.length],
-        }))
+        src:
+          m.url ||
+          (m.public_id
+            ? buildCloudinaryUrl(m.public_id, { width: 1200 })
+            : "/images/hotel-morya-exterior-02.png"),
+        caption:
+          idx < CAPTION_KEYS.length
+            ? t(CAPTION_KEYS[idx])
+            : (m.alt_text || "Hotel Morya Lodging Admapur"),
+        category: "Gallery",
+        span: SPAN_PATTERNS[idx % SPAN_PATTERNS.length],
+      }))
       : fallbackGalleryItems.map((item, idx) => ({
-          ...item,
-          caption: idx < CAPTION_KEYS.length ? t(CAPTION_KEYS[idx]) : item.caption,
-        }));
+        ...item,
+        caption: idx < CAPTION_KEYS.length ? t(CAPTION_KEYS[idx]) : item.caption,
+      }));
 
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 

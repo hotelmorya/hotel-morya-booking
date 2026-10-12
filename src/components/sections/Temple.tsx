@@ -115,10 +115,10 @@ export function Temple() {
           <Reveal className="relative h-[18rem] sm:h-[24rem] lg:h-[28rem] overflow-hidden rounded-3xl border border-border shadow-xl">
             <motion.div {...imageReveal} className="absolute inset-0">
               <Image
-                src="/images/balumama-temple.jpg"
+                src="/images/balumama-temple.png"
                 alt={t("altTempleExterior")}
                 fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
+                sizes="(min-width: 1024px) 300vw, 100vw"
                 className="object-cover"
               />
             </motion.div>
