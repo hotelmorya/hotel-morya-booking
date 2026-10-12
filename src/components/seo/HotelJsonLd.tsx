@@ -46,7 +46,6 @@ export function HotelJsonLd({ locale }: HotelJsonLdProps) {
     image: [
       `${baseUrl}/images/hotel-morya-exterior-02.png`,
       `${baseUrl}/images/hotel-morya-exterior-01.png`,
-      `${baseUrl}/images/hotel-morya-reception-lobby.png`,
       `${baseUrl}/images/hotel-morya-ac-room.png`,
       `${baseUrl}/images/hotel-morya-dormitory.png`,
       `${baseUrl}/images/balumama-temple.png`,

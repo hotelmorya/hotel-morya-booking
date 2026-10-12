@@ -97,8 +97,8 @@ export async function generateMetadata({
       images: [
         {
           url: `${base}/images/hotel-morya-exterior-02.png`,
-          width: 1200,
-          height: 630,
+          width: 1672,
+          height: 941,
           alt: isMr
             ? 'हॉटेल मोरया लॉजिंग इमारत, आदमापूर'
             : 'Hotel Morya Lodging Building in Admapur',

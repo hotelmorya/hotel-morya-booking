@@ -74,8 +74,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/images/hotel-morya-exterior-02.png",
-        width: 1200,
-        height: 630,
+        width: 1672,
+        height: 941,
         alt: "Hotel Morya Lodging Building in Admapur",
       },
     ],
@@ -89,15 +89,7 @@ export const metadata: Metadata = {
       "A comfortable stay 200 metres from Shri Balumama Temple. Explore AC rooms, non-AC rooms, and dormitory in Admapur.",
     images: ["/images/hotel-morya-exterior-02.png"],
   },
-  icons: {
-    icon: [
-      { url: "/favicon.ico" },
-      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
-      { url: "/favicon.svg", type: "image/svg+xml" },
-    ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
-  },
-  manifest: "/site.webmanifest",
+
 };
 
 export const viewport: Viewport = {
