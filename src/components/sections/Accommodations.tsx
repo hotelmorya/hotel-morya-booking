@@ -28,10 +28,9 @@ export interface BackendRoomType {
 
 interface AccommodationsProps {
   initialRoomTypes?: BackendRoomType[];
-  onSelectRoom?: (roomTypeId: string, roomTitle: string) => void;
 }
 
-export function Accommodations({ initialRoomTypes, onSelectRoom }: AccommodationsProps) {
+export function Accommodations({ initialRoomTypes }: AccommodationsProps) {
   const t = useTranslations("rooms");
   const locale = useLocale();
   const isMr = locale === "mr";

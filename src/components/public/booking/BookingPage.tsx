@@ -453,7 +453,6 @@ export function BookingPage({
                 locale={locale}
                 isPlacingHold={placeHold.isPending}
                 holdReattemptFailed={holdReattemptFailed}
-                contact={availability.data?.data.contact}
                 onQuantityChange={(id, qty) => {
                   if (holdReattemptFailed) setHoldReattemptFailed(false)
                   handleQuantityChange(id, qty)
@@ -493,7 +492,6 @@ export function BookingPage({
               upiId={payment?.upi_id ?? null}
               totalAmount={grandTotal}
               contactPhone={contactPhone}
-              contactWhatsapp={contactWhatsapp}
             />
           </StepSection>
         )}

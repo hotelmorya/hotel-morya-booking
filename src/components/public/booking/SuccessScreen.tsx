@@ -26,7 +26,6 @@ export function SuccessScreen({
   contactWhatsapp = '',
 }: Props) {
   const t = useTranslations('booking')
-  const waNumber = contactWhatsapp || HOTEL.whatsapp
 
   const waShareText = `Namaskar! I booked a room at Hotel Morya Lodging Admapur. Booking Ref: ${bookingRef}`
   const waShareLink = waHref(waShareText)

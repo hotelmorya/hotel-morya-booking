@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { Phone, Search, AlertCircle, ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { Phone, Search, AlertCircle, ArrowLeft } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { formatCurrency, formatDateIST } from '@/lib/format'
@@ -51,7 +51,10 @@ export function TrackPage({
     not_arrived: t('statusNotArrived'),
   }
 
-  const waLink = waHref(`Namaskar, I want to check my reservation status for Booking Ref: ${ref || '—'}`)
+  const waLink = waHref(
+    `Namaskar, I want to check my reservation status for Booking Ref: ${ref || '—'}`,
+    contactWhatsapp,
+  )
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()

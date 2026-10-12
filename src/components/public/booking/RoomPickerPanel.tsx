@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/lib/format'
 import { Badge } from '@/components/ui/badge'
-import { waHref } from '@/lib/site'
 import type { AvailabilityRoomType } from '@/hooks/use-availability'
 
 type Props = {
@@ -15,7 +14,6 @@ type Props = {
   locale: string
   isPlacingHold: boolean
   holdReattemptFailed?: boolean
-  contact?: { phone: string; whatsapp: string }
   onQuantityChange: (roomTypeId: string, qty: number) => void
   onContinue: () => void
 }
@@ -33,7 +31,6 @@ export function RoomPickerPanel({
   locale,
   isPlacingHold,
   holdReattemptFailed = false,
-  contact,
   onQuantityChange,
   onContinue,
 }: Props) {

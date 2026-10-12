@@ -5,7 +5,6 @@ import {
   Car,
   Clock,
   Droplets,
-  Flame,
   Building2,
   MapPin,
   ShieldCheck,

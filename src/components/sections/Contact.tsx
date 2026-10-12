@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useTransition } from "react";
+import { useState, useEffect, useTransition, useMemo } from "react";
 import {
   AlertCircle,
   CalendarDays,
@@ -55,47 +55,50 @@ export function Contact({
     bookingRef?: string;
   } | null>(null);
 
-  const roomOptions =
-    initialRoomTypes && initialRoomTypes.length > 0
-      ? initialRoomTypes.map((rt) => {
-          const roomTitle = isMr ? (rt.name.mr || rt.name.en) : rt.name.en;
-          const isDorm =
-            rt.max_guests > 5 ||
-            (rt.name.en || "").toLowerCase().includes("dormitory");
-          const perText = isDorm
-            ? (isMr ? "ग्रुप / रात्र" : "group / night")
-            : (isMr ? "रात्र" : "night");
-          return {
-            id: rt.id,
-            title: roomTitle,
-            rate: rt.base_rate,
-            isDorm,
-            label: `${roomTitle} (₹${Number(rt.base_rate).toLocaleString("en-IN")} / ${perText})`,
-          };
-        })
-      : [
-          {
-            id: "10000000-0000-0000-0000-000000000002",
-            title: isMr ? "डिलक्स AC रूम" : "Deluxe AC Rooms",
-            rate: 1500,
-            isDorm: false,
-            label: `${isMr ? "डिलक्स AC रूम" : "Deluxe AC Rooms"} (₹1,500 / ${isMr ? "रात्र" : "night"})`,
-          },
-          {
-            id: "10000000-0000-0000-0000-000000000001",
-            title: isMr ? "नॉन-AC रूम" : "Comfortable Non-AC Rooms",
-            rate: 800,
-            isDorm: false,
-            label: `${isMr ? "नॉन-AC रूम" : "Comfortable Non-AC Rooms"} (₹800 / ${isMr ? "रात्र" : "night"})`,
-          },
-          {
-            id: "10000000-0000-0000-0000-000000000003",
-            title: isMr ? "मोठा ग्रुप हॉल" : "Pilgrim Group Dormitory",
-            rate: 2200,
-            isDorm: true,
-            label: `${isMr ? "मोठा ग्रुप हॉल" : "Pilgrim Group Dormitory"} (₹2,200 / ${isMr ? "रात्र" : "night"})`,
-          },
-        ];
+  const roomOptions = useMemo(
+    () =>
+      initialRoomTypes && initialRoomTypes.length > 0
+        ? initialRoomTypes.map((rt) => {
+            const roomTitle = isMr ? (rt.name.mr || rt.name.en) : rt.name.en;
+            const isDorm =
+              rt.max_guests > 5 ||
+              (rt.name.en || "").toLowerCase().includes("dormitory");
+            const perText = isDorm
+              ? (isMr ? "ग्रुप / रात्र" : "group / night")
+              : (isMr ? "रात्र" : "night");
+            return {
+              id: rt.id,
+              title: roomTitle,
+              rate: rt.base_rate,
+              isDorm,
+              label: `${roomTitle} (₹${Number(rt.base_rate).toLocaleString("en-IN")} / ${perText})`,
+            };
+          })
+        : [
+            {
+              id: "10000000-0000-0000-0000-000000000002",
+              title: isMr ? "डिलक्स AC रूम" : "Deluxe AC Rooms",
+              rate: 1500,
+              isDorm: false,
+              label: `${isMr ? "डिलक्स AC रूम" : "Deluxe AC Rooms"} (₹1,500 / ${isMr ? "रात्र" : "night"})`,
+            },
+            {
+              id: "10000000-0000-0000-0000-000000000001",
+              title: isMr ? "नॉन-AC रूम" : "Comfortable Non-AC Rooms",
+              rate: 800,
+              isDorm: false,
+              label: `${isMr ? "नॉन-AC रूम" : "Comfortable Non-AC Rooms"} (₹800 / ${isMr ? "रात्र" : "night"})`,
+            },
+            {
+              id: "10000000-0000-0000-0000-000000000003",
+              title: isMr ? "मोठा ग्रुप हॉल" : "Pilgrim Group Dormitory",
+              rate: 2200,
+              isDorm: true,
+              label: `${isMr ? "मोठा ग्रुप हॉल" : "Pilgrim Group Dormitory"} (₹2,200 / ${isMr ? "रात्र" : "night"})`,
+            },
+          ],
+    [initialRoomTypes, isMr]
+  );
 
   const [checkIn, setCheckIn] = useState<string>(() =>
     new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" })
@@ -137,34 +140,41 @@ export function Contact({
   }>({ loading: false });
 
   useEffect(() => {
-    if (selectedRoomId) {
-      setSelectedId(selectedRoomId);
-    } else if (selectedRoom) {
+    let nextId = selectedRoomId;
+    if (!nextId && selectedRoom) {
       const match = roomOptions.find(
         (o) =>
           o.title.toLowerCase().includes(selectedRoom.toLowerCase()) ||
           selectedRoom.toLowerCase().includes(o.title.toLowerCase())
       );
-      if (match) setSelectedId(match.id);
+      if (match) nextId = match.id;
+    }
+    if (nextId) {
+      setSelectedId((curr) => (curr !== nextId ? nextId : curr));
     }
   }, [selectedRoomId, selectedRoom, roomOptions]);
 
   useEffect(() => {
     if (!checkIn || !checkOut || checkOut <= checkIn) return;
     let active = true;
-    setAvailability((prev) => ({ ...prev, loading: true }));
-    fetch(`/api/availability?check_in=${checkIn}&check_out=${checkOut}&guests=${guestCount}`)
+    const controller = new AbortController();
+    fetch(`/api/availability?check_in=${checkIn}&check_out=${checkOut}&guests=${guestCount}`, {
+      signal: controller.signal,
+    })
       .then((res) => res.json())
       .then((json) => {
         if (active && json?.data?.room_types) {
           setAvailability({ loading: false, rooms: json.data.room_types });
         }
       })
-      .catch(() => {
-        if (active) setAvailability({ loading: false });
+      .catch((err) => {
+        if (active && err?.name !== 'AbortError') {
+          setAvailability({ loading: false });
+        }
       });
     return () => {
       active = false;
+      controller.abort();
     };
   }, [checkIn, checkOut, guestCount]);
 

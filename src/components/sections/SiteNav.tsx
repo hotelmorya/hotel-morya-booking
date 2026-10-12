@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useScroll } from "motion/react";
 import { Menu, X, Search, ArrowRight, Phone } from "lucide-react";
@@ -16,14 +16,17 @@ export function SiteNav() {
   const [activeId, setActiveId] = useState<string>("about");
   const { scrollYProgress } = useScroll();
 
-  const navLinks = [
-    { id: "about", label: t("about") },
-    { id: "temple", label: t("temple") },
-    { id: "accommodations", label: t("rooms") },
-    { id: "amenities", label: t("amenities") },
-    { id: "gallery", label: t("gallery") },
-    { id: "contact", label: t("contact") },
-  ];
+  const navLinks = useMemo(
+    () => [
+      { id: "about", label: t("about") },
+      { id: "temple", label: t("temple") },
+      { id: "accommodations", label: t("rooms") },
+      { id: "amenities", label: t("amenities") },
+      { id: "gallery", label: t("gallery") },
+      { id: "contact", label: t("contact") },
+    ],
+    [t]
+  );
 
   useEffect(() => {
     const handleScroll = () => {

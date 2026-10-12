@@ -45,8 +45,10 @@ export function TurnstileWidget({
   const onTokenRef = useRef(onToken)
   const onExpireRef = useRef(onExpire)
 
-  onTokenRef.current = onToken
-  onExpireRef.current = onExpire
+  useEffect(() => {
+    onTokenRef.current = onToken
+    onExpireRef.current = onExpire
+  })
 
   // Imperatively reset the Turnstile widget when parent signals a reset (e.g. failed attempt)
   useEffect(() => {

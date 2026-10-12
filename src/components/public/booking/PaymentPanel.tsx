@@ -3,11 +3,10 @@
 import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
-import { Phone, CheckCircle2 } from 'lucide-react'
 import { RadioGroup, RadioCardOption } from '@/components/ui/radio-group'
 import { TurnstileWidget } from './TurnstileWidget'
 import { useCreatePublicBooking } from '@/hooks/use-public-booking'
-import { HOTEL, telHref, waHref } from '@/lib/site'
+import { HOTEL, telHref } from '@/lib/site'
 
 export type BookingResult = {
   id: string
@@ -27,7 +26,6 @@ type Props = {
   upiId: string | null
   totalAmount: number
   contactPhone?: string
-  contactWhatsapp?: string
 }
 
 type PaymentPath = 'hotel' | 'upi'
@@ -39,7 +37,6 @@ export function PaymentPanel({
   upiId,
   totalAmount,
   contactPhone,
-  contactWhatsapp,
 }: Props) {
   const t = useTranslations('booking')
   const upiEnabled = !!upiQrUrl || !!upiId
@@ -55,7 +52,6 @@ export function PaymentPanel({
 
   const hotelName = HOTEL.name
   const hotelPhone = contactPhone || HOTEL.phones[0]
-  const waNumber = contactWhatsapp || HOTEL.whatsapp
 
   // UPI deep link for mobile one-tap pay
   const upiLink = upiId

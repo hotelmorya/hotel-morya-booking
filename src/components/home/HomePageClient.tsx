@@ -46,14 +46,6 @@ export function HomePageClient({
     () => roomTypes[0]?.name?.en || "Deluxe AC Rooms"
   );
 
-  const handleSelectRoom = (roomId: string, roomTitle: string) => {
-    setSelectedRoomId(roomId);
-    setSelectedRoomTitle(roomTitle);
-    const element = document.getElementById("book");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   return (
     <div className="light-scope relative min-h-screen bg-background text-foreground">
@@ -83,10 +75,7 @@ export function HomePageClient({
         <Temple />
 
         {/* 4. Accommodations: AC, Non-AC & Dormitory (Live Database & Cloudinary) */}
-        <Accommodations
-          initialRoomTypes={roomTypes}
-          onSelectRoom={handleSelectRoom}
-        />
+        <Accommodations initialRoomTypes={roomTypes} />
 
         {/* 5. Why Choose Us / Pilgrimage Amenities */}
         <WhyUs />

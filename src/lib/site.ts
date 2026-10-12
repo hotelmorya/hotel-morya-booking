@@ -88,8 +88,9 @@ export function telHref(phone: string): string {
   return `tel:+91${digits.slice(-10)}`;
 }
 
-export function waHref(message?: string): string {
-  const base = `https://wa.me/91${HOTEL.whatsapp}`;
+export function waHref(message?: string, phone: string = HOTEL.whatsapp): string {
+  const digits = phone.replace(/\D/g, "").slice(-10);
+  const base = `https://wa.me/91${digits || HOTEL.whatsapp}`;
   if (!message) return base;
   return `${base}?text=${encodeURIComponent(message)}`;
 }

@@ -11,7 +11,6 @@ import {
   Play,
   Phone,
   CheckCircle2,
-  Sparkles,
 } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useTranslations, useLocale } from "next-intl";
